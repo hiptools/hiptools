@@ -1,0 +1,732 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
+import pygtk
+pygtk.require('2.0')
+import gtk
+import codecs
+import re
+import os
+import sys
+import unicodedata
+
+# formerly - ucs8conv, renamed
+import hipconv
+import booklst
+import hip_config
+from textview import Show_text
+import hipcomment
+import russ_simp
+
+conv = hipconv.Repl()
+brac = hipcomment.Brackets()
+# russify text in Viewer
+russ = russ_simp.Mn(True, True, True)
+
+
+def destroy_cb(widget):
+    gtk.main_quit()
+    return False
+
+##################CLASSES#################################
+
+
+class Popup:
+    def __init__(self, text=None):
+#        self.title = ""
+        self.text = text
+        dialog = gtk.Dialog(title='warning')
+        label = gtk.Label(self.text)
+        dialog.vbox.pack_start(label, True, True, 10)
+        label.show()
+        dialog.show()
+
+class SeText(Show_text):
+
+    ''' Subclass of Text(), viewer of texts
+    with some special features, needed for hipsearch
+
+    '''
+
+    def __init__(self):
+        Show_text.__init__(self, False)
+        self.textview.connect('move-cursor', self.scrolled)
+        self.scr = 0
+
+    def scrolled(self, textv, steps, count, ext):
+       self.scr = steps 
+       
+    def style_txt(self):
+        # Have to change only this method, everything else is from hipview
+        self.my_text.set_property("font", self.sl_font)
+        self.my_text.set_property("wrap-mode", gtk.WRAP_WORD)
+        
+        startiter, enditer = self.textbuffer.get_bounds()
+        self.textbuffer.apply_tag(self.my_text, startiter, enditer)
+
+        cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+
+#        if not self.pos:
+#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+#        else:
+#            # put cursor at the start of the page
+#            self.textbuffer.place_cursor(startiter)
+#            cur_iter = startiter
+
+        iter1 = self.textbuffer.get_iter_at_line_offset(face.new_win.found_raw, 0)
+        iter2 = self.textbuffer.get_iter_at_line_offset(face.new_win.found_raw + 1, 0)
+
+        self.found_text = gtk.TextTag()
+        self.found_text.set_property("background", "lightgreen")
+        self.tag_table.add(self.found_text)
+        self.textbuffer.apply_tag(self.found_text, iter1, iter2)
+
+#        if isinstance(widget, gtk.TreeView):
+
+        if not self.scr:
+            self.textbuffer.place_cursor(iter1)
+            one = self.textbuffer.create_mark(None, iter1)
+            self.textview.scroll_to_mark(one, 0.0, True, 0.0, 0.0)
+#            self.textview.scroll_to_iter(iter1, 0.0, True, 0.0, 0.0)
+            self.textview.grab_focus()
+        else:
+            self.textbuffer.place_cursor(cur_iter)
+            cur_mark = self.textbuffer.create_mark(None, cur_iter)
+            self.textview.scroll_to_mark(cur_mark, 0.0, True, 0.0, 0.0)
+            self.textview.grab_focus()
+#            print 'scrolled', self.scr
+
+        self.scr = 0
+
+    def style_txt_gr(self):
+        # Have to change only this method, everything else is from hipview
+        self.my_text_gr.set_property("font", self.gr_font)
+        self.my_text_gr.set_property("wrap-mode", gtk.WRAP_WORD)
+        
+        startiter, enditer = self.textbuffer.get_bounds()
+        self.textbuffer.apply_tag(self.my_text_gr, startiter, enditer)
+
+        cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+
+#        if not self.pos:
+#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+#        else:
+#            # put cursor at the start of the page
+#            self.textbuffer.place_cursor(startiter)
+#            cur_iter = startiter
+
+        iter1 = self.textbuffer.get_iter_at_line_offset(face.new_win.found_raw, 0)
+        iter2 = self.textbuffer.get_iter_at_line_offset(face.new_win.found_raw + 1, 0)
+
+        self.found_text = gtk.TextTag()
+        self.found_text.set_property("background", "lightgreen")
+        self.tag_table_gr.add(self.found_text)
+        self.textbuffer.apply_tag(self.found_text, iter1, iter2)
+
+#        if isinstance(widget, gtk.TreeView):
+
+        if not self.scr:
+            self.textbuffer.place_cursor(iter1)
+            one = self.textbuffer.create_mark(None, iter1)
+            self.textview.scroll_to_mark(one, 0.0, True, 0.0, 0.0)
+#            self.textview.scroll_to_iter(iter1, 0.0, True, 0.0, 0.0)
+            self.textview.grab_focus()
+        else:
+            self.textbuffer.place_cursor(cur_iter)
+            cur_mark = self.textbuffer.create_mark(None, cur_iter)
+            self.textview.scroll_to_mark(cur_mark, 0.0, True, 0.0, 0.0)
+            self.textview.grab_focus()
+#            print 'scrolled', self.scr
+
+        self.scr = 0
+
+
+        
+class Viewer:
+    ''' List of found entries
+
+    '''
+
+    def __init__(self):
+        self.res_num = 0
+        self.text = 'Searching...'
+        window2 = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window2.set_resizable(True)
+        window2.set_border_width(10)
+        window2.set_size_request(950, 450)
+
+        window2.set_title("Просмотр результатов")
+        window2.set_border_width(0)
+#        window2.connect('key_press_event', on_key_press_event)
+
+        box1 = gtk.VBox(False, 0)
+        window2.add(box1)
+        box1.show()
+        box2 = gtk.VBox(False, 10)
+        box2.set_border_width(10)
+        box1.pack_start(box2, True, True, 0)
+        box2.show()
+
+        sw = gtk.ScrolledWindow()
+        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.model = gtk.ListStore(str, int, str, str)
+        self.tv = gtk.TreeView(self.model)
+        self.selection = self.tv.get_selection()
+
+#        self.tv.connect('key_press_event', self.on_key_press_event)
+        self.tv.connect('row-activated', self.on_click)
+
+        self.modelfilter = self.model.filter_new()
+#        self.modelfilter.set_visible_func(vis, self.small)
+        self.tv.set_model(self.modelfilter)
+
+        sw.add(self.tv)
+
+        self.label = gtk.Label() 
+        self.entry = gtk.Entry()
+        
+        cell1 = gtk.CellRendererText()
+        cell2 = gtk.CellRendererText()
+        cell1.set_property('font', 'FreeSans 12')
+        cell2.set_property('font', 'FreeSans 12')
+        self.column = gtk.TreeViewColumn("File_path", cell1, text=3)
+        self.column2 = gtk.TreeViewColumn("String", cell2, text=2)
+        self.tv.append_column(self.column)
+        self.tv.append_column(self.column2)
+        self.tv.set_search_column(2)
+        
+        sw.show_all()
+        self.tv.show()
+        box2.pack_start(self.label, False, False, 0)
+        box2.pack_start(sw)
+        box2.pack_start(self.entry, False, False, 0)
+
+        self.entry.connect('activate', self.entry_cb)
+        self.entry.connect('key_press_event', self.on_key_press_event)
+        self.label.set_text("Найдено " + str(count) + " совпадений")
+        self.entry.show()
+        self.label.show()
+
+        window2.show()
+
+    def entry_cb(self, ent):
+        """Callback for entry widg
+           Look for word in results of primary search
+
+        """
+        
+        global search_res
+        global res_num
+
+        res_num = 0
+#    search_res = []
+
+        col_num = 2
+        search = ent.get_text()
+
+        data = [search]
+        def find_match(model, path, iter, data):
+
+            match_line = model.get_value(iter, col_num)
+            if match_line.find(data[0]) >= 0:
+                data.append(path)
+        face.new_win.modelfilter.foreach(find_match, data)
+        search_res = data[1:]
+        if search_res:
+            face.new_win.selection.select_path(search_res[0])
+            face.new_win.tv.scroll_to_cell(search_res[0])
+        else:
+            print 'no match found'
+
+
+    def ins(self, res):
+        
+        for i in res:
+            iter = self.model.append()
+            self.model.set(iter, 0, i[0])
+            self.model.set(iter, 1, i[1])
+            self.model.set(iter, 2, i[2])
+            path_s_u = face.path2name(i[0]).decode('utf8')[:40]
+            self.model.set(iter, 3, path_s_u)
+#            self.model.set(iter, 3, '')
+#            self.model.set(iter, 3, path2name(i[0]))
+
+    def on_click(self, widget, iter, path):
+        ''' callback, row in TreeView clicked '''
+
+        selection = widget.get_selection()
+        model, path = selection.get_selected_rows()
+        # get iter in Viewer (found entries)
+        iter_v = model.get_iter(path[0])
+        file_path = model.get_value(iter_v, 0) 
+
+        self.found_raw = model.get_value(iter_v, 1)    
+
+        try:
+            if face.mode:
+                fp = codecs.open(file_path, "rb", "utf8")
+            else:
+                fp = codecs.open(file_path, "rb", "cp1251")
+            f_lines = fp.readlines()
+            fp.close()
+        except IOError:
+            print 'no such file found'
+
+        txt_ins = ''.join(f_lines)
+
+        # create window to output selected text
+        txt_win = SeText()
+        txt_win.mode = face.mode
+
+        txt_win.path1 = file_path
+        txt_win.window3.set_title(face.path2name(file_path))
+
+        if face.mode:
+            txt_win.ins_txt_gr(txt_ins)
+        else:
+            txt_win.ins_txt_hip(txt_ins)
+
+
+    def on_key_press_event(self, widget, event):
+        """Callback for find-Entry in results window"""
+
+        keyname = gtk.gdk.keyval_name(event.keyval)
+
+        global res_num
+        selection = face.new_win.selection
+        model, path = selection.get_selected_rows()
+        # get iter in Viewer (found entries)
+        iter_v = model.get_iter(path[0])
+        file_path = model.get_value(iter_v, 0) 
+
+        self.found_raw = model.get_value(iter_v, 1)    
+
+        # next result is search (Viewer)
+        if event.state & gtk.gdk.CONTROL_MASK:
+            if keyname == "n" or keyname == "Cyrillic_te":
+                
+                if res_num < len(search_res) - 1:
+                    res_num += 1
+                    face.new_win.selection.select_path(search_res[res_num])
+                    face.new_win.tv.scroll_to_cell(search_res[res_num])
+                    face.new_win.tv.set_cursor_on_cell(search_res[res_num])
+
+            # prevuous result is search (Viewer)
+            if keyname == "p" or keyname == "Cyrillic_ze":
+                if res_num != 0:
+                    res_num -= 1
+                    face.new_win.selection.select_path(search_res[res_num])
+                    face.new_win.tv.scroll_to_cell(search_res[res_num])
+                    face.new_win.tv.set_cursor_on_cell(search_res[res_num])
+
+
+class Manager:
+    '''Main programm window'''
+
+    def __init__(self, mode=True):
+        
+        # if True - switched to greek, else - to slavonic
+        self.mode = mode
+
+#        self.case_ins = False
+        # create configurations object
+        self.config = hip_config.Service(".hiptools.config")
+#        print self.config.default_search_group
+
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window.set_title("hip-search")
+        self.window.connect("destroy", destroy_cb) 
+#        self.window.connect("key_press_event", self.manager_keys) 
+
+        self.window.set_border_width(10)
+        self.window.set_size_request(500, 200)
+
+        self.vbox = gtk.VBox(False, 0)
+        self.hbox = gtk.HBox(False, 0)
+        self.entry = gtk.Entry()
+        self.combo = gtk.combo_box_new_text()
+        self.toggle1 = gtk.CheckButton("Вкл. ударения")
+        self.toggle2 = gtk.CheckButton("Учит. регистр")
+        self.button = gtk.Button('Search')
+        self.pr_bar = gtk.ProgressBar()
+
+        self.vbox.pack_start(self.entry, False, False, 0)
+        self.vbox.pack_start(self.combo, False, False, 0)
+#        self.vbox.pack_start(self.button, True, False, 10)
+        self.hbox.pack_start(self.toggle1, False, False, 10)
+        self.hbox.pack_start(self.toggle2, False, False, 10)
+        self.hbox.pack_end(self.button, False, False, 10)
+        self.vbox.pack_start(self.hbox, True, False, 0)
+        self.vbox.pack_start(self.pr_bar, False, False, 0)
+        self.window.add(self.vbox)
+        
+        self.entry.connect("key_press_event", self.manager_keys) 
+        if self.mode:
+            # greek mode
+        
+            self.gr_filter = [['a|', u'\u1fb3'],
+                            ['h|', u'\u1fc3'],
+                            ['w|', u'\u1ff3'],
+#                        ['a|', u'\u'],
+                            ['a', u'\u03b1'],
+                            ['b', u'\u03b2'],
+                            ['g', u'\u03b3'],
+                            ['d', u'\u03b4'],
+                            ['e', u'\u03b5'],
+                            ['z', u'\u03b6'],
+                            ['h', u'\u03b7'],
+                            ['q', u'\u03b8'],
+                            ['i', u'\u03b9'],
+                            ['k', u'\u03ba'],
+                            ['l', u'\u03bb'],
+                            ['m', u'\u03bc'],
+                            ['n', u'\u03bd'],
+                            ['x', u'\u03be'],
+                            ['o', u'\u03bf'],
+                            ['p', u'\u03c0'],
+                            ['r', u'\u03c1'],
+                            ['j', u'\u03c2'],
+                            ['s', u'\u03c3'],
+                            ['t', u'\u03c4'],
+                            ['u', u'\u03c5'],
+                            ['f', u'\u03c6'],
+                            ['c', u'\u03c7'],
+                            ['y', u'\u03c8'],
+#                        ['|', u'\u037a'], # ypogegrammeni
+                            ['w', u'\u03c9']]
+
+            self.search_group = self.config.default_search_group_gr
+
+            self.lib_path = os.path.join(self.config.gr_path, 'greek_lib')
+
+            self.gl_book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
+
+            self.combo_lst = ['All_services', 'All_read', 'Minologion_base', 'Minologion extra', 'Minologion all', 'Euhologion', 'Hieratikon', 'Octoechos', 'Orologion', 'Penticostartion', 'Triodion', 'Agia_grafh', 'Psalthrion', 'Zlat_Mat', 'Zlat_John']
+
+            min_b = []
+            min_e = []
+            oct_l = []
+            all_l = []
+
+            for n in ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]:
+                min_b.append("Minologion/min_base/" + n)
+                if n != "apr":
+                    min_e.append("Minologion/min_ext/" + n)
+
+            for m in range(8):
+                oct_l.append("Octoechos/ihos_" + str(m + 1))
+
+            for z in [min_b, min_e, oct_l]:
+                all_l.extend(z)
+#        all_l.extend(['Orologion', 'Penticostarion', 'Triodion', 'Agia_grafh/Nea_diaqhkh'])
+            all_l.extend(['Orologion', 'Penticostarion', 'Triodion', 'Psalthrion', 'Hieraticon', 'Euchologion'])
+            all_r = ['Agia_grafh/Nea_diaqhkh', 'Psalthrion', 'st_fathers/chrisostom/Matthew', 'st_fathers/chrisostom/John']
+
+            self.dicti = {'All_services': all_l, 'All_read': all_r, 'Minologion_base': min_b, 'Minologion extra': min_e, 'Minologion all': min_b + min_e, 'Hieratikon': ['Hieraticon'], 'Euhologion': ['Euchologion'], 'Octoechos': oct_l, 'Orologion': ['Orologion'], 'Penticostarion': ['Penticostarion'], 'Triodion': ['Triodion'], 'Agia_grafh': ['Agia_grafh/Nea_diaqhkh'], 'Psalthrion': ['Psalthrion'], 'Zlat_Mat': ['st_fathers/chrisostom/Matthew'], 'Zlat_John': ['st_fathers/chrisostom/John']}
+
+        else:
+            # slavic mode
+
+            self.search_group = self.config.default_search_group
+
+            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
+
+            self.gl_book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
+
+            self.combo_lst = ['Богослужебные', 'Свящ. Писание', 'Все книги', 'Четьи книги', 'Акафисты', 'Алфавит', 'Апостол', 'Часослов', 'Треодь цветная', 'Добротолюбие', 'Экзапостилларии', 'Евангелия', 'Ифика', 'Каноны', 'Молитвы на молебнах', 'Общая минея', 'Октоих', 'Пролог', 'Книга правил', 'Псалтырь', 'Треодь постная', 'Служебник', 'Типикон', 'Требник', 'Ветхий Завет', 'Минеи месячные']
+
+            self.dicti = {'Богослужебные': ['akf','chs','ctr','kan','mol','obs','okt','psa','ptr','slu','tip','trb','min/aug','min/apr','min/dec','min/feb','min/jan','min/jul','min/jun','min/mar','min/may','min/nov','min/okt','min/sep'], 
+        'Свящ. Писание': ['eua', 'aps', 'vzv'], 
+        'Все книги': ['akf', 'alf', 'aps', 'chs', 'ctr', 'dbr', 'eua', 'ifi', 'kan', 'mol', 'obs', 'okt', 'prl', 'prv', 'psa', 'ptr', 'slu', 'tip', 'trb', 'vzv', 'min/aug','min/apr','min/dec','min/feb','min/jan','min/jul','min/jun','min/mar','min/may','min/nov','min/okt','min/sep'],
+        'Четьи книги': ['alf', 'aps', 'dbr', 'eua', 'ifi', 'prl', 'prv', 'vzv'],        'Акафисты': ['akf'], 'Алфавит': ['alf'], 'Апостол': ['aps'], 'Часослов': ['chs'], 'Треодь цветная': ['ctr'], 'Добротолюбие': ['dbr'], 'Евангелия': ['eua'], 'Ифика': ['ifi'], 'Каноны': ['kan'], 'Молитвы на молебнах': ['mol'], 'Общая минея': ['obs'], 'Октоих': ['okt'], 'Пролог': ['prl'], 'Книга правил': ['prv'], 'Псалтырь': ['psa'], 'Треодь постная': ['ptr'], 'Служебник': ['slu'], 'Типикон': ['tip'], 'Требник': ['trb'], 'Ветхий Завет': ['vzv'], 'Минеи месячные': ['min/aug','min/apr','min/dec','min/feb','min/jan','min/jul','min/jun','min/mar','min/may','min/nov','min/okt','min/sep']}
+
+        for i in self.combo_lst: 
+            self.combo.append_text(i.strip())
+
+        self.entry.show()
+        self.combo.show()
+        self.toggle1.show()
+        self.toggle2.show()
+        self.button.show()
+        self.vbox.show()
+        self.hbox.show()
+        self.pr_bar.show()
+        self.window.show()
+
+        # passes two objects: itself and the widget:
+        self.combo.connect("changed", self.choose)       
+        for x in range(len(self.combo_lst)):
+            if self.search_group == self.combo_lst[x]:
+                self.combo.set_active(x)
+
+        # define checkboxes callbacks
+        self.toggle1.connect("toggled", self.stress)
+        self.toggle2.connect("toggled", self.case_switch)       
+
+        self.case_ins = True
+
+        # check config for parameter
+        if self.config.diacritics_off == 'True':
+            self.stress_toggle = False
+        elif self.config.diacritics_off == 'False':
+            self.stress_toggle = True
+
+        self.comm_lst = []
+        self.pointer = 0
+
+        self.button.connect('clicked', self.search_it)
+
+
+    def count_files(self, books):
+
+        file_count = 0
+
+        for book in books:
+#        book = ''.join(["/usr/local/lib/hip-tools/hiplib/", book])
+
+#            book = os.path.join(os.getcwd(), "hiplib", book)
+            book = os.path.join(self.lib_path,  book)
+
+            for file in os.listdir(book):
+                if file.endswith('hip') or file.endswith('xml'):
+                    file_count += 1
+
+#        print file_count
+
+        return file_count
+
+
+    def f_search(self, books=None, s_word=None):
+        '''main search function'''
+
+        # number of 'hip' files in given group of books
+        num_files = self.count_files(books)
+        cur_file = 0
+
+        res = []
+        global count
+        count = 0
+        word = s_word.decode('utf-8')
+#        word = word.lower()
+        if self.mode:
+            word = unicodedata.normalize('NFD', word)
+                
+        if word.startswith('\"'):
+            word = word.replace('\"', '')
+            patt = "\s" + word + "\s"
+            patt = patt.decode('utf8')
+
+#            print 'patt', patt
+            regex = re.compile(patt, re.U)
+                
+        elif word.endswith('*'):
+#        print 'w*'
+            word = word.replace('*', '')
+#        patt = word + ".*\s"
+            patt = "\s" + word + ".*?\s"
+#        print patt
+            regex = re.compile(patt, re.U)
+
+        elif word.startswith('*'):
+            word = word.replace('*', '')
+            patt = "\s\w+?" + word + "\s"
+#        word = '\s\w+?гул[\s\n\.,;:!\?@"\']'
+#        word = '\s\w+?[\s\n\.,;:!\?@"\']'
+#        print patt
+            regex = re.compile(patt, re.U)
+
+        else:
+            patt = word
+            if face.case_ins:
+                regex = re.compile(patt, re.U | re.I)
+            else:
+                regex = re.compile(patt, re.U)
+
+        for j in books:
+#        j = ''.join(["/usr/local/lib/hip-tools/hiplib/", j])
+#            j = os.path.join(os.getcwd(), "hiplib", j)
+            j = os.path.join(self.lib_path, j)
+
+            f_names = os.listdir(j)
+#            print f_names
+
+            for i in f_names:
+                if i.endswith('.hip') or i.endswith('.xml'):
+                    cur_file += 1
+#                    perc = round(float(cur_file)/float(num_files), 1)
+
+                    # calculate percent of work done so far
+                    perc = float(cur_file)/float(num_files)
+                    face.pr_bar.set_fraction(perc)
+                    # these are nesessary to steal control from gtk main loop
+                    # else progrees bar wont move untill job's done
+                    while gtk.events_pending():
+                        gtk.main_iteration()
+
+                    file_path = os.path.join(j, i)
+#                    print "file_path: ", file_path
+                    if self.mode:
+                        fp = codecs.open(file_path, "rb", "utf-8")
+                    else:
+                        fp = codecs.open(file_path, "rb", "cp1251")
+
+
+                    f_lines = fp.readlines()
+                    fp.close()
+
+                    for str_num in range(len(f_lines)):
+                        line = f_lines[str_num]
+
+                        # clean all apostrophs (stresses) from searched text
+                        if self.mode:
+                            for a in [u'\u0300', u'\u0342', u'\u0301', u'\u0314', u'\u0313']:
+                                line = line.replace(a, '')
+                        else:
+
+                            if not face.stress_toggle:
+                                line = line.replace('\'', '')
+                                line = line.replace('`', '')
+                                line = line.replace('^', '')
+                            if '%<' or '%>' in line:
+#                            print line
+                                line = line.replace('%<','')
+                                line = line.replace('%>', '')
+
+                        if regex.search(line):
+                            count += 1
+                            # convert hip to russian
+                            rus_txt = russ.conv_str(f_lines[str_num])
+                            res.append((file_path, str_num, rus_txt))
+
+        return res
+
+
+    def manager_keys(self, widget, event):
+        '''Bindings for main window'''
+
+#        if event.state & gtk.gdk.CONTROL_MASK:
+        keyname = gtk.gdk.keyval_name(event.keyval)
+
+        if keyname == "Return":
+#            print 'Return'
+            self.search_it()
+
+        if keyname == "Up":
+            print 'Up'
+#            if self.comm_lst:
+
+            self.pointer += 1
+            print 'pointer', self.pointer
+            if self.pointer <= len(self.comm_lst):
+                self.entry.set_text(self.comm_lst[len(self.comm_lst) - self.pointer])
+            else:
+                self.pointer == 1
+                self.entry.set_text(self.comm_lst[len(self.comm_lst) - self.pointer])
+ 
+        if keyname == "Down":
+            print 'Down'
+
+    def choose(self, widget):
+        '''Chooses the books group'''
+
+        get_name = widget.get_active_text() 
+
+        for name in self.dicti:
+            if get_name == name:
+                self.books = self.dicti[name]
+
+    def case_switch(self, widget, data=None):
+
+       if widget.get_active():
+           self.case_ins = False
+       else:
+           self.case_ins = True 
+        
+    def stress(self, widget, data=None):
+
+       if widget.get_active():
+           self.stress_toggle = True 
+       else:
+           self.stress_toggle = False
+         
+    def search_it(self, button=None):
+        '''Main search interface'''
+
+        self.s_word = self.entry.get_text()
+        if self.mode:
+            for a, b in self.gr_filter:
+                self.s_word = self.s_word.replace(a, b)
+            print self.s_word
+
+
+        self.comm_lst.append(self.s_word)
+#        print self.comm_lst
+
+        # res - list of tuples, containing path, line_num, text
+        res = self.f_search(self.books, self.s_word)
+        if res:
+            self.new_win = Viewer()
+            self.new_win.ins(res)
+            self.new_win.selection.select_path((0,))
+            self.new_win.tv.set_cursor((0,))
+
+        else:
+            print 'Didn\'t find anything, sorry.'
+            Popup("Ничего не найдено")
+
+    def path2name(self, f_path):
+        ''' Convert given path to description string '''
+
+        self.path_ls = []
+
+        while(f_path):
+            f_path, tail = os.path.split(f_path)
+            if tail == 'hiplib' or tail == 'greek_lib':
+                break
+            self.path_ls.insert(0, tail)
+                    
+        self.desc_str = []
+        self.walker(self.gl_book_lst)
+        res_str = ' / '.join(self.desc_str)
+
+        return res_str
+
+    def walker(self, book_lst):
+        '''recursive funstion for parsing through book list'''
+
+        for book in book_lst:
+            if self.path_ls:
+                if self.path_ls[0] in book[0]:
+                    out = self.path_ls.pop(0)
+                    self.desc_str.append(book[1])
+                    if book[2]:
+                        self.walker(book[2])
+            else:
+                break
+
+def main():
+    gtk.main()
+    return 0
+
+if __name__ == '__main__':
+
+    from optparse import OptionParser
+    usage = "usage: %prog [options] dir"
+    parser = OptionParser(usage=usage)
+
+    parser.add_option("-g", "--greek", dest="greek", action="store_true", help="Switch to greek")
+    parser.add_option("-s", "--slav", dest="slav", action="store_true", help="Switch to slavonic")
+    
+    (options, args) = parser.parse_args()
+#    if args:
+    if options.greek:
+        face = Manager(True)
+    elif options.slav:
+        face = Manager(False)
+    else:
+        print 'no parameters given, exiting'
+        sys.exit(0)
+
+    main()
+
+
