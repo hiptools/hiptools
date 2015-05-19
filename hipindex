@@ -35,7 +35,7 @@ class Book_lst:
 
         if self.mode:
 #            self.lib_path = os.path.join(self.config.gr_path, 'greek_lib')
-            self.lib_path = self.config.get('LibraryPaths', 'gt_path')
+            self.lib_path = self.config.get('LibraryPaths', 'gr_path')
             self.enc = 'utf-8'
         else:
 #            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
