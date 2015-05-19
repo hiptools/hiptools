@@ -11,7 +11,8 @@ import sys
 from xml.dom import minidom
 
 import booklst
-import hip_config
+#import hip_config
+import ConfigParser
 from textview import Show_text
 
 def destroy_cb(widget):
@@ -28,13 +29,17 @@ class Book_lst:
         self.mode = mode
 
         # create configurations object
-        self.config = hip_config.Service('.hiptools.config')
+#        self.config = hip_config.Service('.hiptools.config')
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
 
         if self.mode:
-            self.lib_path = os.path.join(self.config.gr_path, 'greek_lib')
+#            self.lib_path = os.path.join(self.config.gr_path, 'greek_lib')
+            self.lib_path = self.config.get('LibraryPaths', 'gt_path')
             self.enc = 'utf-8'
         else:
-            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
+#            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
+            self.lib_path = self.config.get('LibraryPaths', 'sl_path')
             self.enc = 'cp1251'
 
 

@@ -13,7 +13,8 @@ import unicodedata
 # formerly - ucs8conv, renamed
 import hipconv
 import booklst
-import hip_config
+#import hip_config
+import ConfigParser
 from textview import Show_text
 import hipcomment
 import russ_simp
@@ -330,7 +331,9 @@ class Manager:
 
 #        self.case_ins = False
         # create configurations object
-        self.config = hip_config.Service(".hiptools.config")
+#        self.config = hip_config.Service(".hiptools.config")
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
 #        print self.config.default_search_group
 
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -395,9 +398,9 @@ class Manager:
 #                        ['|', u'\u037a'], # ypogegrammeni
                             ['w', u'\u03c9']]
 
-            self.search_group = self.config.default_search_group_gr
-
-            self.lib_path = os.path.join(self.config.gr_path, 'greek_lib')
+#            self.search_group = self.config.default_search_group_gr
+            self.search_group = self.config.get('SearchOptions', 'default_search_group_gr')
+            self.lib_path = self.config.get('LibraryPaths', 'gr_path')
 
             self.gl_book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
@@ -427,9 +430,11 @@ class Manager:
         else:
             # slavic mode
 
-            self.search_group = self.config.default_search_group
+#            self.search_group = self.config.default_search_group
+#            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
 
-            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
+            self.search_group = self.config.get('SearchOptions', 'default_search_group')
+            self.lib_path = self.config.get('LibraryPaths', 'sl_path')
 
             self.gl_book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
@@ -466,9 +471,9 @@ class Manager:
         self.case_ins = True
 
         # check config for parameter
-        if self.config.diacritics_off == 'True':
+        if self.config.get('SearchOptions', 'diacritics_off') == 'True':
             self.stress_toggle = False
-        elif self.config.diacritics_off == 'False':
+        elif self.config.get('SearchOptions', 'diacritics_off') == 'False':
             self.stress_toggle = True
 
         self.comm_lst = []
@@ -656,7 +661,7 @@ class Manager:
         if self.mode:
             for a, b in self.gr_filter:
                 self.s_word = self.s_word.replace(a, b)
-            print self.s_word
+#            print self.s_word
 
 
         self.comm_lst.append(self.s_word)
@@ -681,7 +686,7 @@ class Manager:
 
         while(f_path):
             f_path, tail = os.path.split(f_path)
-            if tail == 'hiplib' or tail == 'greek_lib':
+            if tail == 'hiplib' or tail == 'greeklib':
                 break
             self.path_ls.insert(0, tail)
                     

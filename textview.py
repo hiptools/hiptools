@@ -12,7 +12,8 @@ import sys
 
 # formerly - ucs8conv, renamed
 import hipconv
-import hip_config
+#import hip_config
+import ConfigParser
 # comment parser
 import hipcomment
 #import write_utf
@@ -108,11 +109,13 @@ class Show_text:
         # well, in that case we'll make an exception.
         self.ucs_patt = re.compile(u'ucs', re.U | re.I)
 
-        self.config = hip_config.Service(".hiptools.config")
+#        self.config = hip_config.Service(".hiptools.config")
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
 
         # default font
-        self.sl_font = self.config.sl_font
-        self.gr_font = self.config.gr_font
+        self.gr_font = self.config.get('Fonts', 'gr_font')
+        self.sl_font = self.config.get('Fonts', 'sl_font')
         self.sl_font_prev = ''
         self.gr_font_prev = ''
         self.plain_font = 'Tahoma 16'
@@ -122,14 +125,14 @@ class Show_text:
         if not self.mode:
             self.check_font(self.sl_font)
 
-            if self.config.default_style == 'slavonic':
+            if self.config.get('Style', 'default_style') == 'slavonic':
                 self.plain = False
-            elif self.config.default_style == 'plain':
+            elif self.config.get('Style', 'default_style') == 'plain':
                 self.plain = True
         else:
             self.plain = False
 
-        if self.config.brackets_off == 'True':
+        if self.config.get('Style', 'brackets_off') == 'True':
             self.brackets_off = True
         else:
             self.brackets_off = False
@@ -381,6 +384,7 @@ class Show_text:
         elif keyname == "u" and event.state & gtk.gdk.CONTROL_MASK:
             print "try and find parallel"
             if self.path1:
+                print self.path1
                 op_path = get_par.Par(self.mode).open_par(self.path1).rstrip()
                 print "op_path", op_path
                 try:

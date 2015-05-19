@@ -12,7 +12,8 @@ import sys
 import os
 import logging
 
-import hip_config
+#import hip_config
+import ConfigParser
 import write_utf
 Writer = write_utf.write_gen()
 
@@ -20,18 +21,23 @@ Writer = write_utf.write_gen()
 class Par:
     def __init__(self, greek=True):
 
-        self.config = hip_config.Service('.hiptools.config')
+#        self.config = hip_config.Service('.hiptools.config')
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
 
-        self.gr_path = self.config.gr_path
+#        self.gr_path = self.config.gr_path
+        self.gr_path = self.config.get('LibraryPaths', 'gr_path')
 #        print 'gr_path', self.gr_path
-        self.sl_path = self.config.sl_path
+#        self.sl_path = self.config.sl_path
+        self.sl_path = self.config.get('LibraryPaths', 'sl_path')
 
         # if True, module called from grindex or gr_search
         # else - from hipindex of hipsearch
         self.greek = greek
-        self.hip = re.compile(r'(hiplib/|greek_lib/)', re.U)
+        self.hip = re.compile(r'(hiplib/|greeklib/)', re.U)
         
-        self.par_path = os.path.join(os.path.split(self.gr_path)[0], "parallel")
+        self.par_path = os.path.join(os.path.expanduser('~'), ".config", "hiptools", "parallel")
+        print self.par_path
 
     def choose_path(self):
         '''dialog to choose parallel path'''
@@ -89,7 +95,9 @@ class Par:
             line = path1 + '==' + path2 + '\n'
 #            print line
 
-            temp_path = os.path.join(self.gr_path, "parallel")
+#            temp_path = os.path.join(self.gr_path, "parallel")
+            temp_path = os.path.join(os.path.expanduser('~'), ".config", "hiptools", "parallel")
+
             #temp_path = os.path.join(os.path.expanduser("~"), "parallel")
             Writer.write_file(temp_path, [line,], "a")
         else:
@@ -106,6 +114,7 @@ class Par:
             # remove first part from path, like "/usr/local/lib
             fir_list = self.hip.split(path1)
             path1 = os.path.join(fir_list[1], fir_list[2])
+            print 'path1', path1
 
 #            print f_lines
             for line in f_lines:
@@ -114,12 +123,15 @@ class Par:
                     parts = line.split("==")
                     if self.greek:
                         op_path = os.path.join(os.path.split(self.sl_path)[0], parts[1])
+
 #                        op_path = op_path.rstrip()
-#                        print op_path
+                        print "parts[1]", parts[1]
 
                     else:
-                        op_path = os.path.join(self.gr_path, parts[0])
+#                        op_path = os.path.join(self.gr_path, parts[0])
+                        op_path = os.path.join(os.path.split(self.gr_path)[0], parts[0])
 #                        print "slav op_path", op_path
+                        print "parts[0]", parts[0]
 
 #                    print "op_path", op_path
 
@@ -135,5 +147,5 @@ class Par:
 
 if __name__ == '__main__':
     fine = Par(True)
-    fine.get_par("greek_lib/oct/ihos_1/Tone1Fri.xml")
-#    fine.open_par("greek_lib/oct/ihos_1/Tone1Fri.xml")
+    fine.get_par("greeklib/oct/ihos_1/Tone1Fri.xml")
+#    fine.open_par("greeklib/oct/ihos_1/Tone1Fri.xml")

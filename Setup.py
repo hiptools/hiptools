@@ -6,15 +6,19 @@
 import os
 import sys
 import subprocess
-import zipfile
+#import zipfile
+import ConfigParser
+
 
 import write_utf
 
 Writer = write_utf.write_gen()
-
+config = ConfigParser.ConfigParser()
    
 # get user login
-log = os.getlogin()
+usr = os.getlogin()
+log = os.path.expanduser(''.join(['~', usr]))
+print 'log', log
     
 def fix_path(f_path):
     '''fix path in executables. Currentrly not used'''
@@ -39,11 +43,11 @@ def fix_path(f_path):
 def write_main(main_path):
     path = main_path
     
-    files_list = ['booklst.py', 'get_par.py', 'hipcomment.py', 'hip_config.py', 'hipconv.py', 'hipindex', 'hipsearch', 'numb_conv.py', 'russ_simp.py', 'slovenize.py', 'textview.py', 'ucs8conv.py', 'write_utf.py']
+    files_list = ['booklst.py', 'get_par.py', 'hipcomment.py', 'hip_config.py', 'hipconv.py', 'hipindex', 'hipsearch', 'numb_conv.py', 'russ_simp.py', 'slovenize.py', 'textview.py', 'write_utf.py']
 
     # write main programm files
     for f_name in files_list:
-        subprocess.call(['cp', '-p', f_name, os.path.join(path, f_name)])
+        subprocess.call(['cp', '-p', '-v', f_name, os.path.join(path, f_name)])
 
     subprocess.call(['chmod', '744', os.path.join(path, 'hipindex')])
     subprocess.call(['chmod', '744', os.path.join(path, 'hipsearch')])
@@ -52,27 +56,65 @@ def write_main(main_path):
 def write_lib(lib_inst_path, local_path):
     # write hip library
 
-    lib_inst_path = os.path.join(lib_inst_path, "hip_tools")
+#    lib_inst_path = os.path.join(lib_inst_path, "hiptools")
 
     if os.path.exists(lib_inst_path):
         b = raw_input('Do you wish to rewrite your old %s library? (yes/no) ' % local_path[0])
         if b == 'yes':
-#            subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
+            subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
             print local_path[0]
 
 
-#    else:
-#        subprocess.call(['mkdir', lib_inst_path])
-#            subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
+    else:
+        subprocess.call(['mkdir', lib_inst_path])
+        subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
 
-#
-## write config files
-#
+
+def create_conf(path, lib_inst_path):
+    # write config files
+
+    if not os.path.exists(path):
+        subprocess.call(['mkdir', path])
+
+    full_path = os.path.join(path, 'hiptools')
+    if not os.path.exists(full_path):
+        subprocess.call(['mkdir', full_path])
+
+    config.add_section('LibraryPaths')
+    config.add_section('SearchOptions')
+    config.add_section('Fonts')
+    config.add_section('Style')
+
+    config.set('LibraryPaths', 'gr_path', os.path.join(lib_inst_path, "greeklib"))
+    config.set('LibraryPaths', 'sl_path', os.path.join(lib_inst_path, "hiplib"))
+    config.set('SearchOptions', 'default_search_group', 'Богослужебные')
+    config.set('SearchOptions', 'default_search_group_gr', 'Minologion_base')
+    config.set('SearchOptions', 'diacritics_off', 'True')
+    config.set('Fonts', 'gr_font', 'Old Standard TT 18')
+    config.set('Fonts', 'sl_font', 'Orthodox.tt Ucs8 22')
+    config.set('Style', 'default_style', 'slavonic')
+    config.set('Style', 'brackets_off', 'True')
+
+    with open(os.path.join(full_path, 'hiptoolsrc'), 'wb') as configfile:
+        config.write(configfile)
+
+    subprocess.call(['cp', '-v', 'parallel', full_path])
+    subprocess.call(['cp', '-v', 'titlo_filter', full_path])
+
+    owner = ''.join([usr, ":", usr])
+
+    subprocess.call(['chown', '-R',  owner, full_path])
+
 #files_dic = {'hipsearch.config': '.hipsearch.config', 'hipindex.config': '.hipindex.config'}
+#    files_ls = ['.hiptools.config', 'parallel']
 #
-#path = os.path.join('/home', log)
+#    path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools')
 #
-#[subprocess.call(['cp', '-R', '-p', f_name, os.path.join(path, files_dic[f_name])]) for f_name in files_dic]
+#    if not os.path.exists(path):
+#        subprocess.call(['mkdir', path])
+#
+#    for f_name in files_ls:
+#        subprocess.call(['cp', '-R', 'v', '-p', f_name, os.path.join(path, f_name)])
 
 if __name__ == '__main__':
 
@@ -86,6 +128,7 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     
     # by default use '/usr/local/bin' and '/usr/local/lib' as install paths
+    # TODO: fix path in programm files
     if options.mainpath:
         main_path = options.mainpath
     else:
@@ -94,7 +137,7 @@ if __name__ == '__main__':
     if options.libpath:
         lib_inst_path = options.libpath
     else:
-        lib_inst_path = '/usr/local/lib'
+        lib_inst_path = '/usr/local/lib/hiptools'
 
     print main_path, lib_inst_path
 #    sys.exit(0)
@@ -112,4 +155,7 @@ if __name__ == '__main__':
             write_lib(lib_inst_path, i)
         else:
             print "Didn\'t find", i[0], "library. If you wish to install it, download from git@github.com:hiptools"
- 
+
+    path = os.path.join(log, '.config')
+    create_conf(path, lib_inst_path) 
+    os.getuid()

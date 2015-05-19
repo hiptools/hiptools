@@ -75,7 +75,8 @@ class Mn:
 
         # fill up the titlo-filter list from file
         try:
-            fp = codecs.open("/usr/local/bin/titlo_filter", "rb", "utf8")
+#            fp = codecs.open("/usr/local/bin/titlo_filter", "rb", "utf8")
+            fp = codecs.open(os.path.join(os.path.expanduser('~'), ".config", "hiptools", "titlo_filter"), "rb", "utf8")
             text_l = fp.readlines()
             fp.close()
 
