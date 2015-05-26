@@ -43,7 +43,7 @@ def fix_path(f_path):
 def write_main(main_path):
     path = main_path
     
-    files_list = ['booklst.py', 'get_par.py', 'hipcomment.py', 'hip_config.py', 'hipconv.py', 'hipindex', 'hipsearch', 'numb_conv.py', 'russ_simp.py', 'slovenize.py', 'textview.py', 'write_utf.py']
+    files_list = ['booklst.py', 'get_par.py', 'hipcomment.py', 'hipconv.py', 'hipindex', 'hipsearch', 'numb_conv.py', 'russ_simp.py', 'slovenize.py', 'textview.py', 'write_utf.py']
 
     # write main programm files
     for f_name in files_list:
@@ -53,21 +53,26 @@ def write_main(main_path):
     subprocess.call(['chmod', '744', os.path.join(path, 'hipsearch')])
 #    subprocess.call(['chmod', '744', os.path.join(path, 'textview.py')])
 
-def write_lib(lib_inst_path, local_path):
-    # write hip library
+def write_lib(lib_inst_path, grpath, hippath):
+    # write hip libraries
 
-#    lib_inst_path = os.path.join(lib_inst_path, "hiptools")
-
-    if os.path.exists(lib_inst_path):
-        b = raw_input('Do you wish to rewrite your old %s library? (yes/no) ' % local_path[0])
-        if b == 'yes':
-            subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
-            print local_path[0]
-
-
-    else:
+    # check common hiplib directory
+    if not os.path.exists(lib_inst_path):
         subprocess.call(['mkdir', lib_inst_path])
-        subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
+
+    for i in [grpath, hippath]:
+        # check local paths for libs
+        if not os.path.exists(i[1]):
+            print "Didn\'t find", i[0], "library. If you wish to install it, download from git@github.com:hiptools"
+            return None
+        # check install paths for libs, ask to rewrite if exists
+        if os.path.exists(os.path.join(lib_inst_path, i[0])):
+            b = raw_input('Do you wish to rewrite your old %s library? (yes/no) ' % i[0])
+            if b == 'yes':
+                subprocess.call(['cp', '-r', '-v', '-p', local_path[1], lib_inst_path])
+
+        else:
+            subprocess.call(['cp', '-r', '-v', '-p', i[1], lib_inst_path])
 
 
 def create_conf(path, lib_inst_path):
@@ -144,17 +149,13 @@ if __name__ == '__main__':
 
     # path to hiplib and greeklib cloned directories
     # They are supposed to be next to current dir, not in it:
-    hippath = ['hiplib', os.path.abspath('../hiplib')]
     grpath = ['greeklib', os.path.abspath('../greeklib')]
+    hippath = ['hiplib', os.path.abspath('../hiplib')]
     
 
     write_main(main_path)
 
-    for i in [hippath, grpath]:
-        if os.path.exists(i[1]):
-            write_lib(lib_inst_path, i)
-        else:
-            print "Didn\'t find", i[0], "library. If you wish to install it, download from git@github.com:hiptools"
+    write_lib(lib_inst_path, grpath, hippath)
 
     path = os.path.join(log, '.config')
     create_conf(path, lib_inst_path) 

@@ -381,6 +381,15 @@ class Show_text:
                 print 'Closed, no files selected'
             dialog.destroy()
 
+        elif keyname == "i" and event.state & gtk.gdk.CONTROL_MASK:
+            # write (manually find) new greek-slavonic parallel 
+            if self.path1:
+#                self.paral.get_par(self.path1)
+                get_par.Par(self.mode).get_par(self.path1)
+            else:
+                print 'no local path found'
+
+
         elif keyname == "u" and event.state & gtk.gdk.CONTROL_MASK:
             print "try and find parallel"
             if self.path1:
