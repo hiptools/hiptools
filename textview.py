@@ -8,11 +8,10 @@ import codecs
 import re
 import os
 import sys
-#import chardet
+import chardet
 
 # formerly - ucs8conv, renamed
 import hipconv
-#import hip_config
 import ConfigParser
 # comment parser
 import hipcomment
@@ -544,7 +543,8 @@ if __name__ == '__main__':
     argv = sys.argv
 
 #    config = hip_config.Service('.hipeditor.config')
-    config = hip_config.Service('.hiptools.config')
+#    config = hip_config.Service('.hiptools.config')
+#    config = ConfigParser.ConfigParser()
     txt_win = Show_text(False)
 
     if len(argv) > 1:
@@ -554,8 +554,8 @@ if __name__ == '__main__':
         lst = fp.readlines()
         fp.close()
 
-        slice = ''.join(lst[:10])
-        enc = chardet.detect(slice)['encoding']
+        myslice = ''.join(lst[:10])
+        enc = chardet.detect(myslice)['encoding']
 #        enc = 'cp1251'
 
         if not enc:
@@ -568,11 +568,12 @@ if __name__ == '__main__':
             new_line = line.decode(enc)
             out_doc.append(new_line)
 
+
         txt = ''.join(out_doc)
 
-        txt1 = txt_win.wrapper(txt)
+        txt = txt_win.wrapper(txt)
 
-        txt_win.ins_txt(txt1)
+        txt_win.ins_txt_hip(txt)
 
     def main():
         gtk.main()

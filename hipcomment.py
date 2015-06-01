@@ -9,7 +9,8 @@ class Brackets:
         self.kill_brac = None
         # regexps for different bracket types
 #        self.parent = re.compile(u'\(.+?\)|\[.+?\]|\{.+?\}| с\\х\s', re.DOTALL | re.U)
-        self.parent = re.compile(u'\(.+?\)|\[.+?\]|\{.+?\}', re.DOTALL | re.U)
+#        self.parent = re.compile(u'\(.+?\)|\[.+?\]|\{.+?\}', re.DOTALL | re.U)
+        self.parent = re.compile(u'\(.+?\)|\[.+?\]|%?\{.+?\}', re.DOTALL | re.U)
 
     def collect(self, found):
         '''callback for substitution in repl_brac()'''

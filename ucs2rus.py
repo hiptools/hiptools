@@ -9,6 +9,7 @@ import hipconv
 import russ_simp
 
 conv = hipconv.Repl()
+russ = russ_simp.Mn(True, True, True)
 
 def convert_ucs(f_name):
 
@@ -23,7 +24,7 @@ def convert_ucs(f_name):
         line = line.strip()
         line = conv(line, 'b_csl')   #.encode('utf8')
         res.append(line)
-        return res
+    return res
 
 if __name__ == '__main__':
 
@@ -33,4 +34,6 @@ if __name__ == '__main__':
 
     res = convert_ucs(f_name)
     for i in res:
+        i = russ.conv_str(i)
+#        i = i.encode('utf8')
         print i
