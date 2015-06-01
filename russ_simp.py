@@ -13,15 +13,17 @@ n_conv = numb_conv.NumParser()
 
 class Mn:
     def __init__(self, stress=None, color=None, junk=None):
+        '''This module tries to convert hip-encoded text into plain Russian'''
+        # if args are True - all wiped out
 
+        # diacritics
         self.stress_sw = stress
 
+        # angle brackets
         self.color_sw = color
 
+        # comments and stuff
         self.junk_sw = junk
-
-#        if self.color_sw:
-#            print 'color'
 
         self.rg_er = re.compile(r"(.*)ъ(|\.|,|;|:|\?|!)?$", re.U)
 
@@ -124,7 +126,7 @@ class Mn:
 
            
     def conv_str(self, line):
-        # that's more useful for debugging
+        # To put text through this function helps debugging
 
         line = line.strip().split(' ')
         line_l = []
@@ -228,3 +230,4 @@ if __name__ == '__main__':
 # fix titilo_filter so, that it would output captial letters in words like Христос
 # make option for including|excluding comments in hip
 # fix parser from russify to work with tags like %< @{ etc. Otherwise "%<Гласъ а~%> doesn't work
+# знак вопроса пофикси!
