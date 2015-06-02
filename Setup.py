@@ -95,6 +95,7 @@ def create_conf(path, lib_inst_path):
     config.set('SearchOptions', 'default_search_group', 'Богослужебные')
     config.set('SearchOptions', 'default_search_group_gr', 'Minologion_base')
     config.set('SearchOptions', 'diacritics_off', 'True')
+    config.set('SearchOptions', 'betacode', 'True')
     config.set('Fonts', 'gr_font', 'Old Standard TT 18')
     config.set('Fonts', 'sl_font', 'Orthodox.tt Ucs8 22')
     config.set('Style', 'default_style', 'slavonic')

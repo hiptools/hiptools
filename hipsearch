@@ -401,6 +401,7 @@ class Manager:
 #            self.search_group = self.config.default_search_group_gr
             self.search_group = self.config.get('SearchOptions', 'default_search_group_gr')
             self.lib_path = self.config.get('LibraryPaths', 'gr_path')
+            self.beta = self.config.get('SearchOptions', 'betacode') # turn on beta-code input. If False - unicode greek
 
             self.gl_book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
@@ -658,7 +659,7 @@ class Manager:
         '''Main search interface'''
 
         self.s_word = self.entry.get_text()
-        if self.mode:
+        if self.mode and self.beta:
             for a, b in self.gr_filter:
                 self.s_word = self.s_word.replace(a, b)
 #            print self.s_word
