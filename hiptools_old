@@ -8,32 +8,53 @@ import codecs
 import re
 import os
 import sys
+from xml.dom import minidom
 
 import booklst
 import hiptools_g
 import hipconv
-import hip_config
+import ConfigParser
 import hipcomment
 import write_utf
+import options
 
 conv = hipconv.Repl()
 brac = hipcomment.Brackets()
 Writer = write_utf.write_gen()
 
+
 class Connect_ind:
-    def __init__(self, config):
+    def __init__(self, mode=False):
+
+        #self.item_open = front.item_open
+        # if True - switched to greek, else - to slavonic
+        self.mode = mode
+
+        # create configurations object
+#        self.config = hip_config.Service('.hiptools.config')
+        self.config = ConfigParser.ConfigParser()
+        self.conf_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc')
+        self.config.read(self.conf_path)
+        self.style_s = self.config.get('Style', 'default_style')
+        self.br_off = self.config.get('Style', 'brackets_off')
+        if self.mode:
+            self.lib_path = self.config.get('LibraryPaths', 'gr_path')
+            self.enc = 'utf-8'
+        else:
+            self.lib_path = self.config.get('LibraryPaths', 'sl_path')
+            self.enc = 'cp1251'
+
 
         # delete special tags at the beginning of HIP file
         self.del_header = 1
         self.exp_lines = []
-        self.base_dict = {}
+#        self.base_dict = {}
 
-        self.book_lst = booklst.listbooks('hiplib') # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
+        self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
         self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
         self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
-
-
+        self.html_del = re.compile(r'<.*?>', re.S)
 
         def putdir(obj, parent=None):
             """
@@ -47,6 +68,10 @@ class Connect_ind:
                     putdir(book[2], iter)
         putdir(self.book_lst)
 
+        front.item_open.connect("activate", self.open_file)
+        front.item_save.connect("activate", self.save_file)
+        front.item2.connect("activate", self.opt_wrap)
+        
         front.tv.connect('row-activated', self.key_press)
 #        front.note.connect('key_press_event', self.note_cb)
         front.box2.connect('key_press_event', self.note_cb)
@@ -59,19 +84,12 @@ class Connect_ind:
         # well, in that case we'll make an exception.
         self.ucs_patt = re.compile(u'ucs', re.U | re.I)
 
-        self.config = config
-
-        # default font
-#        self.sl_font = self.config.default_font
-#        self.sl_font_prev = ''
-#        self.plain_font = 'Tahoma 16'
-#        self.check_font(self.sl_font)
-        if self.config.default_style == 'slavonic':
+        if self.style_s == 'slavonic':
             self.plain = False
-        elif self.config.default_style == 'plain':
+        elif self.style_s == 'plain':
             self.plain = True
 
-        if self.config.brackets_off == 'True':
+        if self.br_off == 'True':
             self.brackets_off = True
         else:
             self.brackets_off = False
@@ -79,6 +97,92 @@ class Connect_ind:
         # regexps to find double new-lines and wrap the text
         self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
         self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
+
+    def opt_wrap(self, widget):
+        # give it main config object. 
+        # Try to use main() loop to catch destruct signal
+        opt_w = options.Opt(widget)
+        self.config.read(self.conf_path)
+        print self.config.get('SearchOptions', 'default_search_group')
+
+    def open_file(self, item_open):
+#        if keyname == "o" and event.state & gtk.gdk.CONTROL_MASK:
+        dialog = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+
+        fil = gtk.FileFilter()
+        fil.set_name("Hip files")
+        fil.add_pattern("*.hip")
+        dialog.add_filter(fil)
+
+        fil = gtk.FileFilter()
+        fil.set_name("Txt files")
+        fil.add_pattern("*.txt")
+        dialog.add_filter(fil)
+
+        fil = gtk.FileFilter()
+        fil.set_name("All files")
+        fil.add_pattern("*")
+        dialog.add_filter(fil)
+
+        response = dialog.run()
+
+        if response == gtk.RESPONSE_OK:
+            f_name = dialog.get_filename()
+
+            fp = codecs.open(f_name, "rb", "cp1251")
+            lines = fp.readlines()
+            fp.close()
+
+            txt1 = self.wrapper(''.join(lines))
+            pr_i.get_txt(txt1, False)
+            pr_i.proc(txt1)
+            pr_i.style_txt()
+
+        elif response == gtk.RESPONSE_CANCEL:
+            print 'Closed, no files selected'
+        dialog.destroy()
+
+    def save_file(self, item_save):
+#        if keyname == "s"  and event.state & gtk.gdk.CONTROL_MASK:
+        dialog = gtk.FileChooserDialog("Save..", None, gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+
+        cur_pg = front.note.get_current_page()
+
+        # child widget to current notebook page
+        page = front.note.get_nth_page(cur_pg)
+        self.textview = page.get_children()[0]
+
+#        if self.textview.mode:
+#            dialog.set_current_name('.hip')
+#        else:
+#            dialog.set_current_name('.txt')
+
+        response = dialog.run()
+
+        if response == gtk.RESPONSE_OK:
+            # child widget to current notebook page
+            page = front.note.get_nth_page(cur_pg)
+            self.textview = page.get_children()[0]
+            self.textbuffer = self.textview.get_buffer()
+
+            startiter, enditer = self.textbuffer.get_bounds()
+            data = self.textbuffer.get_text(startiter, enditer).decode('utf8')
+            Writer.write_line(dialog.get_filename(), data, "w", "cp1251")
+
+        elif response == gtk.RESPONSE_CANCEL:
+            print 'Closed, no files selected'
+        dialog.destroy()
+
+    def wrapper(self, txt):
+
+        text_ls = []
+        parts_ls = self.split_parag.split(txt)
+        for part in parts_ls:
+            part = self.kill_rn.sub(' ', part)
+            text_ls.append(part)
+        txt1 = '\n\n'.join(text_ls)
+
+        return txt1
 
     def check_font(self, font):
         '''Change type of conversion according to chosen font-type'''
@@ -122,31 +226,61 @@ class Connect_ind:
 
         # iter cur points to file, not directory
         if not front.model.iter_has_child(iter_cur):
-            dir_name2 = ""
+            dir_name_x = ""
+            dir_out = []
+            iter_par_c = iter_cur
             f_name = front.model.get_value(iter_cur, 1)
-            iter_par = front.model.iter_parent(iter_cur)
-            # parent of the parent
-            if front.model.iter_parent(iter_par):
-                iter_par2 = front.model.iter_parent(iter_par)
-                dir_name2 = front.model.get_value(iter_par2, 1)
-            dir_name = front.model.get_value(iter_par, 1)
-            f_path = os.path.join(os.getcwd(), "hiplib", dir_name2, dir_name, f_name)
-            print 'run', f_path
 
-            fp = codecs.open(f_path, "rb", "cp1251")
+            while True:
+                iter_par_p = front.model.iter_parent(iter_par_c)
+                dir_name_p = front.model.get_value(iter_par_p, 1)
+                dir_out.append(dir_name_p)
+                iter_par_c = iter_par_p
+                if not front.model.iter_parent(iter_par_p):
+                    break
+
+            dir_out.reverse()
+            f_path_list = [self.lib_path, '/']
+            f_path_list.extend(dir_out)
+            f_path_list.append(f_name)
+            f_path = ''.join(f_path_list)
+
+            print 'run', f_path
+            fp = codecs.open(f_path, "rb", self.enc)
+
             f_lines = fp.readlines()
             fp.close()
 
+            if self.mode:
+                xmldoc = minidom.parseString(f_lines[1] + '</document>')
+                xml_nodes = xmldoc.getElementsByTagName('document')
+                for item in xml_nodes:
+                    t_name = item.getAttribute('title') 
+                    break
+
+            else:
             # aweful crutch: delete service tags in the beginning of the file
             # DO Something!
-            if self.del_header:
-                for z in range(10):
-                    if "<::" in f_lines[z]:
-                        f_lines.pop(f_lines.index(f_lines[z]))
+                if self.del_header:
+                    for z in range(10):
+                        if "<::" in f_lines[z]:
+                            f_lines.pop(f_lines.index(f_lines[z]))
+                t_name = front.model.get_value(iter_cur, 0)
 
+            # create window to output selected text
+#            txt_win = Show_text(self.mode)
+#            txt_win.path1 = f_path
+#
+#            iter_par = front.model.iter_parent(iter_cur)
+#            title = ' / '.join([front.model.get_value(iter_par, 0), t_name])
+#
+#            txt_win.window3.set_title(title)
+
+ 
             # insert text
             text_ls = []
             txt = ''.join(f_lines)
+
             parts_ls = self.split_parag.split(txt)
             for part in parts_ls:
                 part = self.kill_rn.sub(' ', part)
@@ -223,72 +357,7 @@ class Connect_ind:
             else:
                 front.note.set_current_page(-1)
 
-        if keyname == "o" and event.state & gtk.gdk.CONTROL_MASK:
-            dialog = gtk.FileChooserDialog("Open..", None, 
-                    gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, 
-                        gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-
-            fil = gtk.FileFilter()
-            fil.set_name("Hip files")
-            fil.add_pattern("*.hip")
-            dialog.add_filter(fil)
-
-            fil = gtk.FileFilter()
-            fil.set_name("Txt files")
-            fil.add_pattern("*.txt")
-            dialog.add_filter(fil)
-
-            fil = gtk.FileFilter()
-            fil.set_name("All files")
-            fil.add_pattern("*")
-            dialog.add_filter(fil)
-
-            response = dialog.run()
-
-            if response == gtk.RESPONSE_OK:
-                f_name = dialog.get_filename()
-
-                fp = codecs.open(f_name, "rb", "cp1251")
-                lines = fp.readlines()
-                fp.close()
-
-                txt1 = self.wrapper(''.join(lines))
-                txt_win.process(txt1)
-
-            elif response == gtk.RESPONSE_CANCEL:
-                print 'Closed, no files selected'
-            dialog.destroy()
-
-        if keyname == "s"  and event.state & gtk.gdk.CONTROL_MASK:
-            dialog = gtk.FileChooserDialog("Save..", None, 
-                    gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_CANCEL, 
-                        gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-
-            cur_pg = front.note.get_current_page()
-
-            # child widget to current notebook page
-            page = front.note.get_nth_page(cur_pg)
-            self.textview = page.get_children()[0]
-
-            if self.textview.mode:
-                dialog.set_current_name('.hip')
-            else:
-                dialog.set_current_name('.txt')
-
-
-            response = dialog.run()
-
-
-            if response == gtk.RESPONSE_OK:
-
-                startiter, enditer = self.textbuffer.get_bounds()
-                data = self.textbuffer.get_text(startiter, enditer).decode('utf8')
-                Writer.write_line(dialog.get_filename(), data, "w", "cp1251")
-
-            elif response == gtk.RESPONSE_CANCEL:
-                print 'Closed, no files selected'
-            dialog.destroy()
-            
+           
 class Connect_sear:
     """ Callbacks and other methods for search dialog """
 
@@ -594,7 +663,7 @@ class Connect_sear:
         front.combo.connect("changed", self.choose)       
 
         for x in range(len(self.combo_lst)):
-            if conn_i.config.default_search_group == self.combo_lst[x]:
+            if conn_i.config.get('SearchOptions', 'default_search_group') == self.combo_lst[x]:
                 front.combo.set_active(x)
 
         # define checkboxes callbacks
@@ -604,9 +673,10 @@ class Connect_sear:
         self.case_ins = True
 
         # check config for paramater
-        if conn_i.config.diacritics_off == 'True':
+        if conn_i.config.get('SearchOptions', 'diacritics_off') == 'True':
             self.stress_toggle = False
-        elif conn_i.config.diacritics_off == 'False':
+#        elif conn_i.config.diacritics_off == 'False':
+        else:
             self.stress_toggle = True
 
         front.s_entry.connect('key_press_event', self.manager_keys)
@@ -640,15 +710,15 @@ class Process:
 
         # call from index or search, not reload (ctl-d or ctl-r)
         if new_txt:
-            # yeah, this is perplexing! Chars - a trigger. If we got
-            # TreeView as a child, or if there's some text in TextView,
-            # we switch chars = 1 and make a new tab
+            # Chars - a trigger. If we got TreeView as a child, 
+            # or if there's some text in TextView, we switch chars = 1 and make a new tab
 
             if not chars:
                 chars = self.textbuffer.get_char_count()
 
             # Some text in old tab. Have to draw new.
-            if chars:
+#            if chars:
+            else:
                 # style for search (green tag...)
                 if stl:
                     front.append_pg(stl)
@@ -805,9 +875,8 @@ class Process_s(Process):
 
 if __name__ == '__main__':
 
-    config = hip_config.Service('.hipsearch.config')
-    front = hiptools_g.Mug(config)
-    conn_i = Connect_ind(config)
+    front = hiptools_g.Mug()
+    conn_i = Connect_ind()
     conn_s = Connect_sear()
     conn_s.wrap_search()
     pr_i = Process()
