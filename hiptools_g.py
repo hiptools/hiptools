@@ -70,6 +70,20 @@ class Mug:
         # common box for all the vidgets
         box1 = gtk.VBox(False, 0)
         accel_m = gtk.AccelGroup()
+        action_g = gtk.ActionGroup('MenuBarAction')
+
+        self.action_fo = gtk.Action('OpenFile', '_Open', 'Open file', gtk.STOCK_OPEN)
+        self.action_fs = gtk.Action('SaveFile', '_Save', 'Save file', gtk.STOCK_SAVE)
+
+        action_g.add_action_with_accel(self.action_fo, None)
+        action_g.add_action_with_accel(self.action_fs, None)
+
+        self.action_fo.set_accel_group(accel_m)
+        self.action_fs.set_accel_group(accel_m)
+
+        self.action_fo.connect_accelerator()
+        self.action_fs.connect_accelerator()
+
 
         box1.set_border_width(0)
         self.window3.add(box1)
@@ -93,10 +107,12 @@ class Mug:
         menu_file.set_accel_group(accel_m)
 
         self.item_open = gtk.MenuItem('Open file')
-        self.item_open.add_accelerator("activate", accel_m, ord('o'), gtk.gdk.CONTROL_MASK, gtk.ACCEL_VISIBLE)
+#        self.item_open.add_accelerator("activate", accel_m, ord('o'), gtk.gdk.CONTROL_MASK, gtk.ACCEL_VISIBLE)
+        self.action_fo.connect_proxy(self.item_open)
 
         self.item_save = gtk.MenuItem('Save file')
-        self.item_save.add_accelerator("activate", accel_m, ord('s'), gtk.gdk.CONTROL_MASK, gtk.ACCEL_VISIBLE)
+#        self.item_save.add_accelerator("activate", accel_m, ord('s'), gtk.gdk.CONTROL_MASK, gtk.ACCEL_VISIBLE)
+        self.action_fs.connect_proxy(self.item_save)
 
         menu_file.attach(self.item_open, 0, 1, 0, 1)
         menu_file.attach(self.item_save, 0, 1, 1, 2)
