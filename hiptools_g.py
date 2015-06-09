@@ -71,6 +71,7 @@ class Mug:
         box1 = gtk.VBox(False, 0)
         accel_m = gtk.AccelGroup()
         action_g = gtk.ActionGroup('MenuBarAction')
+        self.window3.add_accel_group(accel_m)
 
         self.action_fo = gtk.Action('OpenFile', '_Open', 'Open file', gtk.STOCK_OPEN)
         self.action_fs = gtk.Action('SaveFile', '_Save', 'Save file', gtk.STOCK_SAVE)
@@ -78,7 +79,7 @@ class Mug:
         action_g.add_action_with_accel(self.action_fo, None)
         action_g.add_action_with_accel(self.action_fs, None)
 
-        self.action_fo.set_accel_group(accel_m)
+#        self.action_fo.set_accel_group(accel_m)
         self.action_fs.set_accel_group(accel_m)
 
         self.action_fo.connect_accelerator()
