@@ -18,10 +18,6 @@ import ConfigParser
 #brac = hipcomment.Brackets()
 #Writer = write_utf.write_gen()
 
-def destroy_cb(widget):
-    gtk.main_quit()
-    return False
-
 class Txt(gtk.TextView):
     """ Subclass of TextView
     
@@ -65,7 +61,7 @@ class Mug:
         # second parameter sets height of the whole window
         self.window3.set_size_request(950, 490)
         self.window3.set_border_width(3)
-        self.window3.connect('destroy', destroy_cb)
+        self.window3.connect('destroy', self.destroy_cb)
 
         # common box for all the vidgets
         box1 = gtk.VBox(False, 0)
@@ -79,12 +75,11 @@ class Mug:
         action_g.add_action_with_accel(self.action_fo, None)
         action_g.add_action_with_accel(self.action_fs, None)
 
-#        self.action_fo.set_accel_group(accel_m)
+        self.action_fo.set_accel_group(accel_m)
         self.action_fs.set_accel_group(accel_m)
 
         self.action_fo.connect_accelerator()
         self.action_fs.connect_accelerator()
-
 
         box1.set_border_width(0)
         self.window3.add(box1)
@@ -287,6 +282,10 @@ class Mug:
         # probably not a good idea, if there is some kind of 'kucs.ttf' out there...
         # well, in that case we'll make an exception.
         self.ucs_patt = re.compile(u'ucs', re.U | re.I)
+
+    def destroy_cb(self, widget):
+        gtk.main_quit()
+        return False
 
     def append_pg(self, stl=None):
         # make new page in notebook

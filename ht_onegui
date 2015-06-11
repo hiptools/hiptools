@@ -103,9 +103,25 @@ class Connect_ind:
     def opt_wrap(self, widget):
         # give it main config object. 
         # Try to use main() loop to catch destruct signal
-        opt_w = options.Opt(widget)
-        self.config.read(self.conf_path)
-        print self.config.get('SearchOptions', 'default_search_group')
+        opt_w = options.Opt(self.config)
+        # connect buttons
+        opt_w.apply_bt.connect('activate', self.apply_op)
+
+        # destroys main programm window. 
+#        opt_w.cancel_bt.connect('activate', opt_w.destroy_cb)
+
+    def apply_op(self, widget):
+        # write to config:
+        with open(self.conf_path, 'wb') as configfile:
+            self.config.write(configfile)
+        # apply to widgets:
+#        self.config.read(self.conf_path)
+        print "def group", self.config.get('SearchOptions', 'default_search_group')
+        for x in range(len(conn_s.combo_lst)):
+            if conn_i.config.get('SearchOptions', 'default_search_group') == conn_s.combo_lst[x]:
+                front.combo.set_active(x)
+#        self.choose()
+       
 
     def open_file(self, item_open):
 #        if keyname == "o" and event.state & gtk.gdk.CONTROL_MASK:

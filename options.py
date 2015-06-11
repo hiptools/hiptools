@@ -12,20 +12,37 @@ import sys
 import ConfigParser
 
 class Opt:
-    def __init__(self, widget):
+    def __init__(self, config):
 
-        self.config = ConfigParser.ConfigParser()
-        self.conf_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc')
-        self.config.read(self.conf_path)
+        self.config = config
+#        self.config = ConfigParser.ConfigParser()
+#        self.conf_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc')
+#        self.config.read(self.conf_path)
 
-        self.window3 = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window3.set_size_request(650, 400)
-        self.window3.set_border_width(3)
-        self.window3.set_title('Настроки')
-#        self.window3.connect('destroy', self.destroy_cb)
+        self.window4 = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window4.set_size_request(650, 400)
+        self.window4.set_border_width(3)
+        self.window4.set_title('Настроки')
+#        self.window4.connect('destroy', self.destroy_cb)
+
+        accel_o = gtk.AccelGroup()
+        action_o = gtk.ActionGroup('MenuBarAction')
+        self.window4.add_accel_group(accel_o)
+
+        self.apply_bt = gtk.Action('Apply', '_Apply', 'Apply changes', gtk.STOCK_APPLY)
+        self.cancel_bt = gtk.Action('Cancel', '_Cancel', 'Apply changes', gtk.STOCK_CANCEL)
+        action_o.add_action_with_accel(self.apply_bt, None)
+        action_o.add_action_with_accel(self.cancel_bt, None)
+
+        self.apply_bt.set_accel_group(accel_o)
+        self.cancel_bt.set_accel_group(accel_o)
+
+        self.apply_bt.connect_accelerator()
+        self.cancel_bt.connect_accelerator()
+
 
         vbox = gtk.VBox(False, 3)
-        self.window3.add(vbox)
+        self.window4.add(vbox)
 
         self.note = gtk.Notebook()
         self.note.set_tab_pos(gtk.POS_TOP)
@@ -39,7 +56,7 @@ class Opt:
 
         self.note.show()
         vbox.show()
-        self.window3.show()
+        self.window4.show()
 
         lb0 = gtk.Label()
         lb0.show()
@@ -60,12 +77,14 @@ class Opt:
         hbox3 = gtk.HBox(False, 0)
 
         # Apply and Cancel buttons
-        app = gtk.Button('Применить')
-        can = gtk.Button('Закрыть')
+        app = gtk.Button(None)
+        can = gtk.Button(None)
         app.show()
         can.show()
 
-        app.connect('clicked', self.apply_op)
+        self.apply_bt.connect_proxy(app)
+        self.cancel_bt.connect_proxy(can)
+#        app.connect('clicked', self.apply_op)
 #        can.connect('clicked', self.destroy_cb)
 
         sc1 = gtk.Label('Опции поиска')
@@ -135,9 +154,9 @@ class Opt:
         gtk.main_quit()
         return False
 
-    def apply_op(self, widget):
-        with open(self.conf_path, 'wb') as configfile:
-            self.config.write(configfile)
+#    def apply_op(self, widget):
+#        with open(self.conf_path, 'wb') as configfile:
+#            self.config.write(configfile)
 
     def choose(self, widget):
         if widget == self.combo1:
