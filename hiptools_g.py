@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 import pygtk
@@ -9,27 +9,27 @@ import re
 import os
 import sys
 
-import hipconv
+#import hipconv
 import ConfigParser
-#import hipcomment
-#import write_utf
 
-#conv = hipconv.Repl()
-#brac = hipcomment.Brackets()
-#Writer = write_utf.write_gen()
+from ht_callb import Connect_ind
+from ht_callb import Connect_sear
+from ht_callb import Process
+from ht_callb import Process_s
+
+config = ConfigParser.ConfigParser()
 
 class Txt(gtk.TextView):
     """ Subclass of TextView
     
     """
-    def __init__(self):
+    def __init__(self, conf_path):
 
         gtk.TextView.__init__(self)
 
 #        config = hip_config.Service('.hipsearch.config')
 
-        config = ConfigParser.ConfigParser()
-        config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
+        config.read(conf_path)
 
         self.base_txt = ""
 #        self.mode = config.default_style
@@ -45,16 +45,20 @@ class Txt(gtk.TextView):
 #        print 'font!!!', config.default_font
 #        print 'def mode!!!', self.mode
 
-class Mug:
+class Mug(Connect_ind, Connect_sear, Process, Process_s):
     """ Mug of the main programm
 
     """
-#    def __init__(self, config):
-    def __init__(self):
+    def __init__(self, conf_path):
 
-#        self.plain = True
-        # original plain text
-#        self.base_txt = ""
+        self.conf_path = conf_path
+
+        self.config = config        
+        self.config.read(self.conf_path)
+        # slav-greek switches for viewer and search tools
+        self.mode_v = self.config.get('Switches', 'library_greek_v')
+        self.mode_s = self.config.get('Switches', 'library_greek_s')
+
         self.window3 = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window3.set_resizable(True)
 
@@ -84,6 +88,11 @@ class Mug:
         box1.set_border_width(0)
         self.window3.add(box1)
         box1.show()
+
+        self.action_fo.connect('activate', self.open_file)
+        self.action_fs.connect('activate', self.save_file)
+        
+
 
         # Search area
 #        box3 = gtk.VBox(False, 3)
@@ -128,6 +137,8 @@ class Mug:
         self.item_save.show()
         self.item2.show()
 
+        self.item2.connect("activate", self.opt_wrap)
+
         # first vidget raw: search butt, entry, combo-box
         s_horiz = gtk.HBox(False, 0)
         box1.pack_start(s_horiz, False, False, 0)
@@ -135,9 +146,11 @@ class Mug:
 
         self.combo = gtk.combo_box_new_text()
         self.s_entry = gtk.Entry()
-#        self.s_entry.set_max_length(50)
         self.s_entry.set_width_chars(50)
         self.s_button = gtk.Button('Search')
+
+        self.gr_label1 = "Греч."
+        self.gr_switch1 = gtk.Button(self.gr_label1)
 
         s_horiz.pack_start(self.combo, False, False, 1)
         self.combo.show()
@@ -147,8 +160,12 @@ class Mug:
         
         s_horiz.pack_start(self.s_button, False, False, 1)
         self.s_button.show()
-
        
+        s_horiz.pack_end(self.gr_switch1, False, False, 1)
+        self.gr_switch1.show()
+
+        self.gr_switch1.connect('clicked', self.sw_mode)
+
         # second raw: progress bar, check buttons
         pr_horiz = gtk.HBox(False, 0)
         box1.pack_start(pr_horiz, False, False, 0)
@@ -166,16 +183,6 @@ class Mug:
         self.toggle1.show()
         self.toggle2.show()
         
-        # third raw: greek-slav buttons
-        l_horiz = gtk.HBox(False, 0)
-        box1.pack_start(l_horiz, False, False, 0)
-        l_horiz.show()
-
-        self.l_button = gtk.Button('Greek')
-        l_horiz.pack_start(self.l_button, False, False, 1)
-
-        self.l_button.show()
-
         # Common horizontal box for book list and text area
         self.box2 = gtk.HBox(False, 0)
         self.box2.set_border_width(0)
@@ -192,8 +199,16 @@ class Mug:
 
         books_sw = gtk.ScrolledWindow()
         books_sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.model = gtk.TreeStore(str, str)
-        self.tv = gtk.TreeView(self.model)
+
+        # Tree models
+        self.model_sl = gtk.TreeStore(str, str)
+        self.model_gr = gtk.TreeStore(str, str)
+
+        if self.mode_v:
+            self.tv = gtk.TreeView(self.model_gr)
+        else:
+            self.tv = gtk.TreeView(self.model_sl)
+
         self.selection = self.tv.get_selection()
 
 #        self.modelfilter = self.model.filter_new()
@@ -201,14 +216,23 @@ class Mug:
 
         books_sw.add(self.tv)
 
+        if self.mode_v:
+            self.tv.connect('row-activated', self.key_press, self.model_gr)
+        else:
+            self.tv.connect('row-activated', self.key_press, self.model_sl)
+#        front.note.connect('key_press_event', self.note_cb)
+        self.box2.connect('key_press_event', self.note_cb)
+
+
+
         self.b_entry = gtk.Entry()
         self.b_entry.show()
 #        self.b_entry.connect('key_press_event', self.search_cb)
         
-        cell1 = gtk.CellRendererText()
-        cell2 = gtk.CellRendererText()
-        self.column = gtk.TreeViewColumn("Название книги", cell1, text=0)
-        self.column2 = gtk.TreeViewColumn("Code", cell2, text=1)
+        self.cell1 = gtk.CellRendererText()
+        self.cell2 = gtk.CellRendererText()
+        self.column = gtk.TreeViewColumn("Название книги", self.cell1, text=0)
+        self.column2 = gtk.TreeViewColumn("Code", self.cell2, text=1)
 
         self.tv.append_column(self.column)
         self.tv.append_column(self.column2)
@@ -261,8 +285,19 @@ class Mug:
 
 #        self.box2.pack_start(self.entry, False, False, 0)
 
+        l_horiz = gtk.HBox(False, 0)
+        box5.pack_start(l_horiz, False, False, 0)
+        l_horiz.show()
 
-        box5.pack_start(self.f_select, False, False, 0)
+        self.gr_label2 = "Греч."
+        self.gr_switch2 = gtk.Button(self.gr_label2)
+
+        l_horiz.pack_start(self.f_select, False, False, 1)
+        l_horiz.pack_end(self.gr_switch2, False, False, 1)
+        self.gr_switch2.show()
+
+        self.gr_switch2.connect('clicked', self.sw_mode)
+
         box5.pack_start(self.note, True, True, 0)
         box5.pack_start(self.entry, False, False, 0)
 
@@ -283,6 +318,44 @@ class Mug:
         # well, in that case we'll make an exception.
         self.ucs_patt = re.compile(u'ucs', re.U | re.I)
 
+        Connect_ind.__init__(self)
+        Connect_sear.__init__(self)
+        Process.__init__(self)
+        Process_s.__init__(self)
+        #Connect_sear().
+        
+        # search gui connections
+        for i in self.combo_lst: 
+            self.combo.append_text(i.strip())
+
+        self.combo.connect("changed", self.choose)       
+
+        for x in range(len(self.combo_lst)):
+            if self.config.get('SearchOptions', 'default_search_group') == self.combo_lst[x]:
+                self.combo.set_active(x)
+
+        # define checkboxes callbacks
+        self.toggle1.connect("toggled", self.stress)
+        self.toggle2.connect("toggled", self.case_switch)       
+
+        if self.config.get('SearchOptions', 'case_sensitive') == 'True':
+            self.toggle2.set_active(True)
+            self.case_sen = True
+        else:
+            self.toggle2.set_active(False)
+            self.case_sen = False
+
+        # check config for paramater
+        if self.config.get('SearchOptions', 'diacritics_on') == 'True':
+            self.toggle1.set_active(True)
+            self.stress_toggle = True
+        else:
+            self.toggle1.set_active(False)
+            self.stress_toggle = False
+
+        self.s_entry.connect('key_press_event', self.manager_keys)
+ 
+
     def destroy_cb(self, widget):
         gtk.main_quit()
         return False
@@ -293,7 +366,7 @@ class Mug:
         sw = gtk.ScrolledWindow()
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 #        textview = gtk.TextView()
-        textview = Txt()
+        textview = Txt(self.conf_path)
         textview.set_editable(False)
         textview.set_wrap_mode(gtk.WRAP_WORD_CHAR)
         if stl:
@@ -359,30 +432,41 @@ class Mug:
         return [cur_pg, page, child]
 
 if __name__ == '__main__':
-    argv = sys.argv
 
-#    txt_win = Mug(config)
-    txt_win = Mug()
+    from optparse import OptionParser
+    usage = "usage: %prog [options] dir"
+    parser = OptionParser(usage=usage)
 
-    if len(argv) > 1:
-        f_path = argv[1]
+    parser.add_option("-c", "--config", dest="config", action="store_true", help="Path to config file")
 
-        fp = codecs.open(f_path, "rb", "cp1251")
-        f_lines = fp.readlines()
-        fp.close()
-        # insert text
-        text_ls = []
-        txt = ''.join(f_lines)
+    (options, args) = parser.parse_args()
 
-        txt1 = txt_win.wrapper(txt)
+    if options.config:
+        if args:
+            front = Mug(args[0])
+        else:
+            print "no path to config file given, exiting"
+            sys.exit(0)
+    else:
+        # default path to config file
+        front = Mug(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
+        
 
-        txt_win.ins_txt(txt1)
+#    conn_i = Connect_ind()
+#    conn_s = Connect_sear()
+#    conn_s.wrap_search()
+#    pr_i = Process()
+#    pr_s = Process_s()
+    
 
     def main():
         gtk.main()
         return 0
 
     main()
+
+
+
 
 # TODO: make gtk.InfoBar or gtk.Statusbar (minor info)
 # also gtk.StatusIcon

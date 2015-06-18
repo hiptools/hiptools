@@ -93,9 +93,22 @@ class Opt:
         bt1 = gtk.CheckButton('Включить ударения')
         bt1.show()
 
+        bt2 = gtk.CheckButton('Учитывать регистр')
+        bt2.show()
+
         bt1.connect("toggled", self.w_stress)
-        if self.config.get('SearchOptions', 'diacritics_off') =='False':
+        if self.config.get('SearchOptions', 'diacritics_on') =='True':
             bt1.set_active(True)
+        else:
+            bt1.set_active(False)
+
+
+        bt2.connect("toggled", self.case_switch)
+        if self.config.get('SearchOptions', 'case_sensitive') =='True':
+            bt2.set_active(True)
+        else:
+            bt2.set_active(False)
+
 
         self.combo1 = gtk.combo_box_new_text()
         self.combo1.show()
@@ -117,6 +130,8 @@ class Opt:
         hbox2.show()
 
         vbox1.pack_start(bt1, False, False, 0)
+        vbox1.pack_start(bt2, False, False, 0)
+
         hbox3.pack_end(app, False, False, 0)
         hbox3.pack_end(can, False, False, 0)
         hbox3.show()
@@ -169,12 +184,20 @@ class Opt:
         self.config.set('SearchOptions', line, get_name)
 
     def w_stress(self, widget, data=None):
-        '''callback for checkbutton'''
+        '''callback for stress button'''
 
         if widget.get_active():
-            self.config.set('SearchOptions', 'diacritics_off', 'False')
+            self.config.set('SearchOptions', 'diacritics_on', 'True')
         else:
-            self.config.set('SearchOptions', 'diacritics_off', 'True')
+            self.config.set('SearchOptions', 'diacritics_on', 'False')
+
+    def case_switch(self, widget):
+        '''callback for switch cases button'''
+        if widget.get_active():
+            self.config.set('SearchOptions', 'case_sensitive', 'True')
+        else:
+            self.config.set('SearchOptions', 'case_sensitive', 'False')
+
 
 
 if __name__ == '__main__':

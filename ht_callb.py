@@ -11,7 +11,7 @@ import sys
 from xml.dom import minidom
 
 import booklst
-import hiptools_g
+#import hiptools_g
 import hipconv
 import ConfigParser
 import hipcomment
@@ -26,24 +26,32 @@ Writer = write_utf.write_gen()
 class Connect_ind:
     def __init__(self, mode=False):
 
-        #self.item_open = front.item_open
-        # if True - switched to greek, else - to slavonic
-        self.mode = mode
+        # In here we read config file, so every other class
+        # (accept in options.py) has to use self.config
 
-        # create configurations object
-#        self.config = hip_config.Service('.hiptools.config')
         self.config = ConfigParser.ConfigParser()
-        self.conf_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc')
+#        self.conf_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc')
         self.config.read(self.conf_path)
+
+        # if mode == True - switched to greek, else - to slavonic
+        # mode for search tool
+        self.mode_s = self.config.get('Switches', 'library_greek_s')
+        # mode for index (viewer) tool
+        self.mode_v = self.config.get('Switches', 'library_greek_v')
+
+        # style for slavonic viewer - slavonic or plain
         self.style_s = self.config.get('Style', 'default_style')
+        # kill service tags in hip texts like {...}
         self.br_off = self.config.get('Style', 'brackets_off')
-        if self.mode:
+
+        if self.mode_v:
             self.lib_path = self.config.get('LibraryPaths', 'gr_path')
             self.enc = 'utf-8'
+#            model = self.model_gr
         else:
             self.lib_path = self.config.get('LibraryPaths', 'sl_path')
             self.enc = 'cp1251'
-
+#            model = self.model_sl
 
         # delete special tags at the beginning of HIP file
         self.del_header = 1
@@ -52,29 +60,12 @@ class Connect_ind:
 
         self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
+        # regexps to find double new-lines and wrap the text
         self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
         self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
+
+        # clean up xml tags in greek files (barbaric, fix it!)
         self.html_del = re.compile(r'<.*?>', re.S)
-
-        def putdir(obj, parent=None):
-            """
-            Рекурсивная функция дла добавления элементов в дерево
-            """
-            for book in obj:
-                iter = front.model.append(parent)
-                front.model.set(iter, 0, book[1])
-                front.model.set(iter, 1, book[0])
-                if book[2]: # subdir
-                    putdir(book[2], iter)
-        putdir(self.book_lst)
-
-        front.item_open.connect("activate", self.open_file)
-        front.item_save.connect("activate", self.save_file)
-        front.item2.connect("activate", self.opt_wrap)
-        
-        front.tv.connect('row-activated', self.key_press)
-#        front.note.connect('key_press_event', self.note_cb)
-        front.box2.connect('key_press_event', self.note_cb)
 
         # current position in text
         self.pos = 0
@@ -94,17 +85,114 @@ class Connect_ind:
         else:
             self.brackets_off = False
 
-        # regexps to find double new-lines and wrap the text
-        self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
-        self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
+        if self.mode_v:
+#            self.mode_v = False
+            self.gr_switch2.set_label("Греч.")
+            self.putdir(self.model_gr, self.book_lst)
+        else:
+            self.gr_switch2.set_label("Слав.")
+            self.putdir(self.model_sl, self.book_lst)
 
+
+    def putdir(self, model, obj, parent=None):
+        """
+        Рекурсивная функция дла добавления элементов в дерево
+        """
+        for book in obj:
+            iter = model.append(parent)
+            model.set(iter, 0, book[1])
+            model.set(iter, 1, book[0])
+            if book[2]: # subdir
+                self.putdir(model, book[2], iter)
+
+    def sw_mode(self, widget):
+        '''callback for slav-greek switch in search and index'''
+
+        if widget == self.gr_switch1:
+            if self.mode_s:
+                self.mode_s = False
+                self.gr_switch2.set_label("Слав.")
+            else:
+                self.mode_s = True
+                self.gr_switch2.set_label("Греч.")
+            print 'Greek in search:', self.mode_s
+
+        elif widget == self.gr_switch2:
+            if self.mode_v:
+                self.mode_v = False
+                self.gr_switch2.set_label("Слав.")
+                self.column.clear()
+                self.column2.clear()
+                self.tv.set_model(self.model_gr)
+#                self.column = gtk.TreeViewColumn("Название книги", self.cell1, text=0)
+#                self.column2 = gtk.TreeViewColumn("Code", self.cell2, text=1)
+                self.column.set_attributes(self.cell1, text=0)
+                self.column2.set_attributes(self.cell2, text=1)
+                self.lib_path = self.config.get('LibraryPaths', 'gr_path')
+                self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
+                def putdir(obj, parent=None):
+                    """
+                    Рекурсивная функция дла добавления элементов в дерево
+                    """
+                    for book in obj:
+                        iter = self.model_gr.append(parent)
+                        self.model_gr.set(iter, 0, book[1])
+                        self.model_gr.set(iter, 1, book[0])
+                        if book[2]: # subdir
+                            putdir(book[2], iter)
+
+                putdir(self.book_lst)
+
+
+
+            else:
+                self.mode_v = True
+                self.gr_switch2.set_label("Греч.")
+                self.tv.set_model(self.model_sl)
+            print 'Greek in index:', self.mode_v
+
+
+
+############Options callbacks####################3
     def opt_wrap(self, widget):
-        # give it main config object. 
-        # Try to use main() loop to catch destruct signal
-        opt_w = options.Opt(widget)
-        self.config.read(self.conf_path)
-        print self.config.get('SearchOptions', 'default_search_group')
+        '''callback for Options menu item'''
 
+        opt_w = options.Opt(self.config)
+        # connect buttons
+        opt_w.apply_bt.connect('activate', self.apply_op)
+
+        # destroys main programm window. 
+#        opt_w.cancel_bt.connect('activate', opt_w.destroy_cb)
+        # Try to use main() loop to catch destruct signal?
+
+    def apply_op(self, widget):
+        '''callback for Apply button in Options dialog'''
+
+        # write changes to config:
+        with open(self.conf_path, 'wb') as configfile:
+            self.config.write(configfile)
+
+        # apply to widgets of main programm window:
+        # combo-box slav:
+        for x in range(len(conn_s.combo_lst)):
+            if self.config.get('SearchOptions', 'default_search_group') == conn_s.combo_lst[x]:
+                self.combo.set_active(x)
+        # checkboxes:
+        if self.config.get('SearchOptions', 'diacritics_on') == 'True':
+            self.toggle1.set_active(True)
+            self.stress_toggle = True 
+        else:
+            self.toggle1.set_active(False)
+            self.stress_toggle = False 
+
+        if self.config.get('SearchOptions', 'case_sensitive') == 'True':
+            self.toggle2.set_active(True)
+            self.case_sen = True
+        else:
+            self.toggle2.set_active(False)
+            self.case_sen = False
+    # TODO: make switch to choose hip-unicode       
+################################################
     def open_file(self, item_open):
 #        if keyname == "o" and event.state & gtk.gdk.CONTROL_MASK:
         dialog = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
@@ -146,10 +234,10 @@ class Connect_ind:
 #        if keyname == "s"  and event.state & gtk.gdk.CONTROL_MASK:
         dialog = gtk.FileChooserDialog("Save..", None, gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
-        cur_pg = front.note.get_current_page()
+        cur_pg = self.note.get_current_page()
 
         # child widget to current notebook page
-        page = front.note.get_nth_page(cur_pg)
+        page = self.note.get_nth_page(cur_pg)
         self.textview = page.get_children()[0]
 
 #        if self.textview.mode:
@@ -161,7 +249,7 @@ class Connect_ind:
 
         if response == gtk.RESPONSE_OK:
             # child widget to current notebook page
-            page = front.note.get_nth_page(cur_pg)
+            page = self.note.get_nth_page(cur_pg)
             self.textview = page.get_children()[0]
             self.textbuffer = self.textview.get_buffer()
 
@@ -174,7 +262,7 @@ class Connect_ind:
         dialog.destroy()
 
     def wrapper(self, txt):
-
+        ''' find double new-lines and wrap the text'''
         text_ls = []
         parts_ls = self.split_parag.split(txt)
         for part in parts_ls:
@@ -208,9 +296,7 @@ class Connect_ind:
 #        self.process()
 #        self.style_txt()
 
-
-
-    def key_press(self, tv, path, column):
+    def key_press(self, tv, path, column, model):
         """Callback for Index"""
 
         # expand paths that are not expanded,
@@ -222,21 +308,21 @@ class Connect_ind:
             tv.collapse_row(path)
             self.exp_lines.remove(path)
 
-        iter_cur = front.model.get_iter(path)
+        iter_cur = model.get_iter(path)
 
         # iter cur points to file, not directory
-        if not front.model.iter_has_child(iter_cur):
+        if not model.iter_has_child(iter_cur):
             dir_name_x = ""
             dir_out = []
             iter_par_c = iter_cur
-            f_name = front.model.get_value(iter_cur, 1)
+            f_name = model.get_value(iter_cur, 1)
 
             while True:
-                iter_par_p = front.model.iter_parent(iter_par_c)
-                dir_name_p = front.model.get_value(iter_par_p, 1)
+                iter_par_p = model.iter_parent(iter_par_c)
+                dir_name_p = model.get_value(iter_par_p, 1)
                 dir_out.append(dir_name_p)
                 iter_par_c = iter_par_p
-                if not front.model.iter_parent(iter_par_p):
+                if not model.iter_parent(iter_par_p):
                     break
 
             dir_out.reverse()
@@ -251,7 +337,7 @@ class Connect_ind:
             f_lines = fp.readlines()
             fp.close()
 
-            if self.mode:
+            if self.mode_v:
                 xmldoc = minidom.parseString(f_lines[1] + '</document>')
                 xml_nodes = xmldoc.getElementsByTagName('document')
                 for item in xml_nodes:
@@ -265,14 +351,14 @@ class Connect_ind:
                     for z in range(10):
                         if "<::" in f_lines[z]:
                             f_lines.pop(f_lines.index(f_lines[z]))
-                t_name = front.model.get_value(iter_cur, 0)
+                t_name = model.get_value(iter_cur, 0)
 
             # create window to output selected text
 #            txt_win = Show_text(self.mode)
 #            txt_win.path1 = f_path
 #
-#            iter_par = front.model.iter_parent(iter_cur)
-#            title = ' / '.join([front.model.get_value(iter_par, 0), t_name])
+#            iter_par = self.model.iter_parent(iter_cur)
+#            title = ' / '.join([self.model.get_value(iter_par, 0), t_name])
 #
 #            txt_win.window3.set_title(title)
 
@@ -287,11 +373,9 @@ class Connect_ind:
                 text_ls.append(part)
             txt1 = '\n\n'.join(text_ls)
 
-#            self.process(txt1)
-#            self.style_txt()
-            pr_i.get_txt(txt1)
-            pr_i.proc()
-            pr_i.style_txt()
+            self.get_txt(txt1)
+            self.proc()
+            self.style_txt()
 
     def note_cb(self, widget, event):
         """Callback for notebook wid"""
@@ -300,10 +384,10 @@ class Connect_ind:
 #        print 'key', keyname, 'was pressed', event.keyval
         if keyname == "d" or keyname == "Cyrillic_ve" and event.state & gtk.gdk.CONTROL_MASK:
 
-            cur_pg = front.note.get_current_page()
+            cur_pg = self.note.get_current_page()
 
             # child widget to current notebook page
-            page = front.note.get_nth_page(cur_pg)
+            page = self.note.get_nth_page(cur_pg)
             self.textview = page.get_children()[0]
             self.textbuffer = self.textview.get_buffer()
 
@@ -328,34 +412,34 @@ class Connect_ind:
 
         if keyname == "t" or keyname == "Cyrillic_ie" and event.state & gtk.gdk.CONTROL_MASK:
                 
-            front.append_pg()
-            cur_pg = front.note.get_n_pages() - 1
-            front.note.set_current_page(cur_pg)
+            self.append_pg()
+            cur_pg = self.note.get_n_pages() - 1
+            self.note.set_current_page(cur_pg)
 
         if keyname == "w" or keyname == "Cyrillic_tse" and event.state & gtk.gdk.CONTROL_MASK:
 
-            p_num = front.note.get_n_pages()
+            p_num = self.note.get_n_pages()
             if p_num > 1:
-                front.note.remove_page(front.note.get_current_page())
-                front.note.queue_draw_area(0,0,-1,-1)
+                self.note.remove_page(self.note.get_current_page())
+                self.note.queue_draw_area(0,0,-1,-1)
             else:
-                front.note.remove_page(front.note.get_current_page())
-                front.note.queue_draw_area(0,0,-1,-1)
-                front.append_pg()
+                self.note.remove_page(self.note.get_current_page())
+                self.note.queue_draw_area(0,0,-1,-1)
+                self.append_pg()
 
         if keyname == "Tab" or keyname == "n" or keyname == "Cyrillic_te" and event.state & gtk.gdk.CONTROL_MASK:
-            cur_pg = front.note.get_current_page()
-            if cur_pg + 1 < front.note.get_n_pages():
-                front.note.next_page()
+            cur_pg = self.note.get_current_page()
+            if cur_pg + 1 < self.note.get_n_pages():
+                self.note.next_page()
             else:
-                front.note.set_current_page(0)
+                self.note.set_current_page(0)
 
         if keyname == "p" or keyname == "Cyrillic_ze" and event.state & gtk.gdk.CONTROL_MASK:
-            cur_pg = front.note.get_current_page()
+            cur_pg = self.note.get_current_page()
             if cur_pg > 0:
-                front.note.prev_page()
+                self.note.prev_page()
             else:
-                front.note.set_current_page(-1)
+                self.note.set_current_page(-1)
 
            
 class Connect_sear:
@@ -377,9 +461,9 @@ class Connect_sear:
     def case_switch(self, widget, data=None):
 
        if widget.get_active():
-           self.case_ins = False
+           self.case_sen = True
        else:
-           self.case_ins = True 
+           self.case_sen = False
         
     def choose(self, widget):
         '''Chooses the books group'''
@@ -397,10 +481,12 @@ class Connect_sear:
         for book in books:
 #        book = ''.join(["/usr/local/lib/hip-tools/hiplib/", book])
 
-            book = os.path.join(os.getcwd(), "hiplib", book)
+#            book = os.path.join(os.getcwd(), "hiplib", book)
+            book = os.path.join(self.lib_path,  book)
 
+ 
             for file in os.listdir(book):
-                if file.endswith('hip'):
+                if file.endswith('hip') or file.endswith('xml'):
                     file_count += 1
 
 #        print file_count
@@ -447,7 +533,7 @@ class Connect_sear:
 
         else:
             patt = word
-            if self.case_ins:
+            if not self.case_sen:
                 regex = re.compile(patt, re.U | re.I)
             else:
                 regex = re.compile(patt, re.U)
@@ -465,7 +551,7 @@ class Connect_sear:
 
                     # calculate percent of work done so far
                     perc = float(cur_file)/float(num_files)
-                    front.pr_bar.set_fraction(perc)
+                    self.pr_bar.set_fraction(perc)
                     # these are nesessary to steal control from gtk main loop
                     # else progrees bar wont move untill job's done
                     while gtk.events_pending():
@@ -481,7 +567,7 @@ class Connect_sear:
                         line = f_lines[str_num]
 
                         # clean all apostrophs (stresses) from searched text
-                        if not self.stress_toggle:
+                        if self.stress_toggle:
                             line = line.replace('\'', '')
                             line = line.replace('`', '')
                             line = line.replace('^', '')
@@ -498,13 +584,13 @@ class Connect_sear:
     def ins(self, res):
         
         for i in res:
-            iter = front.model_s.append()
-            front.model_s.set(iter, 0, i[0])
-            front.model_s.set(iter, 1, i[1])
-            front.model_s.set(iter, 2, i[2])
+            iter = self.model_s.append()
+            self.model_s.set(iter, 0, i[0])
+            self.model_s.set(iter, 1, i[1])
+            self.model_s.set(iter, 2, i[2])
             path_s_u = self.path2name(i[0]).decode('utf8')[:40]
-            front.model_s.set(iter, 3, path_s_u)
-#            front.model.set(iter, 3, path2name(i[0]))
+            self.model_s.set(iter, 3, path_s_u)
+#            self.model.set(iter, 3, path2name(i[0]))
 
     def manager_keys(self, widget, event):
         '''Bindings for main window'''
@@ -554,7 +640,7 @@ class Connect_sear:
 #        print txt_ins.decode('utf8')
 
         # create window to output selected text
-#        p_list = front.append_pg()
+#        p_list = self.append_pg()
 #        txt_win.window3.set_title(face.path2name(file_path))
 
 #        n_i.process(txt_ins)
@@ -578,15 +664,15 @@ class Connect_sear:
             self.path_ls.insert(0, tail)
                     
         self.desc_str = []
-        self.walker(conn_i.book_lst)
+        self.walker(self.book_lst)
         res_str = ' / '.join(self.desc_str)
 
         return res_str
 
     def search_it(self, button=None):
-        '''Main search interfront'''
+        '''Main search interself'''
 
-        self.s_word = front.s_entry.get_text()
+        self.s_word = self.s_entry.get_text()
         self.comm_lst.append(self.s_word)
 #        print self.comm_lst
 
@@ -597,8 +683,8 @@ class Connect_sear:
 
             # this piece should probably go to separate method
             # because it's used also in Connect_ind
-            cur_pg = front.note.get_current_page()
-            page = front.note.get_nth_page(cur_pg)
+            cur_pg = self.note.get_current_page()
+            page = self.note.get_nth_page(cur_pg)
             self.textview = page.get_children()[0]
             if not isinstance(self.textview, gtk.TreeView):
                 self.textbuffer = self.textview.get_buffer()
@@ -611,23 +697,23 @@ class Connect_sear:
             if not chars:
                 chars = self.textbuffer.get_char_count()
             if chars:
-                p_list = front.append_search_pg()
+                p_list = self.append_search_pg()
                 self.ins(res)
                 p_list[2].connect('row-activated', self.on_click)
-#                front.tvs.connect('row-activated', self.on_click)
+#                self.tvs.connect('row-activated', self.on_click)
 
             else:
-                front.note.remove_page(cur_pg)
-                front.note.queue_draw_area(0,0,-1,-1)
-                p_list = front.append_search_pg()
+                self.note.remove_page(cur_pg)
+                self.note.queue_draw_area(0,0,-1,-1)
+                p_list = self.append_search_pg()
                 self.ins(res)
                 p_list[2].connect('row-activated', self.on_click)
 
-            cur_pg = front.note.get_n_pages() - 1
-            front.note.set_current_page(cur_pg)
+            cur_pg = self.note.get_n_pages() - 1
+            self.note.set_current_page(cur_pg)
 
-            front.label.set_text("Найдено " + str(count) + " совпадений")
-#            front.label.set_justify(gtk.JUSTIFY_LEFT)
+            self.label.set_text("Найдено " + str(count) + " совпадений")
+#            self.label.set_justify(gtk.JUSTIFY_LEFT)
 
         else:
             print 'Didn\'t find anything, sorry.'
@@ -654,33 +740,39 @@ class Connect_sear:
             else:
                 break
 
-    def wrap_search(self):
-        """ main method of the class """
-
-        for i in self.combo_lst: 
-            front.combo.append_text(i.strip())
-
-        front.combo.connect("changed", self.choose)       
-
-        for x in range(len(self.combo_lst)):
-            if conn_i.config.get('SearchOptions', 'default_search_group') == self.combo_lst[x]:
-                front.combo.set_active(x)
-
-        # define checkboxes callbacks
-        front.toggle1.connect("toggled", self.stress)
-        front.toggle2.connect("toggled", self.case_switch)       
-
-        self.case_ins = True
-
-        # check config for paramater
-        if conn_i.config.get('SearchOptions', 'diacritics_off') == 'True':
-            self.stress_toggle = False
-#        elif conn_i.config.diacritics_off == 'False':
-        else:
-            self.stress_toggle = True
-
-        front.s_entry.connect('key_press_event', self.manager_keys)
- 
+#    def wrap_search(self):
+#        """ main method of the class """
+#
+#        for i in self.combo_lst: 
+#            self.combo.append_text(i.strip())
+#
+#        self.combo.connect("changed", self.choose)       
+#
+#        for x in range(len(self.combo_lst)):
+#            if self.config.get('SearchOptions', 'default_search_group') == self.combo_lst[x]:
+#                self.combo.set_active(x)
+#
+#        # define checkboxes callbacks
+#        self.toggle1.connect("toggled", self.stress)
+#        self.toggle2.connect("toggled", self.case_switch)       
+#
+#        if self.config.get('SearchOptions', 'case_sensitive') == 'True':
+#            self.toggle2.set_active(True)
+#            self.case_sen = True
+#        else:
+#            self.toggle2.set_active(False)
+#            self.case_sen = False
+#
+#        # check config for paramater
+#        if self.config.get('SearchOptions', 'diacritics_on') == 'True':
+#            self.toggle1.set_active(True)
+#            self.stress_toggle = True
+#        else:
+#            self.toggle1.set_active(False)
+#            self.stress_toggle = False
+#
+#        self.s_entry.connect('key_press_event', self.manager_keys)
+# 
 class Process:
     """ Make new tab, insert text, stylize 
 
@@ -694,9 +786,9 @@ class Process:
 
     def get_txt(self, new_txt=None, stl=None):
         chars = 0
-        cur_pg = front.note.get_current_page()
+        cur_pg = self.note.get_current_page()
         # child widget to current notebook page
-        page = front.note.get_nth_page(cur_pg)
+        page = self.note.get_nth_page(cur_pg)
         self.textview = page.get_children()[0]
 
 
@@ -706,7 +798,7 @@ class Process:
         else:
             chars = 1
 #        if name: 
-#        front.note.set_tab_label_text(page, name)
+#        self.note.set_tab_label_text(page, name)
 
         # call from index or search, not reload (ctl-d or ctl-r)
         if new_txt:
@@ -721,21 +813,21 @@ class Process:
             else:
                 # style for search (green tag...)
                 if stl:
-                    front.append_pg(stl)
+                    self.append_pg(stl)
                 else:
-                    front.append_pg()
+                    self.append_pg()
 
-                cur_pg = front.note.get_n_pages() - 1
-                front.note.set_current_page(cur_pg)
+                cur_pg = self.note.get_n_pages() - 1
+                self.note.set_current_page(cur_pg)
 
-                page = front.note.get_nth_page(cur_pg)
+                page = self.note.get_nth_page(cur_pg)
                 self.textview = page.get_children()[0]
                 # get buffer of last page!
                 self.textbuffer = self.textview.get_buffer()
 
             self.base_txt = new_txt
             self.textview.base_txt = self.base_txt
-            self.textview.mode = conn_i.plain
+            self.textview.mode = self.plain
 
         else:
             startiter, enditer = self.textbuffer.get_bounds()
@@ -755,11 +847,11 @@ class Process:
         # if need to convert (plain to slavic)
         if not self.textview.mode:
             # parse comments. If to slavic text, wipe comments
-            conv_txt = brac.repl_brac(self.base_txt, conn_i.brackets_off)[0]
+            conv_txt = brac.repl_brac(self.base_txt, self.brackets_off)[0]
             # convert to slavonic typeset
-            conn_i.check_font(self.textview.sl_font)
+            self.check_font(self.textview.sl_font)
 #            print 'sl_font', self.textview.sl_font
-            conv_txt = conv(conv_txt, conn_i.uni)
+            conv_txt = conv(conv_txt, self.uni)
             
             self.textbuffer.set_text(conv_txt)
             self.tag_table = self.textbuffer.get_tag_table()
@@ -795,7 +887,7 @@ class Process:
         self.my_text = gtk.TextTag()
         self.tag_table.add(self.my_text)
 #        self.style_txt()
-        front.f_select.set_font_name(self.textview.sl_font)
+        self.f_select.set_font_name(self.textview.sl_font)
 
         self.textview.place_cursor_onscreen()
 
@@ -807,9 +899,9 @@ class Process:
         startiter, enditer = self.textbuffer.get_bounds()
         self.textbuffer.apply_tag(self.my_text, startiter, enditer)
 
-        if conn_i.pos:
+        if self.pos:
             # put cursor at the start of the page
-            zero_iter = self.textbuffer.get_iter_at_line(conn_i.pos)
+            zero_iter = self.textbuffer.get_iter_at_line(self.pos)
             zero_mark = self.textbuffer.create_mark(None, zero_iter)
 #            self.textbuffer.place_cursor(zero_iter)
             self.textview.scroll_to_mark(zero_mark, 0.0, True, 0.0, 0.0)
@@ -835,7 +927,7 @@ class Process_s(Process):
         startiter, enditer = self.textbuffer.get_bounds()
         self.textbuffer.apply_tag(self.my_text, startiter, enditer)
 
-        cur_iter = self.textbuffer.get_iter_at_line(conn_i.pos)
+        cur_iter = self.textbuffer.get_iter_at_line(self.pos)
 
 #        if not self.pos:
 #            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
@@ -875,19 +967,37 @@ class Process_s(Process):
 
 if __name__ == '__main__':
 
-    front = hiptools_g.Mug()
-    conn_i = Connect_ind()
-    conn_s = Connect_sear()
-    conn_s.wrap_search()
-    pr_i = Process()
-    pr_s = Process_s()
-    
+    argv = sys.argv
+
+#    txt_win = Mug(config)
+    txt_win = Mug()
+
+    if len(argv) > 1:
+        f_path = argv[1]
+
+        fp = codecs.open(f_path, "rb", "cp1251")
+        f_lines = fp.readlines()
+        fp.close()
+        # insert text
+        text_ls = []
+        txt = ''.join(f_lines)
+
+        txt1 = txt_win.wrapper(txt)
+
+        txt_win.ins_txt(txt1)
 
     def main():
         gtk.main()
         return 0
 
     main()
+
+
+# TODO: probably invoking other objects from Connect_ind()
+# with config object as an arg - is a good idea
+# on the other hand - cli version of index would need separate
+# objects to import
+
 
 
 

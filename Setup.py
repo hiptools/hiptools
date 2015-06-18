@@ -92,9 +92,12 @@ def create_conf(path, lib_inst_path):
 
     config.set('LibraryPaths', 'gr_path', os.path.join(lib_inst_path, "greeklib"))
     config.set('LibraryPaths', 'sl_path', os.path.join(lib_inst_path, "hiplib"))
+    config.set('Switches', 'library_greek_s', "True"))
+    config.set('Switches', 'library_greek_v', "True"))
     config.set('SearchOptions', 'default_search_group', 'Богослужебные')
     config.set('SearchOptions', 'default_search_group_gr', 'Minologion_base')
-    config.set('SearchOptions', 'diacritics_off', 'True')
+    config.set('SearchOptions', 'diacritics_on', 'True')
+    config.set('SearchOptions', 'case_sensitive', 'False')
     config.set('SearchOptions', 'betacode', 'True')
     config.set('Fonts', 'gr_font', 'Old Standard TT 18')
     config.set('Fonts', 'sl_font', 'Orthodox.tt Ucs8 22')
