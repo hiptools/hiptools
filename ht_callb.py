@@ -788,6 +788,7 @@ class Process:
 
         # call from index or search, not reload (ctl-d or ctl-r)
         if new_txt:
+            print 'new_txt'
             # Chars - a trigger. If we got TreeView as a child, 
             # or if there's some text in TextView, we switch chars = 1 and make a new tab
 
