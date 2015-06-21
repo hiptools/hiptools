@@ -44,21 +44,12 @@ class Connect_ind:
         # kill service tags in hip texts like {...}
         self.br_off = self.config.get('Style', 'brackets_off')
 
-        if self.mode_v:
-            self.lib_path = self.config.get('LibraryPaths', 'gr_path')
-            self.enc = 'utf-8'
-#            model = self.model_gr
-        else:
-            self.lib_path = self.config.get('LibraryPaths', 'sl_path')
-            self.enc = 'cp1251'
-#            model = self.model_sl
 
         # delete special tags at the beginning of HIP file
         self.del_header = 1
         self.exp_lines = []
 #        self.base_dict = {}
 
-        self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
         # regexps to find double new-lines and wrap the text
         self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
@@ -85,14 +76,6 @@ class Connect_ind:
         else:
             self.brackets_off = False
 
-        if self.mode_v:
-#            self.mode_v = False
-            self.gr_switch2.set_label("Греч.")
-            self.putdir(self.model_gr, self.book_lst)
-        else:
-            self.gr_switch2.set_label("Слав.")
-            self.putdir(self.model_sl, self.book_lst)
-
 
     def putdir(self, model, obj, parent=None):
         """
@@ -104,6 +87,7 @@ class Connect_ind:
             model.set(iter, 1, book[0])
             if book[2]: # subdir
                 self.putdir(model, book[2], iter)
+        return model
 
     def sw_mode(self, widget):
         '''callback for slav-greek switch in search and index'''
@@ -119,35 +103,28 @@ class Connect_ind:
 
         elif widget == self.gr_switch2:
             if self.mode_v:
-                self.mode_v = False
                 self.gr_switch2.set_label("Слав.")
-                self.column.clear()
-                self.column2.clear()
+
+                self.tv.remove_column(self.column_sl1)
+                self.tv.remove_column(self.column_sl2)
+                self.tv.append_column(self.column_gr1)
+                self.tv.append_column(self.column_gr2)
+
                 self.tv.set_model(self.model_gr)
-#                self.column = gtk.TreeViewColumn("Название книги", self.cell1, text=0)
-#                self.column2 = gtk.TreeViewColumn("Code", self.cell2, text=1)
-                self.column.set_attributes(self.cell1, text=0)
-                self.column2.set_attributes(self.cell2, text=1)
-                self.lib_path = self.config.get('LibraryPaths', 'gr_path')
-                self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
-                def putdir(obj, parent=None):
-                    """
-                    Рекурсивная функция дла добавления элементов в дерево
-                    """
-                    for book in obj:
-                        iter = self.model_gr.append(parent)
-                        self.model_gr.set(iter, 0, book[1])
-                        self.model_gr.set(iter, 1, book[0])
-                        if book[2]: # subdir
-                            putdir(book[2], iter)
 
-                putdir(self.book_lst)
-
-
+                self.mode_v = False
 
             else:
                 self.mode_v = True
                 self.gr_switch2.set_label("Греч.")
+
+
+                self.tv.remove_column(self.column_sl1)
+                self.tv.remove_column(self.column_sl2)
+                self.tv.append_column(self.column_gr1)
+                self.tv.append_column(self.column_gr2)
+
+
                 self.tv.set_model(self.model_sl)
             print 'Greek in index:', self.mode_v
 
@@ -336,15 +313,15 @@ class Connect_ind:
 
             f_lines = fp.readlines()
             fp.close()
-
-            if self.mode_v:
+            
+            if self.mode_v == 'True':
                 xmldoc = minidom.parseString(f_lines[1] + '</document>')
                 xml_nodes = xmldoc.getElementsByTagName('document')
                 for item in xml_nodes:
                     t_name = item.getAttribute('title') 
                     break
 
-            else:
+            elif self.mode_v == 'False':
             # aweful crutch: delete service tags in the beginning of the file
             # DO Something!
                 if self.del_header:

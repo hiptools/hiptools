@@ -10,6 +10,7 @@ import os
 import sys
 
 #import hipconv
+import booklst
 import ConfigParser
 
 from ht_callb import Connect_ind
@@ -164,7 +165,6 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         s_horiz.pack_end(self.gr_switch1, False, False, 1)
         self.gr_switch1.show()
 
-        self.gr_switch1.connect('clicked', self.sw_mode)
 
         # second raw: progress bar, check buttons
         pr_horiz = gtk.HBox(False, 0)
@@ -204,23 +204,19 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         self.model_sl = gtk.TreeStore(str, str)
         self.model_gr = gtk.TreeStore(str, str)
 
-        if self.mode_v:
-            self.tv = gtk.TreeView(self.model_gr)
-        else:
-            self.tv = gtk.TreeView(self.model_sl)
+        self.tv = gtk.TreeView()
+#        if self.mode_v:
+#            self.tv = gtk.TreeView(self.model_gr)
+#        else:
+#            self.tv = gtk.TreeView(self.model_sl)
 
-        self.selection = self.tv.get_selection()
+#        self.selection = self.tv.get_selection()
 
 #        self.modelfilter = self.model.filter_new()
 #        self.tv.set_model(self.modelfilter)
 
         books_sw.add(self.tv)
 
-        if self.mode_v:
-            self.tv.connect('row-activated', self.key_press, self.model_gr)
-        else:
-            self.tv.connect('row-activated', self.key_press, self.model_sl)
-#        front.note.connect('key_press_event', self.note_cb)
         self.box2.connect('key_press_event', self.note_cb)
 
 
@@ -229,18 +225,28 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         self.b_entry.show()
 #        self.b_entry.connect('key_press_event', self.search_cb)
         
-        self.cell1 = gtk.CellRendererText()
-        self.cell2 = gtk.CellRendererText()
-        self.column = gtk.TreeViewColumn("Название книги", self.cell1, text=0)
-        self.column2 = gtk.TreeViewColumn("Code", self.cell2, text=1)
+        # greek renderers and columns
+        self.cell_gr1 = gtk.CellRendererText()
+        self.cell_gr2 = gtk.CellRendererText()
+        self.column_gr1 = gtk.TreeViewColumn("Название книги", self.cell_gr1, text=0)
+        self.column_gr2 = gtk.TreeViewColumn("Code", self.cell_gr2, text=1)
+        # slavonic renderers and columns
+        self.cell_sl1 = gtk.CellRendererText()
+        self.cell_sl2 = gtk.CellRendererText()
+        self.column_sl1 = gtk.TreeViewColumn("Название книги", self.cell_sl1, text=0)
+        self.column_sl2 = gtk.TreeViewColumn("Code", self.cell_sl2, text=1)
 
-        self.tv.append_column(self.column)
-        self.tv.append_column(self.column2)
 #        self.tv.set_search_column(2)
 
         # hide second column 
-        self.column2.set_visible(False)
-        
+        self.column_gr2.set_visible(False)
+        self.column_sl2.set_visible(False)
+
+#        front.note.connect('key_press_event', self.note_cb)
+
+
+
+       
         books_sw.show_all()
         self.tv.show()
         box4.pack_start(books_sw)
@@ -296,7 +302,40 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         l_horiz.pack_end(self.gr_switch2, False, False, 1)
         self.gr_switch2.show()
 
-        self.gr_switch2.connect('clicked', self.sw_mode)
+
+        if self.mode_v == 'True':
+            self.lib_path = self.config.get('LibraryPaths', 'gr_path')
+            self.enc = 'utf-8'
+#            model = self.model_gr
+            self.gr_switch2.set_label("Греч.")
+#            self.book_lst = 
+            self.model_gr = self.putdir(self.model_gr, booklst.listbooks(self.lib_path))
+            self.model_sl = self.putdir(self.model_sl, booklst.listbooks(self.config.get('LibraryPaths', 'sl_path')))
+#            self.putdir(self.model_gr, self.book_lst)
+            print 'mode', self.mode_v
+            self.tv.append_column(self.column_gr1)
+            self.tv.append_column(self.column_gr2)
+            self.tv.set_model(self.model_gr)
+
+            self.tv.connect('row-activated', self.key_press, self.model_gr)
+
+        elif self.mode_v == 'False':
+            self.lib_path = self.config.get('LibraryPaths', 'sl_path')
+            self.enc = 'cp1251'
+            self.gr_switch2.set_label("Слав.")
+            self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
+            self.model_sl = self.putdir(self.model_sl, booklst.listbooks(self.lib_path))
+            self.model_gr = self.putdir(self.model_gr, booklst.listbooks(self.config.get('LibraryPaths', 'gr_path')))
+            #self.putdir(self.model_sl, self.book_lst)
+#            model = self.model_sl
+            print 'mode', self.mode_v
+#            print 'uuu'
+
+            self.tv.append_column(self.column_sl1)
+            self.tv.append_column(self.column_sl2)
+            self.tv.set_model(self.model_sl)
+
+            self.tv.connect('row-activated', self.key_press, self.model_sl)
 
         box5.pack_start(self.note, True, True, 0)
         box5.pack_start(self.entry, False, False, 0)
@@ -324,6 +363,9 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         Process_s.__init__(self)
         #Connect_sear().
         
+        self.gr_switch1.connect('clicked', self.sw_mode)
+        self.gr_switch2.connect('clicked', self.sw_mode)
+
         # search gui connections
         for i in self.combo_lst: 
             self.combo.append_text(i.strip())
