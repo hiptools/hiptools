@@ -40,8 +40,9 @@ class Txt(gtk.TextView):
         self.sl_font_prev = ''
         self.plain_font = 'Tahoma 16'
 
+
         # if style_s == True, have to use Process_s().style_txt()
-        self.style_s = False
+#        self.style_s = False
 
 #        print 'font!!!', config.default_font
 #        print 'def mode!!!', self.mode
@@ -57,8 +58,37 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         self.config = config        
         self.config.read(self.conf_path)
         # slav-greek switches for viewer and search tools
-        self.mode_v = self.config.get('Switches', 'library_greek_v')
-        self.mode_s = self.config.get('Switches', 'library_greek_s')
+        # if mode == True - switched to greek, else - to slavonic
+        # mode for search tool
+        if self.config.get('Switches', 'library_greek_s') == 'True':
+            self.mode_s = True
+        elif self.config.get('Switches', 'library_greek_s') == 'False':
+            self.mode_s = False
+        # mode for index (viewer) tool
+        if self.config.get('Switches', 'library_greek_v') == 'True':
+            self.mode_v = True
+        elif self.config.get('Switches', 'library_greek_v') == 'False':
+            self.mode_v = False
+
+        # style for slavonic viewer - slavonic or plain
+        self.style_s = self.config.get('Style', 'default_style')
+        # kill service tags in hip texts like {...}
+        self.br_off = self.config.get('Style', 'brackets_off')
+
+        if self.style_s == 'slavonic':
+            self.plain = False
+        elif self.style_s == 'plain':
+            self.plain = True
+
+        if self.br_off == 'True':
+            self.brackets_off = True
+        else:
+            self.brackets_off = False
+
+
+
+#        self.mode_v = self.config.get('Switches', 'library_greek_v')
+#        self.mode_s = self.config.get('Switches', 'library_greek_s')
 
         self.window3 = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window3.set_resizable(True)
@@ -219,8 +249,6 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
 
         self.box2.connect('key_press_event', self.note_cb)
 
-
-
         self.b_entry = gtk.Entry()
         self.b_entry.show()
 #        self.b_entry.connect('key_press_event', self.search_cb)
@@ -242,11 +270,6 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         self.column_gr2.set_visible(False)
         self.column_sl2.set_visible(False)
 
-#        front.note.connect('key_press_event', self.note_cb)
-
-
-
-       
         books_sw.show_all()
         self.tv.show()
         box4.pack_start(books_sw)
@@ -303,11 +326,13 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         self.gr_switch2.show()
 
 
-        if self.mode_v == 'True':
+        self.tv.connect('row-activated', self.key_press)
+
+        if self.mode_v:
             self.lib_path = self.config.get('LibraryPaths', 'gr_path')
             self.enc = 'utf-8'
 #            model = self.model_gr
-            self.gr_switch2.set_label("Греч.")
+            self.gr_switch2.set_label("Слав.")
 #            self.book_lst = 
             self.model_gr = self.putdir(self.model_gr, booklst.listbooks(self.lib_path))
             self.model_sl = self.putdir(self.model_sl, booklst.listbooks(self.config.get('LibraryPaths', 'sl_path')))
@@ -317,12 +342,13 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
             self.tv.append_column(self.column_gr2)
             self.tv.set_model(self.model_gr)
 
-            self.tv.connect('row-activated', self.key_press, self.model_gr)
+#        front.note.connect('key_press_event', self.note_cb)
+       
 
-        elif self.mode_v == 'False':
+        else:
             self.lib_path = self.config.get('LibraryPaths', 'sl_path')
             self.enc = 'cp1251'
-            self.gr_switch2.set_label("Слав.")
+            self.gr_switch2.set_label("Греч.")
             self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
             self.model_sl = self.putdir(self.model_sl, booklst.listbooks(self.lib_path))
             self.model_gr = self.putdir(self.model_gr, booklst.listbooks(self.config.get('LibraryPaths', 'gr_path')))
@@ -335,7 +361,6 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
             self.tv.append_column(self.column_sl2)
             self.tv.set_model(self.model_sl)
 
-            self.tv.connect('row-activated', self.key_press, self.model_sl)
 
         box5.pack_start(self.note, True, True, 0)
         box5.pack_start(self.entry, False, False, 0)

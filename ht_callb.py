@@ -33,17 +33,23 @@ class Connect_ind:
 #        self.conf_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc')
         self.config.read(self.conf_path)
 
-        # if mode == True - switched to greek, else - to slavonic
-        # mode for search tool
-        self.mode_s = self.config.get('Switches', 'library_greek_s')
-        # mode for index (viewer) tool
-        self.mode_v = self.config.get('Switches', 'library_greek_v')
-
-        # style for slavonic viewer - slavonic or plain
-        self.style_s = self.config.get('Style', 'default_style')
-        # kill service tags in hip texts like {...}
-        self.br_off = self.config.get('Style', 'brackets_off')
-
+#        # if mode == True - switched to greek, else - to slavonic
+#        # mode for search tool
+#        if self.config.get('Switches', 'library_greek_s') == 'True':
+#            self.mode_s = True
+#        elif self.config.get('Switches', 'library_greek_s') == 'False':
+#            self.mode_s = False
+#        # mode for index (viewer) tool
+#        if self.config.get('Switches', 'library_greek_v') == 'True':
+#            self.mode_v = True
+#        elif self.config.get('Switches', 'library_greek_v') == 'False':
+#            self.mode_v = False
+#
+#        # style for slavonic viewer - slavonic or plain
+#        self.style_s = self.config.get('Style', 'default_style')
+#        # kill service tags in hip texts like {...}
+#        self.br_off = self.config.get('Style', 'brackets_off')
+#
 
         # delete special tags at the beginning of HIP file
         self.del_header = 1
@@ -65,16 +71,6 @@ class Connect_ind:
         # probably not a good idea, if there is some kind of 'kucs.ttf' out there...
         # well, in that case we'll make an exception.
         self.ucs_patt = re.compile(u'ucs', re.U | re.I)
-
-        if self.style_s == 'slavonic':
-            self.plain = False
-        elif self.style_s == 'plain':
-            self.plain = True
-
-        if self.br_off == 'True':
-            self.brackets_off = True
-        else:
-            self.brackets_off = False
 
 
     def putdir(self, model, obj, parent=None):
@@ -102,7 +98,7 @@ class Connect_ind:
             print 'Greek in search:', self.mode_s
 
         elif widget == self.gr_switch2:
-            if self.mode_v == 'True':
+            if not self.mode_v:
                 self.gr_switch2.set_label("Слав.")
 
                 self.tv.remove_column(self.column_sl1)
@@ -112,21 +108,24 @@ class Connect_ind:
 
                 self.tv.set_model(self.model_gr)
 
-                self.mode_v = False
-
-            elif self.mode_v == 'False':
                 self.mode_v = True
+                self.enc = 'utf-8'
+
+            else:
                 self.gr_switch2.set_label("Греч.")
 
-
-                self.tv.remove_column(self.column_sl1)
-                self.tv.remove_column(self.column_sl2)
-                self.tv.append_column(self.column_gr1)
-                self.tv.append_column(self.column_gr2)
-
+                self.tv.remove_column(self.column_gr1)
+                self.tv.remove_column(self.column_gr2)
+                self.tv.append_column(self.column_sl1)
+                self.tv.append_column(self.column_sl2)
 
                 self.tv.set_model(self.model_sl)
+                
+                self.mode_v = False
+                self.enc = 'cp-1251'
+
             print 'Greek in index:', self.mode_v
+#            self.tv.connect('row-activated', self.key_press)
 
 
 
@@ -273,8 +272,11 @@ class Connect_ind:
 #        self.process()
 #        self.style_txt()
 
-    def key_press(self, tv, path, column, model):
+    def key_press(self, tv, path, column):
         """Callback for Index"""
+        print 'current mode_v', self.mode_v
+
+        model = tv.get_model()
 
         # expand paths that are not expanded,
         # collaps expanded (which are in exp_lines = expanded lines)
@@ -303,25 +305,32 @@ class Connect_ind:
                     break
 
             dir_out.reverse()
-            f_path_list = [self.lib_path, '/']
+
+            if self.mode_v:
+                lib_p = self.config.get('LibraryPaths', 'gr_path')
+            else:
+                lib_p = self.config.get('LibraryPaths', 'sl_path')
+
+            f_path_list = [lib_p, '/']
             f_path_list.extend(dir_out)
             f_path_list.append(f_name)
             f_path = ''.join(f_path_list)
 
             print 'run', f_path
+            print 'enc', self.enc
             fp = codecs.open(f_path, "rb", self.enc)
 
             f_lines = fp.readlines()
             fp.close()
             
-            if self.mode_v == 'True':
+            if self.mode_v:
                 xmldoc = minidom.parseString(f_lines[1] + '</document>')
                 xml_nodes = xmldoc.getElementsByTagName('document')
                 for item in xml_nodes:
                     t_name = item.getAttribute('title') 
                     break
 
-            elif self.mode_v == 'False':
+            else:
             # aweful crutch: delete service tags in the beginning of the file
             # DO Something!
                 if self.del_header:
