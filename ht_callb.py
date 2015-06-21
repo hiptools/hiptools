@@ -102,7 +102,7 @@ class Connect_ind:
             print 'Greek in search:', self.mode_s
 
         elif widget == self.gr_switch2:
-            if self.mode_v:
+            if self.mode_v == 'True':
                 self.gr_switch2.set_label("Слав.")
 
                 self.tv.remove_column(self.column_sl1)
@@ -114,7 +114,7 @@ class Connect_ind:
 
                 self.mode_v = False
 
-            else:
+            elif self.mode_v == 'False':
                 self.mode_v = True
                 self.gr_switch2.set_label("Греч.")
 
