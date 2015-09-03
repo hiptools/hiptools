@@ -730,8 +730,10 @@ if __name__ == '__main__':
     elif options.slav:
         face = Manager(False)
     else:
-        print 'no parameters given, exiting'
-        sys.exit(0)
+#        print 'no parameters given, exiting'
+#        sys.exit(0)
+        face = Manager(False)
+
 
     main()
 

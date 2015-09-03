@@ -150,8 +150,8 @@ class Connect_ind:
 
         # apply to widgets of main programm window:
         # combo-box slav:
-        for x in range(len(conn_s.combo_lst)):
-            if self.config.get('SearchOptions', 'default_search_group') == conn_s.combo_lst[x]:
+        for x in range(len(self.combo_lst)):
+            if self.config.get('SearchOptions', 'default_search_group') == self.combo_lst[x]:
                 self.combo.set_active(x)
         # checkboxes:
         if self.config.get('SearchOptions', 'diacritics_on') == 'True':
@@ -198,9 +198,9 @@ class Connect_ind:
             fp.close()
 
             txt1 = self.wrapper(''.join(lines))
-            pr_i.get_txt(txt1, False)
-            pr_i.proc(txt1)
-            pr_i.style_txt()
+            self.get_txt(txt1, False)
+            self.proc(txt1)
+            self.style_txt()
 
         elif response == gtk.RESPONSE_CANCEL:
             print 'Closed, no files selected'
@@ -274,7 +274,7 @@ class Connect_ind:
 
     def key_press(self, tv, path, column):
         """Callback for Index"""
-        print 'current mode_v', self.mode_v
+#        print 'current mode_v', self.mode_v
 
         model = tv.get_model()
 
@@ -317,7 +317,7 @@ class Connect_ind:
             f_path = ''.join(f_path_list)
 
             print 'run', f_path
-            print 'enc', self.enc
+#            print 'enc', self.enc
             fp = codecs.open(f_path, "rb", self.enc)
 
             f_lines = fp.readlines()
@@ -777,10 +777,12 @@ class Process:
         page = self.note.get_nth_page(cur_pg)
         self.textview = page.get_children()[0]
 
-
+        # current page's content is not search res treeview, but regular textview
         if not isinstance(self.textview, gtk.TreeView):
             self.textbuffer = self.textview.get_buffer()
             self.textview.connect('move-cursor', self.scrolled)
+
+            chars = self.textbuffer.get_char_count()
         else:
             chars = 1
 #        if name: 
@@ -788,7 +790,6 @@ class Process:
 
         # call from index or search, not reload (ctl-d or ctl-r)
         if new_txt:
-            print 'new_txt'
             # Chars - a trigger. If we got TreeView as a child, 
             # or if there's some text in TextView, we switch chars = 1 and make a new tab
 
@@ -796,7 +797,6 @@ class Process:
                 chars = self.textbuffer.get_char_count()
 
             # Some text in old tab. Have to draw new.
-#            if chars:
             else:
                 # style for search (green tag...)
                 if stl:

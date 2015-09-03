@@ -331,19 +331,12 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
         if self.mode_v:
             self.lib_path = self.config.get('LibraryPaths', 'gr_path')
             self.enc = 'utf-8'
-#            model = self.model_gr
             self.gr_switch2.set_label("Слав.")
-#            self.book_lst = 
             self.model_gr = self.putdir(self.model_gr, booklst.listbooks(self.lib_path))
             self.model_sl = self.putdir(self.model_sl, booklst.listbooks(self.config.get('LibraryPaths', 'sl_path')))
-#            self.putdir(self.model_gr, self.book_lst)
-            print 'mode', self.mode_v
             self.tv.append_column(self.column_gr1)
             self.tv.append_column(self.column_gr2)
             self.tv.set_model(self.model_gr)
-
-#        front.note.connect('key_press_event', self.note_cb)
-       
 
         else:
             self.lib_path = self.config.get('LibraryPaths', 'sl_path')
@@ -352,10 +345,6 @@ class Mug(Connect_ind, Connect_sear, Process, Process_s):
             self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
             self.model_sl = self.putdir(self.model_sl, booklst.listbooks(self.lib_path))
             self.model_gr = self.putdir(self.model_gr, booklst.listbooks(self.config.get('LibraryPaths', 'gr_path')))
-            #self.putdir(self.model_sl, self.book_lst)
-#            model = self.model_sl
-            print 'mode', self.mode_v
-#            print 'uuu'
 
             self.tv.append_column(self.column_sl1)
             self.tv.append_column(self.column_sl2)

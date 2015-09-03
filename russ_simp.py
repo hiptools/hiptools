@@ -231,3 +231,4 @@ if __name__ == '__main__':
 # make option for including|excluding comments in hip
 # fix parser from russify to work with tags like %< @{ etc. Otherwise "%<Гласъ а~%> doesn't work
 # знак вопроса пофикси!
+# богоотеческий - fix
