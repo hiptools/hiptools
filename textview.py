@@ -59,14 +59,59 @@ class Show_text:
         if __name__ == '__main__':
             self.window3.connect('destroy', destroy_cb)
 
+        # main box
         box1 = gtk.VBox(False, 0)
         self.window3.add(box1)
         box1.show()
 
+#        hbox1 =  gtk.HBox(False, 0)
+#        hbox1.set_border_width(3)
+
+#        box1.pack_start(hbox1, True, True, 0)
+#        hbox1.show()
+
+        self.panes = gtk.HPaned()
+
+#        tree_box1 = gtk.VBox(False, 0)
+#        tree_box1.set_border_width(3)
+#        tree_box1.show()
+
         box2 = gtk.VBox(False, 3)
         box2.set_border_width(3)
-        box1.pack_start(box2, True, True, 0)
         box2.show()
+
+#        hbox1.pack_start(tree_box1, False, False, 1)
+#        hbox1.pack_start(box2, True, True, 1)
+        
+#        tree_box1.set_size_request(200, 400)
+
+        swt = gtk.ScrolledWindow()
+        swt.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.model = gtk.TreeStore(str, str)
+        self.tv = gtk.TreeView(self.model)
+        self.selection = self.tv.get_selection()
+        self.tv.connect('row-activated', self.tree_cb)
+
+        swt.add(self.tv)
+
+#        self.label = gtk.Label() 
+        
+        cell1 = gtk.CellRendererText()
+        cell2 = gtk.CellRendererText()
+        self.column = gtk.TreeViewColumn("Содержание", cell1, text=0)
+        self.column2 = gtk.TreeViewColumn("Code", cell2, text=1)
+
+        self.tv.append_column(self.column)
+        self.tv.append_column(self.column2)
+
+        # hide second column 
+        self.column2.set_visible(False)
+        
+        swt.show_all()
+        self.tv.show()
+
+#        tree_box1.pack_start(sw)
+
 
         self.f_select = gtk.FontButton(fontname=None)
         self.f_select.connect('font-set', self.font_cb)
@@ -92,10 +137,20 @@ class Show_text:
         self.entry.connect('key_press_event', self.search_cb)
 
         self.textview.show()
-        box2.pack_start(self.f_select, False, False, 0)
+
+        box1.pack_start(self.f_select, False, False, 0)
+        box1.pack_start(self.panes, True, True, 0)
+        box1.pack_start(self.entry, False, False, 0)
+        self.panes.show()
+ 
+        self.panes.pack1(swt, True, False)
+        self.panes.pack2(sw, True, False)
+        self.panes.set_position(150)
+
+#        box2.pack_start(self.f_select, False, False, 0)
 #        box2.pack_start(self.check1, False, False, 0)
-        box2.pack_start(sw)
-        box2.pack_start(self.entry, False, False, 0)
+#        box2.pack_start(sw)
+#        box2.pack_start(self.entry, False, False, 0)
 
         self.window3.show()
         self.textview.grab_focus()
@@ -145,6 +200,7 @@ class Show_text:
         self.reg_n = re.compile(u'([0-9]+)', re.U)
 
         self.html_del = re.compile(r'<.*?>', re.S)
+
         
     def check_font(self, font):
         '''Change type of conversion according to chosen font-type'''
@@ -156,6 +212,127 @@ class Show_text:
             self.uni = 'uni_csl'
         else:
             self.uni = 'uni'
+
+    def tree_cb(self, tv, path, column):
+        '''Callback for treeview'''
+
+        iter_cur = self.model.get_iter(path)
+#        f_name = self.model.get_value(iter_cur, 1)
+        val = self.model.get_value(iter_cur, 1)
+
+        print val
+
+        cur_mark = self.textbuffer.get_mark(val)
+#        print cur_mark
+        self.textview.scroll_to_mark(cur_mark, 0.0, True, 0.0, 0.0)
+#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+        cur_iter = self.textbuffer.get_iter_at_mark(cur_mark)
+        self.textbuffer.place_cursor(cur_iter)
+
+
+#
+#        # expand or collapse rows
+#        if not path in self.exp_lines: 
+#            tv.expand_row(path, False)
+#            self.exp_lines.append(path)
+#        else:
+#            tv.collapse_row(path)
+#            self.exp_lines.remove(path)
+#
+#        iter_cur = self.model.get_iter(path)
+#
+#        if not self.model.iter_has_child(iter_cur):
+#            dir_name_x = ""
+#            dir_out = []
+#            iter_par_c = iter_cur
+#            f_name = self.model.get_value(iter_cur, 1)
+#
+##            print self.model.get_value(iter_par_c, 1)
+#
+#            while True:
+#                iter_par_p = self.model.iter_parent(iter_par_c)
+#                dir_name_p = self.model.get_value(iter_par_p, 1)
+#                dir_out.append(dir_name_p)
+#                iter_par_c = iter_par_p
+#                if not self.model.iter_parent(iter_par_p):
+#                    break
+#
+#            dir_out.reverse()
+#            f_path_list = [self.lib_path, '/']
+#            f_path_list.extend(dir_out)
+#            f_path_list.append(f_name)
+#            f_path = ''.join(f_path_list)
+#
+#            print 'run', f_path
+##            fp = codecs.open(f_path, "rb", self.enc)
+#
+##            f_lines = fp.readlines()
+##            fp.close()
+#
+#            if self.mode:
+#                t_name = ""
+#                tree = ET.parse(f_path)
+#                root = tree.getroot()
+#                res = []
+#                f_lines = []
+#
+##        for bk in root.iter('book'):
+##        cnt = 0
+#
+##        for child in root:
+##            print child.tag, child.attrib        
+#                for bk in root.iter('span'):
+#
+##        for bk in root.iter('p'):
+#                    for sec in bk.iter('span'):
+#                        tit = sec.find('title')
+#                        if tit: 
+#                            print 'title', tit[0][0].text
+#                            t_name = tit[0][0].text
+#                        else:
+#                            print 'no title'
+#
+#                        print sec.text
+#                        f_lines.append(sec.text)
+#
+#            else:
+#            # aweful crutch: delete service tags in the beginning of the file
+#            # DO Something!
+#                if self.del_header:
+#                    for z in range(10):
+#                        if "<::" in f_lines[z]:
+#                            f_lines.pop(f_lines.index(f_lines[z]))
+#                t_name = self.model.get_value(iter_cur, 0)
+#
+#
+#            # create window to output selected text
+#            txt_win = Show_text(self.mode)
+#            txt_win.path1 = f_path
+#
+#            iter_par = self.model.iter_parent(iter_cur)
+#            title = ' / '.join([self.model.get_value(iter_par, 0), t_name])
+#
+#            txt_win.window3.set_title(title)
+#
+#            # insert text
+#            text_ls = []
+#            txt = ''.join(f_lines)
+#
+#            parts_ls = self.split_parag.split(txt)
+#            for part in parts_ls:
+#                part = self.kill_rn.sub(' ', part)
+#                text_ls.append(part)
+#            txt1 = '\n\n'.join(text_ls)
+#
+#######            import pdb; pdb.set_trace()
+#            if self.mode:
+##                txt = self.html_del.sub('', txt)
+#                txt_win.ins_txt_gr(f_lines)
+#            else:
+#                txt_win.ins_txt_hip(txt1)
+##            txt_win.style_txt()
+#
+#
 
     def font_cb(self, f_button):
         '''Callback to font-select dialog'''
@@ -222,22 +399,37 @@ class Show_text:
 #        self.textview.scroll_to_iter(self.textbuffer.get_start_iter(), 0.0, True, 0.0, 0.0)
         self.textview.place_cursor_onscreen()
 
-    def ins_txt_gr(self, new_txt=None):
+    def ins_txt_gr(self, f_lines=None):
 
-        if new_txt:
-            self.base_txt = new_txt
+#        if new_txt:
+#            self.base_txt = new_txt
         if not self.plain: 
+
             # parse comments. If 2d argument True, wipe comments
 #            conv_txt = brac.repl_brac(self.base_txt, True)[0]
-            conv_txt = brac.repl_brac(self.base_txt, self.brackets_off)[0]
+
+#            conv_txt = brac.repl_brac(self.base_txt, self.brackets_off)[0]
 
             # cleanup all xml tags (untill they are shown correctly)
-            conv_txt = self.html_del.sub('', conv_txt)
+#            conv_txt = self.html_del.sub('', conv_txt)
 
             # convert to slavonic typeset
 #            conv_txt = conv(conv_txt, self.uni)
 #            conv_txt = conv(self.base_txt, self.uni)
-            self.textbuffer.set_text(conv_txt)
+
+#            self.textbuffer.set_text(conv_txt)
+            if f_lines:
+                for i in range(len(f_lines)):
+                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i])
+                    self.textbuffer.create_mark(str(i+1), self.textbuffer.get_end_iter(), True)
+#                self.mark = self.buffer.create_mark("End",self.buffer.get_end_iter(), False )
+                    citer = self.model.append(None)
+                    self.model.set(citer, 0, u'Часть ' + str(i+1))
+                    self.model.set(citer, 1, str(i+1))
+        # fill in treeview menu on the side of textview
+#        cnt = 1
+#        marks_l = []
+#        print self.textbuffer.get_mark('3')
 
             # have to 'remember' last used font.
             if self.gr_font == self.plain_font:
@@ -252,6 +444,12 @@ class Show_text:
         self.tag_table_gr.add(self.my_text_gr)
         self.style_txt_gr()  
         self.f_select.set_font_name(self.gr_font)
+
+#        while self.textbuffer.get_mark(str(cnt)):
+#            marks_l.append(self.textbuffer.get_mark(str(cnt)))
+#            cnt += 1
+#            print 'count', cnt
+
 
            
     def parse_red(self, string):
@@ -426,6 +624,18 @@ class Show_text:
 
             else:
                 print 'no local path found'
+
+        elif keyname == "n" and event.state & gtk.gdk.CONTROL_MASK:
+            # scroll to next mark
+
+#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+#            self.textbuffer.place_cursor(cur_iter)
+            cur_mark = self.textbuffer.get_mark('3')
+            print cur_mark
+            self.textview.scroll_to_mark(cur_mark, 0.0, True, 0.0, 0.0)
+#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+            cur_iter = self.textbuffer.get_iter_at_mark(cur_mark)
+            self.textbuffer.place_cursor(cur_iter)
 
     def search_cb(self, widget, event):
 

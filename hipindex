@@ -8,7 +8,8 @@ import codecs
 import re
 import os
 import sys
-from xml.dom import minidom
+#from xml.dom import minidom
+import xml.etree.ElementTree as ET
 
 import booklst
 #import hip_config
@@ -148,17 +149,36 @@ class Book_lst:
             f_path = ''.join(f_path_list)
 
             print 'run', f_path
-            fp = codecs.open(f_path, "rb", self.enc)
+#            fp = codecs.open(f_path, "rb", self.enc)
 
-            f_lines = fp.readlines()
-            fp.close()
+#            f_lines = fp.readlines()
+#            fp.close()
 
             if self.mode:
-                xmldoc = minidom.parseString(f_lines[1] + '</document>')
-                xml_nodes = xmldoc.getElementsByTagName('document')
-                for item in xml_nodes:
-                    t_name = item.getAttribute('title') 
-                    break
+                t_name = ""
+                tree = ET.parse(f_path)
+                root = tree.getroot()
+                res = []
+                f_lines = []
+
+#        for bk in root.iter('book'):
+#        cnt = 0
+
+#        for child in root:
+#            print child.tag, child.attrib        
+                for bk in root.iter('span'):
+
+#        for bk in root.iter('p'):
+                    for sec in bk.iter('span'):
+                        tit = sec.find('title')
+                        if tit: 
+                            print 'title', tit[0][0].text
+                            t_name = tit[0][0].text
+                        else:
+                            print 'no title'
+
+#                        print sec.text
+                        f_lines.append(sec.text)
 
             else:
             # aweful crutch: delete service tags in the beginning of the file
@@ -191,8 +211,8 @@ class Book_lst:
 
 ######            import pdb; pdb.set_trace()
             if self.mode:
-                txt = self.html_del.sub('', txt)
-                txt_win.ins_txt_gr(txt1)
+#                txt = self.html_del.sub('', txt)
+                txt_win.ins_txt_gr(f_lines)
             else:
                 txt_win.ins_txt_hip(txt1)
 #            txt_win.style_txt()
