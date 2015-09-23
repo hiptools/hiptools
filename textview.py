@@ -421,11 +421,13 @@ class Show_text:
             if f_lines:
                 for i in range(len(f_lines)):
                     self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i])
+#                    self.textbuffer.create_mark(str(i+1), self.textbuffer.get_end_iter(), True)
                     self.textbuffer.create_mark(str(i+1), self.textbuffer.get_end_iter(), True)
 #                self.mark = self.buffer.create_mark("End",self.buffer.get_end_iter(), False )
                     citer = self.model.append(None)
                     self.model.set(citer, 0, u'Часть ' + str(i+1))
-                    self.model.set(citer, 1, str(i+1))
+#                    self.model.set(citer, 1, str(i+1))
+                    self.model.set(citer, 1, str(i))
         # fill in treeview menu on the side of textview
 #        cnt = 1
 #        marks_l = []

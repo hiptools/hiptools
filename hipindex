@@ -159,23 +159,32 @@ class Book_lst:
                 tree = ET.parse(f_path)
                 root = tree.getroot()
                 res = []
+                # put header first in the list of text blocks
+#                f_lines = [root.find('header').text,]
                 f_lines = []
+                if root.find('header'):
+                    f_lines.append(root.find('header').text)
 
 #        for bk in root.iter('book'):
 #        cnt = 0
 
-#        for child in root:
-#            print child.tag, child.attrib        
+#                for child in root:
+#                    print child.tag, child.attrib        
+                for att in root.attrib:
+                    if att == 'title':
+                        t_name = root.attrib['title']
+#                if root.attrib['title']:
+
                 for bk in root.iter('span'):
 
 #        for bk in root.iter('p'):
                     for sec in bk.iter('span'):
-                        tit = sec.find('title')
-                        if tit: 
-                            print 'title', tit[0][0].text
-                            t_name = tit[0][0].text
-                        else:
-                            print 'no title'
+#                        tit = sec.find('title')
+#                        if tit: 
+#                            print 'title', tit[0][0].text
+#                            t_name = tit[0][0].text
+#                        else:
+#                            print 'no title'
 
 #                        print sec.text
                         f_lines.append(sec.text)
