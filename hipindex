@@ -162,8 +162,10 @@ class Book_lst:
                 # put header first in the list of text blocks
 #                f_lines = [root.find('header').text,]
                 f_lines = []
-                if root.find('header'):
-                    f_lines.append(root.find('header').text)
+                head = root.find('header')
+                # can't check 'head' the usual way - parser swears
+                if ET.iselement(head):
+                    f_lines.append(head.text)
 
 #        for bk in root.iter('book'):
 #        cnt = 0

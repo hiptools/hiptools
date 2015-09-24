@@ -10,18 +10,20 @@ import os
 import sys
 import chardet
 
+import xml.etree.ElementTree as ET
+
 # formerly - ucs8conv, renamed
 import hipconv
 import ConfigParser
 # comment parser
 import hipcomment
-#import write_utf
+import write_utf
 import slovenize
 import get_par
 
 conv = hipconv.Repl()
 brac = hipcomment.Brackets()
-#Writer = write_utf.write_gen()
+Writer = write_utf.write_gen()
 slov = slovenize.Mn()
 
 def destroy_cb(widget):
@@ -39,6 +41,8 @@ class Show_text:
         self.mode = Mode
 
         self.plain = True
+
+        self.bmarks = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'bookmarks')
 
         # path in greek_lib (or hip_lib) to find greek/slavonic parallel
         # the value is appointed in grindex (gr_search) to an existing gr_view.Text istance
@@ -80,6 +84,12 @@ class Show_text:
         box2.set_border_width(3)
         box2.show()
 
+        box_combo = gtk.HBox(False, 3)
+        box_combo.set_border_width(3)
+        box_combo.show()
+        box1.pack_start(box_combo, False, False, 0)
+        
+
 #        hbox1.pack_start(tree_box1, False, False, 1)
 #        hbox1.pack_start(box2, True, True, 1)
         
@@ -116,6 +126,9 @@ class Show_text:
         self.f_select = gtk.FontButton(fontname=None)
         self.f_select.connect('font-set', self.font_cb)
 
+        self.combo = gtk.combo_box_new_text()
+        self.combo.connect("changed", self.choose)       
+
 #        self.check1 = gtk.CheckButton("вкл. юникод")
 #        self.check1.connect("toggled", self.uni_out)
 
@@ -132,13 +145,27 @@ class Show_text:
         sw.add(self.textview)
         sw.show()
         self.f_select.show()
+        self.combo.show()
+
+        try:
+            fp = codecs.open(self.bmarks, "rb", "utf-8")
+            lines = fp.readlines()
+            fp.close()
+            for ln in lines:
+                self.combo.append_text(ln)
+        except IOError:
+            print 'can not open bookmarks file at', self.bmarks
+
+
+
 #        self.check1.show()
         self.entry.show()
         self.entry.connect('key_press_event', self.search_cb)
 
         self.textview.show()
 
-        box1.pack_start(self.f_select, False, False, 0)
+        box_combo.pack_start(self.f_select, False, False, 0)
+        box_combo.pack_start(self.combo, True, True, 0)
         box1.pack_start(self.panes, True, True, 0)
         box1.pack_start(self.entry, False, False, 0)
         self.panes.show()
@@ -213,8 +240,20 @@ class Show_text:
         else:
             self.uni = 'uni'
 
+    def choose(self, widget):
+        '''callback for combo box (bookmarks)'''
+
+        get_name = widget.get_active_text().strip()
+        bookm = get_name.split()[0]
+        print bookm
+        txt_this = self.xml_open(bookm)
+
+        self.path1 = bookm
+        self.ins_txt_gr(txt_this)
+        print len(txt_this)
+
     def tree_cb(self, tv, path, column):
-        '''Callback for treeview'''
+        '''Callback for treeview, the "Contents" '''
 
         iter_cur = self.model.get_iter(path)
 #        f_name = self.model.get_value(iter_cur, 1)
@@ -420,18 +459,19 @@ class Show_text:
 #            self.textbuffer.set_text(conv_txt)
             if f_lines:
                 for i in range(len(f_lines)):
+                    # insert line (paragraph) into TextView buffer 
                     self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i])
-#                    self.textbuffer.create_mark(str(i+1), self.textbuffer.get_end_iter(), True)
-                    self.textbuffer.create_mark(str(i+1), self.textbuffer.get_end_iter(), True)
+
+                    # set mark at the end of the paragraph
+                    if not i == len(f_lines) - 1:
+                        self.textbuffer.create_mark(str(i), self.textbuffer.get_end_iter(), True)
 #                self.mark = self.buffer.create_mark("End",self.buffer.get_end_iter(), False )
-                    citer = self.model.append(None)
-                    self.model.set(citer, 0, u'Часть ' + str(i+1))
+
+                        # fill in TreeView (side panel with 'Contents' of the page)
+                        citer = self.model.append(None)
+                        self.model.set(citer, 0, u'Часть ' + str(i+1))
 #                    self.model.set(citer, 1, str(i+1))
-                    self.model.set(citer, 1, str(i))
-        # fill in treeview menu on the side of textview
-#        cnt = 1
-#        marks_l = []
-#        print self.textbuffer.get_mark('3')
+                        self.model.set(citer, 1, str(i))
 
             # have to 'remember' last used font.
             if self.gr_font == self.plain_font:
@@ -627,17 +667,39 @@ class Show_text:
             else:
                 print 'no local path found'
 
-        elif keyname == "n" and event.state & gtk.gdk.CONTROL_MASK:
-            # scroll to next mark
+        elif keyname == "b" and event.state & gtk.gdk.CONTROL_MASK:
+            # add a bookmark
+            book_name = ""
+            temp_iter = self.textview.get_iter_at_location(0, self.textview.get_visible_rect()[1])
+            # current position in text
+            self.pos = temp_iter.get_line()
+            print 'positon', self.pos
 
-#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+#            tree = ET.parse(f_path)
+#            root = tree.getroot()
+#            # get filename from <document name> attribute
+#            # Be careful! in some files there's no such attrib!
+#            for att in root.attrib:
+#                if att == 'name':
+#                    book_name = ''.join([root.attrib['name'], '.xml'])
+#                    print book_name
+#            if not book_name:
+#                print "didn't find any book name in <document> tag"
+#
+            Writer.write_line(self.bmarks, self.path1 + ' ' + str(self.pos) + '\n', 'a')
+#            mord.combo.append_text(wd_path)
+
+#        elif keyname == "n" and event.state & gtk.gdk.CONTROL_MASK:
+#            # scroll to next mark
+#
+##            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+##            self.textbuffer.place_cursor(cur_iter)
+#            cur_mark = self.textbuffer.get_mark('3')
+#            print cur_mark
+#            self.textview.scroll_to_mark(cur_mark, 0.0, True, 0.0, 0.0)
+##            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
+#            cur_iter = self.textbuffer.get_iter_at_mark(cur_mark)
 #            self.textbuffer.place_cursor(cur_iter)
-            cur_mark = self.textbuffer.get_mark('3')
-            print cur_mark
-            self.textview.scroll_to_mark(cur_mark, 0.0, True, 0.0, 0.0)
-#            cur_iter = self.textbuffer.get_iter_at_line(self.pos)
-            cur_iter = self.textbuffer.get_iter_at_mark(cur_mark)
-            self.textbuffer.place_cursor(cur_iter)
 
     def search_cb(self, widget, event):
 
@@ -747,45 +809,93 @@ class Show_text:
 
         return txt1
 
+    def xml_open(self, *args):
+        t_name = ""
+        tree = ET.parse(args[0])
+        root = tree.getroot()
+#        res = []
+        f_lines = []
+
+        head = root.find('header')
+        # can't check 'head' the usual way - parser swears
+        if ET.iselement(head):
+            f_lines.append(head.text)
+
+#        for att in root.attrib:
+#            if att == 'title':
+#                t_name = root.attrib['title']
+
+        for bk in root.iter('span'):
+            for sec in bk.iter('span'):
+                f_lines.append(sec.text)
+
+#        return f_lines, root
+        return f_lines
+
+
 
 if __name__ == '__main__':
 
     global enc
     
-    argv = sys.argv
+#    argv = sys.argv
+
+    from optparse import OptionParser
+    usage = "usage: %prog [options] file"
+    parser = OptionParser(usage=usage)
+
+    parser.add_option("-x", "--xml", dest="xml", action="store_true", help="Open as xml")
+#    parser.add_option("-g", "--greek", dest="greek", action="store_true", help="Switch to greek")
+    
+    (options, args) = parser.parse_args()
 
 #    config = hip_config.Service('.hipeditor.config')
 #    config = hip_config.Service('.hiptools.config')
 #    config = ConfigParser.ConfigParser()
-    txt_win = Show_text(False)
 
-    if len(argv) > 1:
-        f_path = argv[1]
+    if args:
 
-        fp = open(f_path)
-        lst = fp.readlines()
-        fp.close()
+        f_path = args[0]
 
-        myslice = ''.join(lst[:10])
-        enc = chardet.detect(myslice)['encoding']
+        if options.xml:
+
+            txt_win = Show_text(True)
+            txt_win.path1 = args[0]
+            f_lines = txt_win.xml_open(args[0])
+            txt_win.ins_txt_gr(f_lines)
+
+        else:
+            txt_win = Show_text(False)
+            fp = open(f_path)
+            lst = fp.readlines()
+            fp.close()
+
+            myslice = ''.join(lst[:10])
+            enc = chardet.detect(myslice)['encoding']
 #        enc = 'cp1251'
 
-        if not enc:
-            enc = 'utf8'
+            if not enc:
+                enc = 'utf8'
 
-        out_doc = []
-        count = 0
+            out_doc = []
+            count = 0
 
-        for line in lst:
-            new_line = line.decode(enc)
-            out_doc.append(new_line)
+            for line in lst:
+                new_line = line.decode(enc)
+                out_doc.append(new_line)
 
 
-        txt = ''.join(out_doc)
+            txt = ''.join(out_doc)
 
-        txt = txt_win.wrapper(txt)
+            txt = txt_win.wrapper(txt)
 
-        txt_win.ins_txt_hip(txt)
+            txt_win.ins_txt_hip(txt)
+
+
+
+    else:
+        print 'no arguments, exiting'
+        sys.exit(0)
 
     def main():
         gtk.main()
