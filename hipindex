@@ -177,10 +177,19 @@ class Book_lst:
                         t_name = root.attrib['title']
 #                if root.attrib['title']:
 
+                # if 0 - do not include tag into left panel (Contents) in textview
+                flag = 0
                 for bk in root.iter('span'):
 
 #        for bk in root.iter('p'):
                     for sec in bk.iter('span'):
+                        for s_att in sec.attrib:
+                            if s_att == 'number':
+                                flag = 1
+                                break
+#                            else:
+#                                flag = 0
+#                        if sec.attrib
 #                        tit = sec.find('title')
 #                        if tit: 
 #                            print 'title', tit[0][0].text
@@ -189,7 +198,7 @@ class Book_lst:
 #                            print 'no title'
 
 #                        print sec.text
-                        f_lines.append(sec.text)
+                        f_lines.append([sec.text, flag])
 
             else:
             # aweful crutch: delete service tags in the beginning of the file
@@ -211,21 +220,21 @@ class Book_lst:
             txt_win.window3.set_title(title)
 
             # insert text
-            text_ls = []
-            txt = ''.join(f_lines)
-
-            parts_ls = self.split_parag.split(txt)
-            for part in parts_ls:
-                part = self.kill_rn.sub(' ', part)
-                text_ls.append(part)
-            txt1 = '\n\n'.join(text_ls)
+#            text_ls = []
+#            txt = ''.join(f_lines)
+#
+#            parts_ls = self.split_parag.split(txt)
+#            for part in parts_ls:
+#                part = self.kill_rn.sub(' ', part)
+#                text_ls.append(part)
+#            txt1 = '\n\n'.join(text_ls)
 
 ######            import pdb; pdb.set_trace()
             if self.mode:
 #                txt = self.html_del.sub('', txt)
                 txt_win.ins_txt_gr(f_lines)
-            else:
-                txt_win.ins_txt_hip(txt1)
+#            else:
+#                txt_win.ins_txt_hip(txt1)
 #            txt_win.style_txt()
 
 def main():

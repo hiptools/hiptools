@@ -244,13 +244,21 @@ class Show_text:
         '''callback for combo box (bookmarks)'''
 
         get_name = widget.get_active_text().strip()
-        bookm = get_name.split()[0]
-        print bookm
+        bookm, num = get_name.split()
+        print bookm, num
         txt_this = self.xml_open(bookm)
 
         self.path1 = bookm
         self.ins_txt_gr(txt_this)
-        print len(txt_this)
+#        print len(txt_this)
+
+        bm_iter = self.textbuffer.get_iter_at_line(int(num))
+#        print 'iter at', bm_iter.get_line()
+        tmp_mk = self.textbuffer.create_mark(None, bm_iter, True)
+
+#        self.textview.scroll_to_iter(bm_iter, 0.0, True, 0.0, 0.0)
+        self.textview.scroll_to_mark(tmp_mk, 0.0, True, 0.0, 0.0)
+        self.textbuffer.place_cursor(bm_iter)
 
     def tree_cb(self, tv, path, column):
         '''Callback for treeview, the "Contents" '''
@@ -458,12 +466,15 @@ class Show_text:
 
 #            self.textbuffer.set_text(conv_txt)
             if f_lines:
+                st, end = self.textbuffer.get_bounds()
+                self.textbuffer.delete(st, end)
                 for i in range(len(f_lines)):
-                    # insert line (paragraph) into TextView buffer 
-                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i])
+                    # insert line (paragraph) into TextView buffer. 
+                    # have to be filter here - only allowed tags get through
+                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i][0])
 
                     # set mark at the end of the paragraph
-                    if not i == len(f_lines) - 1:
+                    if f_lines[i][1] and not i == len(f_lines) - 1:
                         self.textbuffer.create_mark(str(i), self.textbuffer.get_end_iter(), True)
 #                self.mark = self.buffer.create_mark("End",self.buffer.get_end_iter(), False )
 
@@ -675,6 +686,12 @@ class Show_text:
             self.pos = temp_iter.get_line()
             print 'positon', self.pos
 
+            bm_line = self.path1 + ' ' + str(self.pos)
+
+            Writer.write_line(self.bmarks, bm_line + '\n', 'a')
+
+            self.combo.append_text(bm_line)
+
 #            tree = ET.parse(f_path)
 #            root = tree.getroot()
 #            # get filename from <document name> attribute
@@ -686,7 +703,6 @@ class Show_text:
 #            if not book_name:
 #                print "didn't find any book name in <document> tag"
 #
-            Writer.write_line(self.bmarks, self.path1 + ' ' + str(self.pos) + '\n', 'a')
 #            mord.combo.append_text(wd_path)
 
 #        elif keyname == "n" and event.state & gtk.gdk.CONTROL_MASK:
@@ -827,6 +843,13 @@ class Show_text:
 
         for bk in root.iter('span'):
             for sec in bk.iter('span'):
+                for s_att in sec.attrib:
+                    if s_att == 'number':
+                        flag = 1
+                        break
+#                    else:
+#                        flag = 0
+
                 f_lines.append(sec.text)
 
 #        return f_lines, root
@@ -844,7 +867,7 @@ if __name__ == '__main__':
     usage = "usage: %prog [options] file"
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-x", "--xml", dest="xml", action="store_true", help="Open as xml")
+#    parser.add_option("-x", "--xml", dest="xml", action="store_true", help="Open as xml")
 #    parser.add_option("-g", "--greek", dest="greek", action="store_true", help="Switch to greek")
     
     (options, args) = parser.parse_args()
@@ -857,40 +880,40 @@ if __name__ == '__main__':
 
         f_path = args[0]
 
-        if options.xml:
+#        if options.xml:
 
-            txt_win = Show_text(True)
-            txt_win.path1 = args[0]
-            f_lines = txt_win.xml_open(args[0])
-            txt_win.ins_txt_gr(f_lines)
+        txt_win = Show_text(True)
+        txt_win.path1 = args[0]
+        f_lines = txt_win.xml_open(args[0])
+        txt_win.ins_txt_gr(f_lines)
 
-        else:
-            txt_win = Show_text(False)
-            fp = open(f_path)
-            lst = fp.readlines()
-            fp.close()
-
-            myslice = ''.join(lst[:10])
-            enc = chardet.detect(myslice)['encoding']
-#        enc = 'cp1251'
-
-            if not enc:
-                enc = 'utf8'
-
-            out_doc = []
-            count = 0
-
-            for line in lst:
-                new_line = line.decode(enc)
-                out_doc.append(new_line)
-
-
-            txt = ''.join(out_doc)
-
-            txt = txt_win.wrapper(txt)
-
-            txt_win.ins_txt_hip(txt)
-
+#        else:
+#            txt_win = Show_text(False)
+#            fp = open(f_path)
+#            lst = fp.readlines()
+#            fp.close()
+#
+#            myslice = ''.join(lst[:10])
+#            enc = chardet.detect(myslice)['encoding']
+##        enc = 'cp1251'
+#
+#            if not enc:
+#                enc = 'utf8'
+#
+#            out_doc = []
+#            count = 0
+#
+#            for line in lst:
+#                new_line = line.decode(enc)
+#                out_doc.append(new_line)
+#
+#
+#            txt = ''.join(out_doc)
+#
+#            txt = txt_win.wrapper(txt)
+#
+#            txt_win.ins_txt_hip(txt)
+#
 
 
     else:
