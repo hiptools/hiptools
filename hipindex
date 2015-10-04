@@ -183,10 +183,10 @@ class Book_lst:
 
 #        for bk in root.iter('p'):
                     for sec in bk.iter('span'):
-                        for s_att in sec.attrib:
-                            if s_att == 'number':
-                                flag = 1
-                                break
+#                        for s_att in sec.attrib:
+#                            if s_att == 'number':
+#                               flag = 1
+#                               break
 #                            else:
 #                                flag = 0
 #                        if sec.attrib
@@ -198,7 +198,8 @@ class Book_lst:
 #                            print 'no title'
 
 #                        print sec.text
-                        f_lines.append([sec.text, flag])
+#                        f_lines.append([sec.text, flag])
+                        f_lines.append(sec.text)
 
             else:
             # aweful crutch: delete service tags in the beginning of the file

@@ -471,10 +471,12 @@ class Show_text:
                 for i in range(len(f_lines)):
                     # insert line (paragraph) into TextView buffer. 
                     # have to be filter here - only allowed tags get through
-                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i][0])
+#                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i][0])
+                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i])
 
                     # set mark at the end of the paragraph
-                    if f_lines[i][1] and not i == len(f_lines) - 1:
+#                    if f_lines[i][1] and not i == len(f_lines) - 1:
+                    if f_lines[i] and not i == len(f_lines) - 1:
                         self.textbuffer.create_mark(str(i), self.textbuffer.get_end_iter(), True)
 #                self.mark = self.buffer.create_mark("End",self.buffer.get_end_iter(), False )
 
@@ -843,10 +845,10 @@ class Show_text:
 
         for bk in root.iter('span'):
             for sec in bk.iter('span'):
-                for s_att in sec.attrib:
-                    if s_att == 'number':
-                        flag = 1
-                        break
+#                for s_att in sec.attrib:
+#                    if s_att == 'number':
+#                        flag = 1
+#                        break
 #                    else:
 #                        flag = 0
 
