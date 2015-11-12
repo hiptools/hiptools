@@ -452,3 +452,4 @@ greeklib/Penticostarion/Pascha.xml==hiplib/ctr/01paskha.hip
 greek_lib/Penticostarion/Samaritan.xml==hiplib/ctr/13sam.hip
 greeklib/Penticostarion/p77.xml==hiplib/ctr/21troicsubb.hip
 greeklib/Penticostarion/Pentecost.xml==hiplib/ctr/22pentikost.hip
+greeklib/Euchologion/Agiasmos.xml==hiplib/trb/11mosv_vod.hip

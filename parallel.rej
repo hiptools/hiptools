@@ -1,0 +1,7 @@
+--- parallel	2015-10-11 00:43:43.350019747 +0300
++++ parallel	2015-06-01 09:11:51.510002881 +0300
+@@ -452,4 +452,3 @@
+ greek_lib/Penticostarion/Samaritan.xml==hiplib/ctr/13sam.hip
+ greeklib/Penticostarion/p77.xml==hiplib/ctr/21troicsubb.hip
+ greeklib/Penticostarion/Pentecost.xml==hiplib/ctr/22pentikost.hip
+-greeklib/Euchologion/Agiasmos.xml==hiplib/trb/11mosv_vod.hip
