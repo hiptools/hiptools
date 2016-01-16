@@ -15,7 +15,8 @@ class Findaname():
         pass
 
     def searcher(self, find_n):
-        tree = ET.parse('saints.xml')
+        s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'saints.xml')
+        tree = ET.parse(s_path)
         root = tree.getroot()
         res = []
 
@@ -26,20 +27,7 @@ class Findaname():
                         res_path = os.path.join(lib_path, 'min',  d.get('filename').encode('utf8'))
                         res.append([res_path, d.get('date').encode('utf8'), fs.get('name').encode('utf8')])
                          
-#                        print d.get('date').encode('utf8'), fs.get('name').encode('utf8')
-
-#            print bk.tag, bk.attrib
-#            print fs.get('name')
-#                pr = xml.findall('.//child[@id="123"]...')
-
-
-#                for p in bk.iter('start'):
-#                    if p.get('num') == zach:
-#                        chap = p.get('chap')
-#                        ver = p.get('ver')
-#                        res.append((chap, ver))
-
-        # [date, text]
+        # [filename, date, text]
         return res
 
 if __name__ == '__main__':
@@ -59,23 +47,29 @@ if __name__ == '__main__':
 
     (options, args) = parser.parse_args()
 
+    chuck = re.compile(u'\d\d?', re.U)
+
+    def output(res):
+        # recursive func, outputs results, checks input, starts a popup
+        for i in range(len(res)):
+            print i, res[i][1], res[i][2]
+        nm = raw_input('pick number or [q]uit! ')
+        if nm == 'q':
+            sys.exit(1)
+        elif not chuck.match(nm):
+            print 'Use q to quit, numbers to open file'
+            # here's the recursion
+            output(res)
+        else:
+            f_name = ''.join(res[int(nm)])
+            print 'opening file: ', res[int(nm)][0]
+            subprocess.Popen(['textview.py', res[int(nm)][0]])
+
     if args:
         res = al.searcher(args[0].decode('utf8'))
-        if res:
-            for i in range(len(res)):
-                print i, res[i][1], res[i][2]
-        else:
-            print 'no such thing, sorry'
-            sys.exit(1)
+        output(res)
+
     else:
         print 'No args. What\'s to search? Exiting'
         sys.exit(1)
 
-    nm = raw_input('pick number or [q]uit! ')
-    # if 'q' choosen programm quits
-    if nm == 'q':
-        sys.exit(1)
-    
-    f_name = ''.join(res[int(nm)])
-    print 'opening file: ', res[int(nm)][0]
-    subprocess.Popen(['textview.py', res[int(nm)][0]])
