@@ -59,10 +59,13 @@ class Main_face():
         box1 = gtk.VBox(False, 0)
         window.add(box1)
         box1.show()
-        box2 = gtk.VBox(False, 10)
-        box2.set_border_width(10)
+        box2 = gtk.VBox(False, 3)
+        box2.set_border_width(3)
         box1.pack_start(box2, True, True, 0)
         box2.show()
+
+        hbox = gtk.HBox(False, 0)
+        hbox.show()
 
         sw = gtk.ScrolledWindow()
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -73,37 +76,44 @@ class Main_face():
 
         sw.add(self.tv)
 
-        self.label = gtk.Label() 
+        label = gtk.Label() 
+        entry = gtk.Entry()
+        button = gtk.Button('Поиск')
         
         cell1 = gtk.CellRendererText()
         cell2 = gtk.CellRendererText()
-        self.column = gtk.TreeViewColumn("Название книги", cell1, text=0)
-        self.column2 = gtk.TreeViewColumn("Code", cell2, text=1)
+        self.column = gtk.TreeViewColumn("Дата", cell1, text=0)
+        self.column2 = gtk.TreeViewColumn("Память святого", cell2, text=1)
 
         self.tv.append_column(self.column)
         self.tv.append_column(self.column2)
 
         # hide second column 
-        self.column2.set_visible(False)
+#        self.column2.set_visible(False)
         
         sw.show_all()
         self.tv.show()
-        box2.pack_start(self.label, False, False, 0)
+        box2.pack_start(hbox, False, False, 0)
+        hbox.pack_start(entry, True, False, 10)
+        hbox.pack_end(button, False, False, 0)
+        box2.pack_start(label, False, False, 0)
         box2.pack_start(sw)
 
-        self.label.show()
+        label.show()
+        entry.show()
 
         window.show()
 
 
-#        entry.connect('activate', sr.entry_cb)
+        entry.connect('activate', sr.entry_cb)
 
-
+def main():
+    gtk.main()
+    return 0
 
 if __name__ == '__main__':
 
     sr = Findaname()
-    face = Main_face()
 
     config = ConfigParser.ConfigParser()
     config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
@@ -114,37 +124,42 @@ if __name__ == '__main__':
     usage = "usage: %prog name"
     parser = OptionParser(usage=usage)
 
-#    parser.add_option("-d", "--debug", dest="debug", action="store_true", help="Create new base")
+    parser.add_option("-c", "--cli", dest="cli", action="store_true", help="use CLI indtead of GUI")
 
     (options, args) = parser.parse_args()
 
-    chuck = re.compile(u'\d\d?', re.U)
-
-    def output(res):
-        # recursive func, outputs results, checks input, starts a popup
-        for i in range(len(res)):
-            print i, res[i][1], res[i][2]
-        nm = raw_input('pick number or [q]uit! ')
-        if nm == 'q':
-            sys.exit(1)
-        elif not chuck.match(nm):
-            print 'Use q to quit, numbers to open file'
-            # here's the recursion
-            output(res)
-        else:
-            f_name = ''.join(res[int(nm)])
-            print 'opening file: ', res[int(nm)][0]
-            subprocess.Popen(['textview.py', res[int(nm)][0]])
-
-    if args:
-        res = sr.searcher(args[0].decode('utf8'))
-        if res:
-            output(res)
-        else:
-            print 'Nothing is found, sorry'
-            sys.exit(1)
+    if not options.cli:
+        face = Main_face()
+        main()
 
     else:
-        print 'No args. What\'s to search? Exiting'
-        sys.exit(1)
+        chuck = re.compile(u'\d\d?', re.U)
+
+        def output(res):
+            # recursive func, outputs results, checks input, starts a popup
+            for i in range(len(res)):
+                print i, res[i][1], res[i][2]
+            nm = raw_input('pick number or [q]uit! ')
+            if nm == 'q':
+                sys.exit(1)
+            elif not chuck.match(nm):
+                print 'Use q to quit, numbers to open file'
+                # here's the recursion
+                output(res)
+            else:
+                f_name = ''.join(res[int(nm)])
+                print 'opening file: ', res[int(nm)][0]
+                subprocess.Popen(['textview.py', res[int(nm)][0]])
+
+        if args:
+            res = sr.searcher(args[0].decode('utf8'))
+            if res:
+                output(res)
+            else:
+                print 'Nothing is found, sorry'
+                sys.exit(1)
+
+        else:
+            print 'No args. What\'s to search? Exiting'
+            sys.exit(1)
 
