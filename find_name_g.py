@@ -13,12 +13,16 @@ import xml.etree.ElementTree as ET
 import subprocess
 
 import ConfigParser
+from textview import Show_text
 
 class Findaname():
     '''Finds names of the saints and other feasts and corresponding service texts in hip library.
      All names searched should be in Genetive case'''
     def __init__(self):
-        pass
+        self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
+        self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
+        self.html_del = re.compile(r'<.*?>', re.S)
+
 
     def searcher(self, find_n):
         s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'saints.xml')
@@ -38,6 +42,75 @@ class Findaname():
 
     def entry_cb(self, ent):
         search_w = ent.get_text()
+        print search_w
+
+        res = self.searcher(search_w)
+        for name in res:
+            print name[1], name[2]
+        self.ins(res)
+
+    def ins(self, res):
+        
+        for i in res:
+            iter = face.model.append()
+            face.model.set(iter, 0, i[0])
+            face.model.set(iter, 1, i[1])
+            face.model.set(iter, 2, i[2])
+#            path_s_u = face.path2name(i[0]).decode('utf8')[:40]
+#            face.model.set(iter, 3, path_s_u)
+#            self.model.set(iter, 3, '')
+#            self.model.set(iter, 3, path2name(i[0]))
+
+
+    def on_click(self, widget, iter, path):
+        ''' callback, row in TreeView clicked '''
+
+        selection = widget.get_selection()
+        model, path = selection.get_selected_rows()
+        # get iter in Viewer (found entries)
+        iter_v = model.get_iter(path[0])
+        file_path = model.get_value(iter_v, 0) 
+        title = model.get_value(iter_v, 1) 
+#        print file_path
+
+        try:
+#            if face.mode:
+#                fp = codecs.open(file_path, "rb", "utf8")
+#            else:
+            fp = codecs.open(file_path, "rb", "cp1251")
+            f_lines = fp.readlines()
+            fp.close()
+        except IOError:
+            print 'no such file found'
+
+
+        # create window to output selected text
+        txt_win = Show_text(False)
+        txt_win.path1 = file_path
+        txt_win.window3.set_title(title)
+
+        text_ls = []
+        txt = ''.join(f_lines)
+
+        parts_ls = self.split_parag.split(txt)
+        for part in parts_ls:
+            part = self.kill_rn.sub(' ', part)
+            text_ls.append(part)
+        txt1 = '\n\n'.join(text_ls)
+
+        txt_win.ins_txt_hip(txt1)
+
+
+#        txt_win.mode = face.mode
+#
+#        txt_win.window3.set_title(face.path2name(file_path))
+#
+#        if face.mode:
+#            txt_win.ins_txt_gr(txt_ins)
+#        else:
+#            txt_win.ins_txt_hip(txt_ins)
+
+
 
 def destroy_cb(widget):
     gtk.main_quit()
@@ -69,10 +142,13 @@ class Main_face():
 
         sw = gtk.ScrolledWindow()
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.model = gtk.TreeStore(str, str)
+        self.model = gtk.ListStore(str, str, str, str)
         self.tv = gtk.TreeView(self.model)
         self.selection = self.tv.get_selection()
-#        self.tv.connect('row-activated', self.key_press)
+        self.tv.connect('row-activated', sr.on_click)
+
+        self.modelfilter = self.model.filter_new()
+        self.tv.set_model(self.modelfilter)
 
         sw.add(self.tv)
 
@@ -82,11 +158,13 @@ class Main_face():
         
         cell1 = gtk.CellRendererText()
         cell2 = gtk.CellRendererText()
-        self.column = gtk.TreeViewColumn("Дата", cell1, text=0)
-        self.column2 = gtk.TreeViewColumn("Память святого", cell2, text=1)
-
+        cell1.set_property('font', 'FreeSans 12')
+        cell2.set_property('font', 'FreeSans 12')
+        self.column = gtk.TreeViewColumn("Дата", cell1, text=1)
+        self.column2 = gtk.TreeViewColumn("Память святого", cell2, text=2)
         self.tv.append_column(self.column)
         self.tv.append_column(self.column2)
+#        self.tv.set_search_column(2)
 
         # hide second column 
 #        self.column2.set_visible(False)
@@ -94,16 +172,16 @@ class Main_face():
         sw.show_all()
         self.tv.show()
         box2.pack_start(hbox, False, False, 0)
-        hbox.pack_start(entry, True, False, 10)
-        hbox.pack_end(button, False, False, 0)
+        hbox.pack_start(entry, True, True, 1)
+        hbox.pack_end(button, False, False, 1)
         box2.pack_start(label, False, False, 0)
         box2.pack_start(sw)
 
         label.show()
         entry.show()
+        button.show()
 
         window.show()
-
 
         entry.connect('activate', sr.entry_cb)
 
