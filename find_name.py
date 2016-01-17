@@ -11,6 +11,8 @@ import subprocess
 import ConfigParser
 
 class Findaname():
+    '''Finds names of the saints and other feasts and corresponding service texts in hip library.
+     All names searched should be in Genetive case'''
     def __init__(self):
         pass
 
@@ -40,7 +42,7 @@ if __name__ == '__main__':
     lib_path = config.get('LibraryPaths', 'sl_path')
 
     from optparse import OptionParser
-    usage = "usage: %prog [options] dir"
+    usage = "usage: %prog name"
     parser = OptionParser(usage=usage)
 
 #    parser.add_option("-d", "--debug", dest="debug", action="store_true", help="Create new base")
@@ -67,7 +69,11 @@ if __name__ == '__main__':
 
     if args:
         res = al.searcher(args[0].decode('utf8'))
-        output(res)
+        if res:
+            output(res)
+        else:
+            print 'Nothing is found, sorry'
+            sys.exit(1)
 
     else:
         print 'No args. What\'s to search? Exiting'
