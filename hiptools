@@ -1,0 +1,267 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
+import pygtk
+pygtk.require('2.0')
+import gtk
+import codecs
+import re
+import os
+import sys
+import unicodedata
+from xml.dom import minidom
+
+import booklst
+#import hip_config
+import ConfigParser
+from textview import Show_text
+
+import russ_simp
+
+# russify text in Viewer
+russ = russ_simp.Mn(True, True, True)
+
+def destroy_cb(widget):
+    gtk.main_quit()
+    return False
+
+class Book_lst:
+    '''Programm main window'''
+
+    def __init__(self, mode=True):
+    # Found entries page. 
+        
+        # if True - switched to greek, else - to slavonic
+        self.mode = mode
+
+        # create configurations object
+#        self.config = hip_config.Service('.hiptools.config')
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
+
+        if self.mode:
+#            self.lib_path = os.path.join(self.config.gr_path, 'greek_lib')
+            self.lib_path = self.config.get('LibraryPaths', 'gr_path')
+            self.enc = 'utf-8'
+        else:
+#            self.lib_path = os.path.join(self.config.sl_path, 'hiplib')
+            self.lib_path = self.config.get('LibraryPaths', 'sl_path')
+            self.enc = 'cp1251'
+
+
+        # delete special tags at the beginning of HIP file
+        self.del_header = 1
+        self.exp_lines = []
+        window2 = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window2.set_resizable(True)
+        window2.set_border_width(10)
+        window2.set_size_request(500, 700)
+
+        window2.set_title("Список книг")
+        window2.set_border_width(0)
+        window2.connect("destroy", destroy_cb) 
+
+        box1 = gtk.VBox(False, 0)
+        window2.add(box1)
+        box1.show()
+        box2 = gtk.VBox(False, 10)
+        box3 = gtk.VBox(False, 10)
+        box2.set_border_width(10)
+        box3.set_border_width(10)
+        box1.pack_start(box2, True, True, 0)
+        box1.pack_start(box3, True, True, 0)
+        box2.show()
+        box3.show()
+
+        sw = gtk.ScrolledWindow()
+        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.model = gtk.TreeStore(str, str)
+        self.tv = gtk.TreeView(self.model)
+        self.selection = self.tv.get_selection()
+        self.tv.connect('row-activated', self.key_press)
+
+        sw.add(self.tv)
+
+        self.label = gtk.Label() 
+        
+        cell1 = gtk.CellRendererText()
+        cell2 = gtk.CellRendererText()
+        self.column = gtk.TreeViewColumn("Название книги", cell1, text=0)
+        self.column2 = gtk.TreeViewColumn("Code", cell2, text=1)
+
+        self.tv.append_column(self.column)
+        self.tv.append_column(self.column2)
+
+        # hide second column 
+        self.column2.set_visible(False)
+        
+        sw.show_all()
+        self.tv.show()
+
+#        self.vbox = gtk.VBox(False, 0)
+        hbox = gtk.HBox(False, 0)
+        entry = gtk.Entry()
+        combo = gtk.combo_box_new_text()
+        toggle1 = gtk.CheckButton("Вкл. ударения")
+        toggle2 = gtk.CheckButton("Учит. регистр")
+        button = gtk.Button('Search')
+        pr_bar = gtk.ProgressBar()
+
+        box2.pack_start(entry, False, False, 0)
+        box2.pack_start(combo, False, False, 0)
+#        self.vbox.pack_start(self.button, True, False, 10)
+        hbox.pack_start(toggle1, False, False, 10)
+        hbox.pack_start(toggle2, False, False, 10)
+        hbox.pack_end(button, False, False, 10)
+        box2.pack_start(hbox, True, False, 0)
+        box2.pack_start(pr_bar, False, False, 0)
+#        for i in self.combo_lst: 
+#            self.combo.append_text(i.strip())
+
+        entry.show()
+        combo.show()
+        toggle1.show()
+        toggle2.show()
+        button.show()
+        hbox.show()
+        pr_bar.show()
+#        window.show()
+
+
+
+
+        box2.pack_start(self.label, False, False, 0)
+        box2.pack_start(sw)
+
+        self.label.show()
+
+        window2.show()
+
+        self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
+
+        self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
+        self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
+        self.html_del = re.compile(r'<.*?>', re.S)
+
+        def putdir(obj, parent=None):
+            """
+            Рекурсивная функция дла добавления элементов в дерево
+            """
+            for book in obj:
+                iter = self.model.append(parent)
+                self.model.set(iter, 0, book[1])
+                self.model.set(iter, 1, book[0])
+                if book[2]: # subdir
+                    putdir(book[2], iter)
+        putdir(self.book_lst)
+
+    def key_press(self, tv, path, column):
+        """Callback for Viewer"""
+
+        # expand or collapse rows
+        if not path in self.exp_lines: 
+            tv.expand_row(path, False)
+            self.exp_lines.append(path)
+        else:
+            tv.collapse_row(path)
+            self.exp_lines.remove(path)
+
+        iter_cur = self.model.get_iter(path)
+
+        if not self.model.iter_has_child(iter_cur):
+            dir_name_x = ""
+            dir_out = []
+            iter_par_c = iter_cur
+            f_name = self.model.get_value(iter_cur, 1)
+
+#            print self.model.get_value(iter_par_c, 1)
+
+            while True:
+                iter_par_p = self.model.iter_parent(iter_par_c)
+                dir_name_p = self.model.get_value(iter_par_p, 1)
+                dir_out.append(dir_name_p)
+                iter_par_c = iter_par_p
+                if not self.model.iter_parent(iter_par_p):
+                    break
+
+            dir_out.reverse()
+            f_path_list = [self.lib_path, '/']
+            f_path_list.extend(dir_out)
+            f_path_list.append(f_name)
+            f_path = ''.join(f_path_list)
+
+            print 'run', f_path
+            fp = codecs.open(f_path, "rb", self.enc)
+
+            f_lines = fp.readlines()
+            fp.close()
+
+            if self.mode:
+                xmldoc = minidom.parseString(f_lines[1] + '</document>')
+                xml_nodes = xmldoc.getElementsByTagName('document')
+                for item in xml_nodes:
+                    t_name = item.getAttribute('title') 
+                    break
+
+            else:
+            # aweful crutch: delete service tags in the beginning of the file
+            # DO Something!
+                if self.del_header:
+                    for z in range(10):
+                        if "<::" in f_lines[z]:
+                            f_lines.pop(f_lines.index(f_lines[z]))
+                t_name = self.model.get_value(iter_cur, 0)
+
+
+            # create window to output selected text
+            txt_win = Show_text(self.mode)
+            txt_win.path1 = f_path
+
+            iter_par = self.model.iter_parent(iter_cur)
+            title = ' / '.join([self.model.get_value(iter_par, 0), t_name])
+
+            txt_win.window3.set_title(title)
+
+            # insert text
+            text_ls = []
+            txt = ''.join(f_lines)
+
+            parts_ls = self.split_parag.split(txt)
+            for part in parts_ls:
+                part = self.kill_rn.sub(' ', part)
+                text_ls.append(part)
+            txt1 = '\n\n'.join(text_ls)
+
+######            import pdb; pdb.set_trace()
+            if self.mode:
+                txt = self.html_del.sub('', txt)
+                txt_win.ins_txt_gr(txt1)
+            else:
+                txt_win.ins_txt_hip(txt1)
+#            txt_win.style_txt()
+
+def main():
+    gtk.main()
+    return 0
+
+if __name__ == '__main__':
+
+    from optparse import OptionParser
+    usage = "usage: %prog [options] dir"
+    parser = OptionParser(usage=usage)
+
+    parser.add_option("-g", "--greek", dest="greek", action="store_true", help="Switch to greek")
+    parser.add_option("-s", "--slav", dest="slav", action="store_true", help="Switch to slavonic")
+    
+    (options, args) = parser.parse_args()
+#    if args:
+    if options.greek:
+        face = Book_lst(True)
+    elif options.slav:
+        face = Book_lst(False)
+    else:
+        print 'no parameters given, exiting'
+        sys.exit(0)
+
+
+    main()
