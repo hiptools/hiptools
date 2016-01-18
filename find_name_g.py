@@ -50,7 +50,7 @@ class Findaname():
         self.ins(res)
 
     def ins(self, res):
-        
+#        face.model.cleanup() 
         for i in res:
             iter = face.model.append()
             face.model.set(iter, 0, i[0])
