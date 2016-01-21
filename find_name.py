@@ -18,14 +18,46 @@ from textview import Show_text
 class Findaname():
     '''Finds names of the saints and other feasts and corresponding service texts in hip library.
      All names searched should be in Genetive case'''
-    def __init__(self):
+    def __init__(self, mode=False):
         self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
         self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
         self.html_del = re.compile(r'<.*?>', re.S)
+        if mode:
+            self.mode = True
+            self.xml_file = 'saints_gr.xml'
+            self.lib_path = os.path.join(config.get('LibraryPaths', 'gr_path'), 'Minologion', 'min_base')
+            self.enc = 'utf-8'
+        else:
+            self.mode = False
+            self.xml_file = 'saints.xml'
+            self.lib_path = os.path.join(config.get('LibraryPaths', 'sl_path'), 'min')
+            self.enc = 'cp1251'
+        print self.lib_path
 
+    def txt_output(self, res):
+        # recursive func, outputs results in text version of the prog, checks input, starts a popup
+
+        for i in range(len(res)):
+            print i, res[i][1], res[i][2]
+
+        nm = raw_input('pick number or [q]uit! ')
+
+        if nm == 'q':
+            sys.exit(1)
+            
+        elif not chuck.match(nm):
+            print 'Use q to quit, numbers to open file'
+            # here's the recursion
+            self.txt_output(res)
+
+        else:
+#            f_name = ''.join(res[int(nm)])
+            print 'opening file: ', res[int(nm)][0]
+            self.opener(res[int(nm)][0], res[int(nm)][2], cli = True)
+#            self.opener(res[int(nm)][0], 'just text')
 
     def searcher(self, find_n):
-        s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'saints.xml')
+        s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', self.xml_file)
         tree = ET.parse(s_path)
         root = tree.getroot()
         res = []
@@ -34,7 +66,7 @@ class Findaname():
             for d in mn.iter('day'):
                 for fs in d.iter('feast'):
                     if find_n in fs.get('name'):
-                        res_path = os.path.join(lib_path, 'min',  d.get('filename').encode('utf8'))
+                        res_path = os.path.join(self.lib_path, d.get('filename').encode('utf8'))
                         res.append([res_path, d.get('date').encode('utf8'), fs.get('name').encode('utf8')])
                          
         # [filename, date, text]
@@ -78,19 +110,18 @@ class Findaname():
         title = model.get_value(iter_v, 1) 
 #        print file_path
 
+        self.opener(file_path, title)
+
+    def opener(self, file_path, title, cli=False):
         try:
-#            if face.mode:
-#                fp = codecs.open(file_path, "rb", "utf8")
-#            else:
-            fp = codecs.open(file_path, "rb", "cp1251")
+            fp = codecs.open(file_path, "rb", self.enc)
             f_lines = fp.readlines()
             fp.close()
         except IOError:
             print 'no such file found'
 
-
-        # create window to output selected text
-        txt_win = Show_text(False)
+            # create window to output selected text
+        txt_win = Show_text(self.mode)
         txt_win.path1 = file_path
         txt_win.window3.set_title(title)
 
@@ -103,28 +134,25 @@ class Findaname():
             text_ls.append(part)
         txt1 = '\n\n'.join(text_ls)
 
-        txt_win.ins_txt_hip(txt1)
+        if self.mode:
+            txt_win.ins_txt_gr(txt1)
+        else:
+            txt_win.ins_txt_hip(txt1)
+
+        if cli:
+            txt_win.window3.connect("destroy", self.destroy_cb) 
+            main()
 
 
-#        txt_win.mode = face.mode
-#
-#        txt_win.window3.set_title(face.path2name(file_path))
-#
-#        if face.mode:
-#            txt_win.ins_txt_gr(txt_ins)
-#        else:
-#            txt_win.ins_txt_hip(txt_ins)
-
-
-
-def destroy_cb(widget):
-    gtk.main_quit()
-    return False
+    def destroy_cb(self, widget):
+        gtk.main_quit()
+        return False
 
 
 class Main_face():
     '''GUI'''
-    def __init__(self):
+    def __init__(self, mode=False):
+
         window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         window.set_resizable(True)
         window.set_border_width(10)
@@ -132,7 +160,7 @@ class Main_face():
 
         window.set_title("Найденные имена")
         window.set_border_width(0)
-        window.connect("destroy", destroy_cb) 
+        window.connect("destroy", sr.destroy_cb) 
 
         box1 = gtk.VBox(False, 0)
         window.add(box1)
@@ -196,48 +224,42 @@ def main():
 
 if __name__ == '__main__':
 
-    sr = Findaname()
 
     config = ConfigParser.ConfigParser()
     config.read(os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'hiptoolsrc'))
 
-    lib_path = config.get('LibraryPaths', 'sl_path')
 
     from optparse import OptionParser
     usage = "usage: %prog name"
     parser = OptionParser(usage=usage)
 
     parser.add_option("-c", "--cli", dest="cli", action="store_true", help="use CLI indtead of GUI")
+    parser.add_option("-g", "--greek", dest="greek", action="store_true", help="Search in greek base instead of slavic")
 
     (options, args) = parser.parse_args()
 
     if not options.cli:
-        face = Main_face()
+        if options.greek:
+            sr = Findaname(True)
+            face = Main_face()
+        else:
+            sr = Findaname(False)
+            face = Main_face()
+
         main()
 
     else:
         chuck = re.compile(u'\d\d?', re.U)
 
-        def output(res):
-            # recursive func, outputs results, checks input, starts a popup
-            for i in range(len(res)):
-                print i, res[i][1], res[i][2]
-            nm = raw_input('pick number or [q]uit! ')
-            if nm == 'q':
-                sys.exit(1)
-            elif not chuck.match(nm):
-                print 'Use q to quit, numbers to open file'
-                # here's the recursion
-                output(res)
-            else:
-                f_name = ''.join(res[int(nm)])
-                print 'opening file: ', res[int(nm)][0]
-                subprocess.Popen(['textview.py', res[int(nm)][0]])
-
         if args:
+            if options.greek:
+                sr = Findaname(True)
+            else:
+                sr = Findaname(False)
+
             res = sr.searcher(args[0].decode('utf8'))
             if res:
-                output(res)
+                sr.txt_output(res)
             else:
                 print 'Nothing is found, sorry'
                 sys.exit(1)
