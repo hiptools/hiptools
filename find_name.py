@@ -35,6 +35,40 @@ class Findaname():
             self.enc = 'cp1251'
         print self.lib_path
 
+        # TODO: make capital letters substitution, otherwise betacode doesnt work
+        # also make a betacode module!
+        if self.mode:
+            self.gr_filter = [['a|', u'\u1fb3'],
+                            ['h|', u'\u1fc3'],
+                            ['w|', u'\u1ff3'],
+#                        ['a|', u'\u'],
+                            ['a', u'\u03b1'],
+                            ['b', u'\u03b2'],
+                            ['g', u'\u03b3'],
+                            ['d', u'\u03b4'],
+                            ['e', u'\u03b5'],
+                            ['z', u'\u03b6'],
+                            ['h', u'\u03b7'],
+                            ['q', u'\u03b8'],
+                            ['i', u'\u03b9'],
+                            ['k', u'\u03ba'],
+                            ['l', u'\u03bb'],
+                            ['m', u'\u03bc'],
+                            ['n', u'\u03bd'],
+                            ['x', u'\u03be'],
+                            ['o', u'\u03bf'],
+                            ['p', u'\u03c0'],
+                            ['r', u'\u03c1'],
+                            ['j', u'\u03c2'],
+                            ['s', u'\u03c3'],
+                            ['t', u'\u03c4'],
+                            ['u', u'\u03c5'],
+                            ['f', u'\u03c6'],
+                            ['c', u'\u03c7'],
+                            ['y', u'\u03c8'],
+#                        ['|', u'\u037a'], # ypogegrammeni
+                            ['w', u'\u03c9']]
+
     def txt_output(self, res):
         # recursive func, outputs results in text version of the prog, checks input, starts a popup
 
@@ -59,6 +93,10 @@ class Findaname():
 
     def searcher(self, find_n):
 
+        for a, b in self.gr_filter:
+            find_n = find_n.replace(a, b)
+        print "this is beta code", find_n
+
         find_n = find_n.decode('utf-8')
         find_n = unicodedata.normalize('NFD', find_n)
         s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', self.xml_file)
@@ -69,7 +107,13 @@ class Findaname():
         for mn in root.iter('month'):
             for d in mn.iter('day'):
                 for fs in d.iter('feast'):
-                    if find_n in fs.get('name'):
+                    s_line = fs.get('name')
+                    # clean all apostrophs (stresses) from searched text
+                    if self.mode:
+                        for a in [u'\u0300', u'\u0342', u'\u0301', u'\u0314', u'\u0313']:
+                            s_line = s_line.replace(a, '')
+
+                    if find_n in s_line:
                         res_path = os.path.join(self.lib_path, d.get('filename').encode('utf8'))
                         res.append([res_path, d.get('date').encode('utf8'), fs.get('name').encode('utf8')])
                          
