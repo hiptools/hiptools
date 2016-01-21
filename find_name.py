@@ -69,6 +69,31 @@ class Findaname():
 #                        ['|', u'\u037a'], # ypogegrammeni
                             ['w', u'\u03c9']]
 
+            self.gr_filt_c = [['A', u'\u0391'],
+                              ['B', u'\u0392'],
+                              ['G', u'\u0393'],
+                              ['D', u'\u0394'],
+                              ['E', u'\u0395'],
+                              ['Z', u'\u0396'],
+                              ['H', u'\u0397'],
+                              ['Q', u'\u0398'],
+                              ['I', u'\u0399'],
+                              ['K', u'\u039a'],
+                              ['L', u'\u039b'],
+                              ['M', u'\u039c'],
+                              ['N', u'\u039d'],
+                              ['X', u'\u039e'],
+                              ['O', u'\u039f'],
+                              ['P', u'\u03a0'],
+                              ['R', u'\u03a1'],
+                              ['S', u'\u03a3'],
+                              ['T', u'\u03a4'],
+                              ['U', u'\u03a5'],
+                              ['F', u'\u03a6'],
+                              ['C', u'\u03a7'],
+                              ['Y', u'\u03a8'],
+                              ['W', u'\u03a9']]
+
     def txt_output(self, res):
         # recursive func, outputs results in text version of the prog, checks input, starts a popup
 
@@ -95,6 +120,9 @@ class Findaname():
 
         for a, b in self.gr_filter:
             find_n = find_n.replace(a, b)
+        for a, b in self.gr_filt_c:
+            find_n = find_n.replace(a, b)
+
         print "this is beta code", find_n
 
         find_n = find_n.decode('utf-8')
