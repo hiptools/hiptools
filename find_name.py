@@ -15,6 +15,9 @@ import unicodedata
 
 import ConfigParser
 from textview import Show_text
+from betacode import Beta
+
+bcode = Beta()
 
 class Findaname():
     '''Finds names of the saints and other feasts and corresponding service texts in hip library.
@@ -118,11 +121,9 @@ class Findaname():
 
     def searcher(self, find_n):
 
-        for a, b in self.gr_filter:
-            find_n = find_n.replace(a, b)
-        for a, b in self.gr_filt_c:
-            find_n = find_n.replace(a, b)
-
+        find_n = bcode.convert_all(find_n)
+#        find_n = bcode.convert_s(find_n)
+#       find_n = bcode.convert_b(find_n)
         print "this is beta code", find_n
 
         find_n = find_n.decode('utf-8')

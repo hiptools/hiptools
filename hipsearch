@@ -23,7 +23,9 @@ conv = hipconv.Repl()
 brac = hipcomment.Brackets()
 # russify text in Viewer
 russ = russ_simp.Mn(True, True, True)
+from betacode import Beta
 
+bcode = Beta()
 
 def destroy_cb(widget):
     gtk.main_quit()
@@ -367,37 +369,6 @@ class Manager:
         if self.mode:
             # greek mode
         
-            self.gr_filter = [['a|', u'\u1fb3'],
-                            ['h|', u'\u1fc3'],
-                            ['w|', u'\u1ff3'],
-#                        ['a|', u'\u'],
-                            ['a', u'\u03b1'],
-                            ['b', u'\u03b2'],
-                            ['g', u'\u03b3'],
-                            ['d', u'\u03b4'],
-                            ['e', u'\u03b5'],
-                            ['z', u'\u03b6'],
-                            ['h', u'\u03b7'],
-                            ['q', u'\u03b8'],
-                            ['i', u'\u03b9'],
-                            ['k', u'\u03ba'],
-                            ['l', u'\u03bb'],
-                            ['m', u'\u03bc'],
-                            ['n', u'\u03bd'],
-                            ['x', u'\u03be'],
-                            ['o', u'\u03bf'],
-                            ['p', u'\u03c0'],
-                            ['r', u'\u03c1'],
-                            ['j', u'\u03c2'],
-                            ['s', u'\u03c3'],
-                            ['t', u'\u03c4'],
-                            ['u', u'\u03c5'],
-                            ['f', u'\u03c6'],
-                            ['c', u'\u03c7'],
-                            ['y', u'\u03c8'],
-#                        ['|', u'\u037a'], # ypogegrammeni
-                            ['w', u'\u03c9']]
-
 #            self.search_group = self.config.default_search_group_gr
             self.search_group = self.config.get('SearchOptions', 'default_search_group_gr')
             self.lib_path = self.config.get('LibraryPaths', 'gr_path')
@@ -660,10 +631,7 @@ class Manager:
 
         self.s_word = self.entry.get_text()
         if self.mode and self.beta:
-            for a, b in self.gr_filter:
-                self.s_word = self.s_word.replace(a, b)
-#            print self.s_word
-
+            self.s_word = bcode.convert_all(self.s_word)
 
         self.comm_lst.append(self.s_word)
 #        print self.comm_lst
