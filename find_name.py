@@ -10,7 +10,8 @@ import re
 import sys
 import os
 import xml.etree.ElementTree as ET
-import subprocess
+#import subprocess
+import unicodedata
 
 import ConfigParser
 from textview import Show_text
@@ -57,6 +58,9 @@ class Findaname():
 #            self.opener(res[int(nm)][0], 'just text')
 
     def searcher(self, find_n):
+
+        find_n = find_n.decode('utf-8')
+        find_n = unicodedata.normalize('NFD', find_n)
         s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', self.xml_file)
         tree = ET.parse(s_path)
         root = tree.getroot()
