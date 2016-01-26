@@ -29,73 +29,14 @@ class Findaname():
         if mode:
             self.mode = True
             self.xml_file = 'saints_gr.xml'
-            self.lib_path = os.path.join(config.get('LibraryPaths', 'gr_path'), 'Minologion', 'min_base')
+            self.lib_path = os.path.join(config.get('LibraryPaths', 'gr_path'), 'Minologion')
             self.enc = 'utf-8'
         else:
             self.mode = False
-            self.xml_file = 'saints.xml'
+            self.xml_file = 'saints_hip.xml'
             self.lib_path = os.path.join(config.get('LibraryPaths', 'sl_path'), 'min')
             self.enc = 'cp1251'
         print self.lib_path
-
-        # TODO: make capital letters substitution, otherwise betacode doesnt work
-        # also make a betacode module!
-        if self.mode:
-            self.gr_filter = [['a|', u'\u1fb3'],
-                            ['h|', u'\u1fc3'],
-                            ['w|', u'\u1ff3'],
-#                        ['a|', u'\u'],
-                            ['a', u'\u03b1'],
-                            ['b', u'\u03b2'],
-                            ['g', u'\u03b3'],
-                            ['d', u'\u03b4'],
-                            ['e', u'\u03b5'],
-                            ['z', u'\u03b6'],
-                            ['h', u'\u03b7'],
-                            ['q', u'\u03b8'],
-                            ['i', u'\u03b9'],
-                            ['k', u'\u03ba'],
-                            ['l', u'\u03bb'],
-                            ['m', u'\u03bc'],
-                            ['n', u'\u03bd'],
-                            ['x', u'\u03be'],
-                            ['o', u'\u03bf'],
-                            ['p', u'\u03c0'],
-                            ['r', u'\u03c1'],
-                            ['j', u'\u03c2'],
-                            ['s', u'\u03c3'],
-                            ['t', u'\u03c4'],
-                            ['u', u'\u03c5'],
-                            ['f', u'\u03c6'],
-                            ['c', u'\u03c7'],
-                            ['y', u'\u03c8'],
-#                        ['|', u'\u037a'], # ypogegrammeni
-                            ['w', u'\u03c9']]
-
-            self.gr_filt_c = [['A', u'\u0391'],
-                              ['B', u'\u0392'],
-                              ['G', u'\u0393'],
-                              ['D', u'\u0394'],
-                              ['E', u'\u0395'],
-                              ['Z', u'\u0396'],
-                              ['H', u'\u0397'],
-                              ['Q', u'\u0398'],
-                              ['I', u'\u0399'],
-                              ['K', u'\u039a'],
-                              ['L', u'\u039b'],
-                              ['M', u'\u039c'],
-                              ['N', u'\u039d'],
-                              ['X', u'\u039e'],
-                              ['O', u'\u039f'],
-                              ['P', u'\u03a0'],
-                              ['R', u'\u03a1'],
-                              ['S', u'\u03a3'],
-                              ['T', u'\u03a4'],
-                              ['U', u'\u03a5'],
-                              ['F', u'\u03a6'],
-                              ['C', u'\u03a7'],
-                              ['Y', u'\u03a8'],
-                              ['W', u'\u03a9']]
 
     def txt_output(self, res):
         # recursive func, outputs results in text version of the prog, checks input, starts a popup
@@ -128,6 +69,7 @@ class Findaname():
 
         find_n = find_n.decode('utf-8')
         find_n = unicodedata.normalize('NFD', find_n)
+
         s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', self.xml_file)
         tree = ET.parse(s_path)
         root = tree.getroot()
@@ -143,7 +85,7 @@ class Findaname():
                             s_line = s_line.replace(a, '')
 
                     if find_n in s_line:
-                        res_path = os.path.join(self.lib_path, d.get('filename').encode('utf8'))
+                        res_path = os.path.join(self.lib_path, fs.get('filename').encode('utf8'))
                         res.append([res_path, d.get('date').encode('utf8'), fs.get('name').encode('utf8')])
                          
         # [filename, date, text]
@@ -190,12 +132,13 @@ class Findaname():
         self.opener(file_path, title)
 
     def opener(self, file_path, title, cli=False):
+#        print 'path', file_path
         try:
             fp = codecs.open(file_path, "rb", self.enc)
             f_lines = fp.readlines()
             fp.close()
         except IOError:
-            print 'no such file found'
+            print 'no such file found', file_path
 
             # create window to output selected text
         txt_win = Show_text(self.mode)

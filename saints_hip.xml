@@ -1,0 +1,1405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+  <month name="sep">
+    <day date="1 сентября:" exact="1 sep">
+      <feast filename="sep/01.hip" name="Начало индикта" res=""/>
+      <feast filename="sep/01.hip" name="Преподобного Симеона столпника" res=""/>
+      <feast filename="sep/01.hip" name="Собор Пресвятой Богородицы в Миасинех" res=""/>
+      <feast filename="sep/01.hip" name="Святых 40 мучениц" res=""/>
+    </day>
+    <day date="2 сентября:" exact="2 sep">
+      <feast filename="sep/02.hip" name="Святого мученика Маманта" res=""/>
+      <feast filename="sep/02.hip" name="Преподобного Иоанна постника, патриарха Царьграда" res=""/>
+    </day>
+    <day date="3 сентября:" exact="3 sep">
+      <feast filename="sep/03.hip" name="Священномученика Анфима, епископа Никомидийского" res=""/>
+      <feast filename="sep/03.hip" name="Преподобного Феоктиста, спостника великого Евфимия" res=""/>
+    </day>
+    <day date="4 сентября:" exact="4 sep">
+      <feast filename="sep/04.hip" name="Священномученика Вавилы, епископа великой Антиохии" res=""/>
+      <feast filename="sep/04.hip" name="Святого пророка и боговидца Моисея" res=""/>
+      <feast filename="sep/04p.hip" name="Иконы Пресвятой Богородицы Неопалимой купины" res="ext"/>
+      <feast filename="sep/04p.hip" name="Святителя Иоасафа, епископа Белоградского" res="ext"/>
+    </day>
+    <day date="5 сентября:" exact="5 sep">
+      <feast filename="sep/05.hip" name="Святого пророка Захарии, отца Иоанна Предтечи" res=""/>
+      <feast filename="sep/05.hip" name="Другая служба того же святого пророка Захарии, и святой праведной Елисаветы" res=""/>
+    </day>
+    <day date="6 сентября:" exact="6 sep">
+      <feast filename="sep/06.hip" name="Воспоминание чуда архистратига Михаила, бывшего в Колоссаех, в Хонех" res=""/>
+      <feast filename="sep/06.hip" name="Святого мученика Евдоксия" res=""/>
+    </day>
+    <day date="7 сентября:" exact="7 sep">
+      <feast filename="sep/07.hip" name="Предпразднество Рождества Пресвятой Богородицы" res=""/>
+      <feast filename="sep/07.hip" name="Святого мученика Созонта" res=""/>
+      <feast filename="sep/07.hip" name="Святителя Иоанна, архиепископа Новгородского" res=""/>
+    </day>
+    <day date="8 сентября:" exact="8 sep">
+      <feast filename="sep/08.hip" name="Рождество Пресвятой Владычицы нашей Богородицы и Приснодевы Марии" res=""/>
+    </day>
+    <day date="9 сентября:" exact="9 sep">
+      <feast filename="sep/09.hip" name="Святых и праведных богоотец Иоакима и Анны" res=""/>
+      <feast filename="sep/09.hip" name="Святого мученика Севириана" res=""/>
+      <feast filename="sep/09.hip" name="Преподобного игумена Иосифа Волоцкого" res=""/>
+      <feast filename="sep/09p.hip" name="Святителя Феодосия, архиепископа Черниговского" res="ext"/>
+    </day>
+    <day date="10 сентября:" exact="10 sep">
+      <feast filename="sep/10.hip" name="Святых мучениц Минодоры, Митродоры и Нимфодоры" res=""/>
+    </day>
+    <day date="11 сентября:" exact="11 sep">
+      <feast filename="sep/11.hip" name="Преподобной Феодоры Александрийской" res=""/>
+      <feast filename="sep/11.hip" name="Священномученика Автонома" res=""/>
+      <feast filename="sep/11.hip" name="(Службу святых преподобных Сергия и Германа Валаамских чудотворцев смотри 28 июня)" res=""/>
+      <feast filename="sep/11p.hip" name="Преподобного Силуана Афонского" res="ext"/>
+    </day>
+    <day date="12 сентября:" exact="12 sep">
+      <feast filename="sep/12.hip" name="Отдание праздника Рождества Пресвятой Богородицы" res=""/>
+      <feast filename="sep/12.hip" name="(Службу священномученику Автоному см. 11 сентября)" res=""/>
+    </day>
+    <day date="12 сентября:" exact="12 sep">
+      <feast filename="sep/12p.hip" name="Праведного Симеона Верхотурского, чудотворца" res=""/>
+    </day>
+    <day date="13 сентября:" exact="13 sep">
+      <feast filename="sep/13.hip" name="Память обновлений храма Воскресения" res=""/>
+      <feast filename="sep/13.hip" name="Предпрадзнество Воздвижения честнаго и животворящего Креста" res=""/>
+      <feast filename="sep/13.hip" name="Святого священномученика Корнилия сотника" res=""/>
+    </day>
+    <day date="14 сентября:" exact="14 sep">
+      <feast filename="sep/14.hip" name="Воздвижение честнаго и животворящего Креста" res=""/>
+    </day>
+    <day date="15 сентября:" exact="15 sep">
+      <feast filename="sep/15.hip" name="Святого великомученика Никиты" res=""/>
+    </day>
+    <day date="16 сентября:" exact="16 sep">
+      <feast filename="sep/16.hip" name="Святой великомученицы Евфимии всехвальной" res=""/>
+    </day>
+    <day date="17 сентября:" exact="17 sep">
+      <feast filename="sep/17.hip" name="Святой мученицы Софии, и трех ее дочерей: Веры, Надежды и Любови" res=""/>
+    </day>
+    <day date="18 сентября:" exact="18 sep">
+      <feast filename="sep/18.hip" name="Преподобного Евмения епископа, Гортинского чудотворца" res=""/>
+    </day>
+    <day date="19 сентября:" exact="19 sep">
+      <feast filename="sep/19.hip" name="Святых мучеников Трофима, Савватия и Доримедонта" res=""/>
+      <feast filename="sep/19.hip" name="Благоверного великого князя Феодора и чад его благоверных князей Давида и Константина" res=""/>
+    </day>
+    <day date="20 сентября:" exact="20 sep">
+      <feast filename="sep/20.hip" name="Святого великомученика Евстафия" res=""/>
+      <feast filename="sep/20.hip" name="Благоверного великого князя Михаила Черниговского и боярина его Феодора" res=""/>
+    </day>
+    <day date="21 сентября:" exact="21 sep">
+      <feast filename="sep/21.hip" name="Отдание праздника Воздвижения честнаго и животворящего Креста" res=""/>
+      <feast filename="sep/21p.hip" name="Святителя Димитрия, митрополита Ростовского, чудотворца" res="ext"/>
+    </day>
+    <day date="22 сентября:" exact="22 sep">
+      <feast filename="sep/22.hip" name="Святого апостола Кодрата" res=""/>
+      <feast filename="sep/22.hip" name="Священномученика Фоки, епископа Синопийского" res=""/>
+      <feast filename="sep/22.hip" name="Святого пророка Ионы" res=""/>
+      <feast filename="sep/22.hip" name="Преподобного Ионы пресвитера, отца Феофана, творца канонов, и Феодора начертанного" res=""/>
+    </day>
+    <day date="23 сентября:" exact="23 sep">
+      <feast filename="sep/23.hip" name="Зачатие честнаго славного пророка, предтечи и крестителя Господня Иоанна" res=""/>
+      <feast filename="sep/23p.hip" name="Святителя Иннокентия, митрополита Московского, апостола Сибири и Америки" res="ext"/>
+    </day>
+    <day date="24 сентября:" exact="24 sep">
+      <feast filename="sep/24.hip" name="Святой первомученицы равноапостольной Феклы" res=""/>
+    </day>
+    <day date="25 сентября:" exact="25 sep">
+      <feast filename="sep/25.hip" name="Преподобной Евфросинии Александрийской" res=""/>
+      <feast filename="sep/25.hip" name="Преставление преподобного Сергия, игумена Радонежского" res=""/>
+    </day>
+    <day date="26 сентября:" exact="26 sep">
+      <feast filename="sep/26.hip" name="Преставление святого апостола и евангелиста Иоанна Богослова" res=""/>
+    </day>
+    <day date="27 сентября:" exact="27 sep">
+      <feast filename="sep/27.hip" name="Святого мучника Каллистрата, и дружины его" res=""/>
+      <feast filename="sep/27.hip" name="Преподобного Савватия Соловецкого" res=""/>
+    </day>
+    <day date="28 сентября:" exact="28 sep">
+      <feast filename="sep/28.hip" name="Преподобного Харитона исповедника" res=""/>
+    </day>
+    <day date="29 сентября:" exact="29 sep">
+      <feast filename="sep/29.hip" name="Преподобного Кириака отшельника" res=""/>
+    </day>
+    <day date="30 сентября:" exact="30 sep">
+      <feast filename="sep/30.hip" name="Священномученика Григория, великой Армении" res=""/>
+      <feast filename="sep/30.hip" name="Преподобного Григория,  Пельшемского, Вологодского чудотворца" res=""/>
+      <feast filename="sep/30.hip" name="Святителя Михаила, первого митрополита Киевского" res=""/>
+    </day>
+  </month>
+  <month name="okt">
+    <day date="1 октября:" exact="1 okt">
+      <feast filename="okt/01.hip" name="Святого апостола Анании, одного от семидесяти" res=""/>
+      <feast filename="okt/01.hip" name="Преподобного Романа сладкопевца" res=""/>
+      <feast filename="okt/01.hip" name="Покров Пресвятой Владычицы  нашей Богородицы" res=""/>
+      <feast filename="okt/01.hip" name="Преподобного Саввы Вишерского" res=""/>
+    </day>
+    <day date="2 октября:" exact="2 okt">
+      <feast filename="okt/02.hip" name="Святого священномученика Киприана и святой мученицы Иустины" res=""/>
+      <feast filename="okt/02.hip" name="Святого Андрея, Христа ради юродивого" res=""/>
+      <feast filename="okt/02p.hip" name="Святой преподобной благоверной великой княгини инокини Анны Кашинской" res="ext"/>
+    </day>
+    <day date="3 октября:" exact="3 okt">
+      <feast filename="okt/03.hip" name="Святого священномученика Дионисия Ареопагита" res=""/>
+    </day>
+    <day date="4 октября:" exact="4 okt">
+      <feast filename="okt/04.hip" name="Святого священномученика Иерофея, епископа Афинского" res=""/>
+      <feast filename="okt/04.hip" name="Обретение честных мощей святителей Гурия, архиепископа Казанского, и Варсонофия, епископа Тверского" res=""/>
+    </day>
+    <day date="5 октября:" exact="5 okt">
+      <feast filename="okt/05.hip" name="Святой мученицы Харитины" res=""/>
+      <feast filename="okt/05.hip" name="Святителей Петра, Алексия, Ионы, Филиппа и Ермогена, митрополитов Московских, и всей России чудотворцев" res=""/>
+    </day>
+    <day date="6 октября:" exact="6 okt">
+      <feast filename="okt/06.hip" name="Святого апостола Фомы" res=""/>
+    </day>
+    <day date="7 октября:" exact="7 okt">
+      <feast filename="okt/07.hip" name="Святых мучеников Сергия и Вакха" res=""/>
+    </day>
+    <day date="8 октября:" exact="8 okt">
+      <feast filename="okt/08.hip" name="Преподобной матери нашей Пелагии" res=""/>
+    </day>
+    <day date="9 октября:" exact="9 okt">
+      <feast filename="okt/09.hip" name="Святого апостола Иакова Алфеева" res=""/>
+      <feast filename="okt/09.hip" name="Преподобного Андроника и жены его Афанасии" res=""/>
+    </day>
+    <day date="10 октября:" exact="10 okt">
+      <feast filename="okt/10.hip" name="Святых мучеников Евлампия и Евлампии" res=""/>
+      <feast filename="okt/10p.hip" name="Преподобного Амвросия, старца Оптинского" res="ext"/>
+    </day>
+    <day date="11 октября:" exact="11 okt">
+      <feast filename="okt/11.hip" name="Святого апостола Филиппа, одного из семи диаконов" res=""/>
+      <feast filename="okt/11.hip" name="Преподобного Феофана исповедника, епископа Никийского" res=""/>
+      <feast filename="okt/11.hip" name="Святых отцов седьмого Вселенского Собора" res=""/>
+    </day>
+    <day date="12 октября:" exact="12 okt">
+      <feast filename="okt/12.hip" name="Святых мучеников Прова, Тараха и Андроника" res=""/>
+      <feast filename="okt/12.hip" name="Преподобного Космы святоградца, творца канонов, епископа Маиумского" res=""/>
+    </day>
+    <day date="13 октября:" exact="13 okt">
+      <feast filename="okt/13.hip" name="Святых мучеников Карпа и Папилы" res=""/>
+      <feast filename="okt/13p.hip" name="Иверской иконы Пресвятой Богородицы" res="ext"/>
+    </day>
+    <day date="14 октября:" exact="14 okt">
+      <feast filename="okt/14.hip" name="Святых мучеников Назария, Гервасия, Протасия и Келсия" res=""/>
+      <feast filename="okt/14.hip" name="Преподобной матери нашей Параскевы" res=""/>
+    </day>
+    <day date="15 октября:" exact="15 okt">
+      <feast filename="okt/15.hip" name="Преподобного Евфимия нового" res=""/>
+      <feast filename="okt/15.hip" name="Святого преподобномученика Лукиана, пресвитера великой Антиохии" res=""/>
+    </day>
+    <day date="16 октября:" exact="16 okt">
+      <feast filename="okt/16.hip" name="Святого мученика Лонгина сотника, при Кресте Господне" res=""/>
+    </day>
+    <day date="17 октября:" exact="17 okt">
+      <feast filename="okt/17.hip" name="Святого пророка Осии" res=""/>
+      <feast filename="okt/17.hip" name="Преподобномученика Андрея Критского" res=""/>
+    </day>
+    <day date="18 октября:" exact="18 okt">
+      <feast filename="okt/18.hip" name="Святого апостола и евангелиста Луки" res=""/>
+    </day>
+    <day date="19 октября:" exact="19 okt">
+      <feast filename="okt/19.hip" name="Святого пророка Иоиля" res=""/>
+      <feast filename="okt/19.hip" name="Святого мученика Уара" res=""/>
+      <feast filename="okt/19.hip" name="Преподобного Иоанна Рыльского" res=""/>
+    </day>
+    <day date="20 октября:" exact="20 okt">
+      <feast filename="okt/20.hip" name="Святого великомученика Артемия" res=""/>
+    </day>
+    <day date="21 октября:" exact="21 okt">
+      <feast filename="okt/21.hip" name="Преподобного Илариона Великого" res=""/>
+      <feast filename="okt/21.hip" name="Святителя Илариона, епископа Меглинского" res=""/>
+    </day>
+    <day date="22 октября:" exact="22 okt">
+      <feast filename="okt/22.hip" name="Святого равноапостольного Аверкия епископа, Иерапольского чудотворца" res=""/>
+      <feast filename="okt/22.hip" name="Святых семи Ефесских отроков" res=""/>
+      <feast filename="okt/22.hip" name="Казанской иконы Пресвятой Богородицы" res=""/>
+    </day>
+    <day date="23 октября:" exact="23 okt">
+      <feast filename="okt/23.hip" name="Святого апостола Иакова, брата Божия" res=""/>
+      <feast filename="okt/23.hip" name="Перенесение мощей святого Иакова, Боровитского чудотворца" res=""/>
+    </day>
+    <day date="24 октября:" exact="24 okt">
+      <feast filename="okt/24.hip" name="Святого мученика Арефы и с ним пострадавших" res=""/>
+      <feast filename="okt/24p.hip" name="Иконы пресвятой Богородицы Всех скорбящих Радость" res="ext"/>
+    </day>
+    <day date="25 октября:" exact="25 okt">
+      <feast filename="okt/25.hip" name="Святых мучеников Маркиана и Мартирия" res=""/>
+    </day>
+    <day date="26 октября:" exact="26 okt">
+      <feast filename="okt/26.hip" name="Святого и славного великомученика Димитрия мироточца" res=""/>
+      <feast filename="okt/26.hip" name="И воспоминание великого и страшного трясения" res=""/>
+    </day>
+    <day date="27 октября:" exact="27 okt">
+      <feast filename="okt/27.hip" name="Святого мученика Нестора" res=""/>
+    </day>
+    <day date="28 октября:" exact="28 okt">
+      <feast filename="okt/28.hip" name="Святых мучеников Терентия и Неонилы" res=""/>
+      <feast filename="okt/28.hip" name="Преподобного Стефана Савваита, творца канонов" res=""/>
+      <feast filename="okt/28.hip" name="Святителя Арсения, архиепископа Сербского" res=""/>
+      <feast filename="okt/28.hip" name="Святой мученицы Параскевы" res=""/>
+      <feast filename="okt/28p.hip" name="Преподобного Иова, игумена Почаевского" res="ext"/>
+    </day>
+    <day date="29 октября:" exact="29 okt">
+      <feast filename="okt/29.hip" name="Святой преподобномученицы Анастасии Римляныни" res=""/>
+      <feast filename="okt/29.hip" name="Преподобного Аврамия затворника" res=""/>
+      <feast filename="okt/29.hip" name="Преподобного Аврамия, Ростовского чудотворца" res=""/>
+    </day>
+    <day date="30 октября:" exact="30 okt">
+      <feast filename="okt/30.hip" name="Святых мучеников Зиновия и Зиновии, сестры его" res=""/>
+    </day>
+    <day date="31 октября:" exact="31 okt">
+      <feast filename="okt/31.hip" name="Святых апостолов Стахия, Амплия и их соработников" res=""/>
+      <feast filename="okt/31.hip" name="Святого мученика Епимаха" res=""/>
+    </day>
+  </month>
+  <month name="nov">
+    <day date="1 ноября:" exact="1 nov">
+      <feast filename="nov/01.hip" name="Бессребренников и чудотворцев Космы и Дамиана" res=""/>
+    </day>
+    <day date="2 ноября:" exact="2 nov">
+      <feast filename="nov/02.hip" name="Святых мучеников Акиндина, Пигасия, Аффония, Елпидифора и Анемподиста" res=""/>
+    </day>
+    <day date="3 ноября:" exact="3 nov">
+      <feast filename="nov/03.hip" name="Святых мучеников Акепсимы епископа, и Иосифа пресвитера, и Аифала диакона" res=""/>
+      <feast filename="nov/03.hip" name="Обновление храма святого великомученика Георгия в Лиде" res=""/>
+    </day>
+    <day date="4 ноября:" exact="4 nov">
+      <feast filename="nov/04.hip" name="Преподобного Иоанникия великого" res=""/>
+      <feast filename="nov/04.hip" name="Святого мученика Никандра, епископа Мирского и Ермея пресвитера" res=""/>
+    </day>
+    <day date="5 ноября:" exact="5 nov">
+      <feast filename="nov/05.hip" name="Святых мучеников Галактиона и Епистими" res=""/>
+      <feast filename="nov/05.hip" name="Святителя Ионы, архиепископа Новгородского" res=""/>
+    </day>
+    <day date="6 ноября:" exact="6 nov">
+      <feast filename="nov/06.hip" name="Святителя Павла, архиепископа Константинопольского" res=""/>
+      <feast filename="nov/06.hip" name="Преподобного Варлаама, игумена Хутынского" res=""/>
+    </day>
+    <day date="7 ноября:" exact="7 nov">
+      <feast filename="nov/07.hip" name="Святых тридцати трех мелитинских мучеников" res=""/>
+      <feast filename="nov/07.hip" name="Преподобного Лазаря Галисийского" res=""/>
+    </day>
+    <day date="8 ноября:" exact="8 nov">
+      <feast filename="nov/08.hip" name="Собор святого архистратига Михаила и прочих бесплотных сил" res=""/>
+    </day>
+    <day date="9 ноября:" exact="9 nov">
+      <feast filename="nov/09.hip" name="Святых мучеников Онисифора и Порфирия, и преподобной матери нашей Матроны" res=""/>
+      <feast filename="nov/09.hip" name="Преподобной Феоктисты Лезвийской" res=""/>
+      <feast filename="nov/09p.hip" name="Иконы Божией Матери, нарицаемой Скоропослушница" res="ext"/>
+    </day>
+    <day date="10 ноября:" exact="10 nov">
+      <feast filename="nov/10.hip" name="Святых апостолов Ераста, Олимпа, Родиона и других" res=""/>
+    </day>
+    <day date="11 ноября:" exact="11 nov">
+      <feast filename="nov/11.hip" name="Святых мучеников Мины Виктора и Викентия" res=""/>
+      <feast filename="nov/11.hip" name="Святой мученицы Стефаниды" res=""/>
+      <feast filename="nov/11.hip" name="Преподобного Феодора Студита, исповедника" res=""/>
+      <feast filename="nov/11.hip" name="Блаженного Максима, Христа ради юродивого, Московского чудотворца" res=""/>
+    </day>
+    <day date="12 ноября:" exact="12 nov">
+      <feast filename="nov/12.hip" name="Святителя Иоанна милостивого, патриарха Александрийского" res=""/>
+      <feast filename="nov/12.hip" name="Преподобного Нила" res=""/>
+    </day>
+    <day date="13 ноября:" exact="13 nov">
+      <feast filename="nov/13.hip" name="Святителя Иоанна, архиепископа Константинопольского, Златоуста" res=""/>
+    </day>
+    <day date="14 ноября:" exact="14 nov">
+      <feast filename="nov/14.hip" name="Святого апостола Филиппа" res=""/>
+      <feast filename="nov/14p.hip" name="Святителя Григория Паламы, архиепископа Солунского" res="ext"/>
+    </day>
+    <day date="15 ноября:" exact="15 nov">
+      <feast filename="nov/15.hip" name="Святых мучеников и исповедников Гурия, Самона и Авива" res=""/>
+    </day>
+    <day date="15 ноября:" exact="15 nov">
+      <feast filename="nov/15p.hip" name="Преподобного Паисия Величковского" res=""/>
+    </day>
+    <day date="16 ноября:" exact="16 nov">
+      <feast filename="nov/16.hip" name="Святого апостола и евангелиста Матфея" res=""/>
+    </day>
+    <day date="17 ноября:" exact="17 nov">
+      <feast filename="nov/17.hip" name="Святителя Григория, епископа Неокесарийского" res=""/>
+      <feast filename="nov/17.hip" name="Преподобного Никона, игумена Радонежского" res=""/>
+    </day>
+    <day date="18 ноября:" exact="18 nov">
+      <feast filename="nov/18.hip" name="Святых мучеников Платона и Романа" res=""/>
+    </day>
+    <day date="19 ноября:" exact="19 nov">
+      <feast filename="nov/19.hip" name="Святого пророка Авдиа" res=""/>
+      <feast filename="nov/19.hip" name="Святого мученика Варлаама" res=""/>
+      <feast filename="nov/19.hip" name="Святых преподобных Варлаама и Иоасафа, царевича Индийского" res=""/>
+    </day>
+    <day date="20 ноября:" exact="20 nov">
+      <feast filename="nov/20.hip" name="Предпразднество входа в храм Пресвятой Богородицы" res=""/>
+      <feast filename="nov/20.hip" name="Преподобного Григория Декаполита" res=""/>
+      <feast filename="nov/20.hip" name="Святителя Прокла, архиепископа Константинопольского" res=""/>
+    </day>
+    <day date="21 ноября:" exact="21 nov">
+      <feast filename="nov/21.hip" name="Вход во храм Пресвятой Владычицы нашей Богородицы и Приснодевы Марии" res=""/>
+    </day>
+    <day date="22 ноября:" exact="22 nov">
+      <feast filename="nov/22.hip" name="Святого апостола Филимона с иными" res=""/>
+      <feast filename="nov/22.hip" name="Святого благоверного великого князя Михаила Ярославича Тверского" res=""/>
+    </day>
+    <day date="23 ноября:" exact="23 nov">
+      <feast filename="nov/23.hip" name="Святителя Амфилохия, епископа Иконийского" res=""/>
+      <feast filename="nov/23.hip" name="Святителя Григория, епископа Акранантийского" res=""/>
+      <feast filename="nov/23.hip" name="Святого благоверного великого князя Александра Невского, в схиме Алексия" res=""/>
+      <feast filename="nov/23p.hip" name="Святителя Митрофана, епископа Воронежского" res="ext"/>
+    </day>
+    <day date="24 ноября:" exact="24 nov">
+      <feast filename="nov/24.hip" name="Святой великомученицы Екатерины" res=""/>
+      <feast filename="nov/24.hip" name="Святого великомученика Меркурия" res=""/>
+      <feast filename="nov/24.hip" name="Святого мученика Меркурия Смоленского" res=""/>
+    </day>
+    <day date="25 ноября:" exact="25 nov">
+      <feast filename="nov/25.hip" name="Священномученика Климента, папы Римского и Петра, архиепископа Александрийского" res=""/>
+    </day>
+    <day date="26 ноября:" exact="26 nov">
+      <feast filename="nov/26.hip" name="Преподобного Алипия столпника" res=""/>
+      <feast filename="nov/26.hip" name="Освящение церкви святого великомученика Георгия, в Киеве" res=""/>
+      <feast filename="nov/26p.hip" name="Святителя Иннокентия, епископа Иркутского" res="ext"/>
+    </day>
+    <day date="27 ноября:" exact="27 nov">
+      <feast filename="nov/27.hip" name="Святого великомученика Иакова Персянина" res=""/>
+      <feast filename="nov/27.hip" name="Преподобного Палладия" res=""/>
+      <feast filename="nov/27.hip" name="Служба знамения Пресвятой Богородицы, бывшего в Великом Новгороде" res=""/>
+      <feast filename="nov/27.hip" name="Святителя Иакова, епископа Ростовского" res=""/>
+    </day>
+    <day date="28 ноября:" exact="28 nov">
+      <feast filename="nov/28.hip" name="Святого преподобномученика Стефана нового" res=""/>
+      <feast filename="nov/28.hip" name="Святого мученика Иринарха" res=""/>
+    </day>
+    <day date="29 ноября:" exact="29 nov">
+      <feast filename="nov/29.hip" name="Святого мученика Парамона" res=""/>
+      <feast filename="nov/29.hip" name="Святого мученика Филумена" res=""/>
+      <feast filename="nov/29.hip" name="Преподобного Акакия Синайского" res=""/>
+    </day>
+    <day date="30 ноября:" exact="30 nov">
+      <feast filename="nov/30.hip" name="Святого апостола Андрея первозванного" res=""/>
+    </day>
+  </month>
+  <month name="dec">
+    <day date="1 декабря:" exact="1 dec">
+      <feast filename="dec/01.hip" name="Святого пророка Наума" res=""/>
+    </day>
+    <day date="2 декабря:" exact="2 dec">
+      <feast filename="dec/02.hip" name="Святого пророка Аввакума" res=""/>
+    </day>
+    <day date="3 декабря:" exact="3 dec">
+      <feast filename="dec/03.hip" name="Святого пророка Софонии" res=""/>
+      <feast filename="dec/03.hip" name="Преподобного Саввы Сторожевского" res=""/>
+    </day>
+    <day date="4 декабря:" exact="4 dec">
+      <feast filename="dec/04.hip" name="Святой великомученицы Варвары" res=""/>
+      <feast filename="dec/04.hip" name="Преподобного Иоанна Дамаскина" res=""/>
+    </day>
+    <day date="5 декабря:" exact="5 dec">
+      <feast filename="dec/05.hip" name="Преподобного Саввы Освященного" res=""/>
+    </day>
+    <day date="6 декабря:" exact="6 dec">
+      <feast filename="dec/06.hip" name="Святителя Николая, архиепископа Мирликийского, чудотворца" res=""/>
+    </day>
+    <day date="7 декабря:" exact="7 dec">
+      <feast filename="dec/07.hip" name="Святителя Амвросия" res=""/>
+      <feast filename="dec/07.hip" name="епископа Медиоланского" res=""/>
+      <feast filename="dec/07.hip" name="Преподобного Антония Сийского" res=""/>
+      <feast filename="dec/07.hip" name="Преподобного Нила Столобенского" res=""/>
+    </day>
+    <day date="8 декабря:" exact="8 dec">
+      <feast filename="dec/08.hip" name="Преподобного Патапия" res=""/>
+    </day>
+    <day date="9 декабря:" exact="9 dec">
+      <feast filename="dec/09.hip" name="Зачатие святой Анны, когда зачала Пресвятую Богородицу" res=""/>
+      <feast filename="dec/09p.hip" name="Иконы Божией Матери, нарицаемой Нечаянная Радость" res="ext"/>
+    </day>
+    <day date="10 декабря:" exact="10 dec">
+      <feast filename="dec/10.hip" name="Святых мучеников Мины, Ермогена и Евграфа" res=""/>
+    </day>
+    <day date="11 декабря:" exact="11 dec">
+      <feast filename="dec/11.hip" name="Преподобного Даниила Столпника" res=""/>
+      <feast filename="dec/11.hip" name="Неделя святых праотец" res=""/>
+    </day>
+    <day date="12 декабря:" exact="12 dec">
+      <feast filename="dec/12.hip" name="Святителя Спиридона, епископа Тримифийского" res=""/>
+    </day>
+    <day date="13 декабря:" exact="13 dec">
+      <feast filename="dec/13.hip" name="Святых мучеников Евстратия, Авксентия, Евгения, Мардария и Ореста" res=""/>
+      <feast filename="dec/13.hip" name="Святой мученицы Лукии девы" res=""/>
+    </day>
+    <day date="14 декабря:" exact="14 dec">
+      <feast filename="dec/14.hip" name="Святых мучеников Фирса, Левкия, Филимона и других" res=""/>
+    </day>
+    <day date="15 декабря:" exact="15 dec">
+      <feast filename="dec/15.hip" name="Святого священномученика Елевферия" res=""/>
+      <feast filename="dec/15.hip" name="Преподобного Павла, в Латре" res=""/>
+      <feast filename="dec/15.hip" name="Святителя Стефана исповедника, архиепископа Сурожского" res=""/>
+    </day>
+    <day date="16 декабря:" exact="16 dec">
+      <feast filename="dec/16.hip" name="Святого пророка Аггея" res=""/>
+    </day>
+    <day date="17 декабря:" exact="17 dec">
+      <feast filename="dec/17.hip" name="Святого пророка Даниила" res=""/>
+      <feast filename="dec/17.hip" name="Святых трех отроков Анании, Азарии и Мисаила" res=""/>
+    </day>
+    <day date="18 декабря:" exact="18 dec">
+      <feast filename="dec/18.hip" name="Святого мученика Севастиана и дружины его" res=""/>
+      <feast filename="dec/18.hip" name="Суббота перед Рождеством Христовым" res=""/>
+      <feast filename="dec/18.hip" name="Неделя перед Рождеством Христовым, святых отец" res=""/>
+    </day>
+    <day date="19 декабря:" exact="19 dec">
+      <feast filename="dec/19.hip" name="Святого мученика Вонифатия" res=""/>
+    </day>
+    <day date="20 декабря:" exact="20 dec">
+      <feast filename="dec/20.hip" name="Предпразднество по плоти Рождества Господа Бога и Спаса нашего Иисуса Христа" res=""/>
+      <feast filename="dec/20.hip" name="Священномученика Игнатия Богоносца" res=""/>
+      <feast filename="dec/20p.hip" name="Святого праведного Иоанна, Кронштадского чудотворца" res="ext"/>
+    </day>
+    <day date="21 декабря:" exact="21 dec">
+      <feast filename="dec/21.hip" name="Святой мученицы Иулиании Никомидийской" res=""/>
+      <feast filename="dec/21.hip" name="Святителя Петра, митрополита Киевского и всей России" res=""/>
+    </day>
+    <day date="22 декабря:" exact="22 dec">
+      <feast filename="dec/22.hip" name="Святой великомученицы Анастасии узорешительницы" res=""/>
+    </day>
+    <day date="23 декабря:" exact="23 dec">
+      <feast filename="dec/23.hip" name="Святых десяти критских мучеников" res=""/>
+    </day>
+    <day date="24 декабря:" exact="24 dec">
+      <feast filename="dec/24.hip" name="Святой преподобномученицы Евгении" res=""/>
+      <feast filename="dec/24.hip" name="Последование часов, певаемых в навечерии Рождества Христова" res=""/>
+    </day>
+    <day date="25 декабря:" exact="25 dec">
+      <feast filename="dec/25.hip" name="Рождество Господа Бога и Спаса нашего Иисуса Христа" res=""/>
+      <feast filename="dec/25.hip" name="Воспоминание избавления церкви и державы российской от нашествия галлов и с ними двадцати народов" res=""/>
+    </day>
+    <day date="26 декабря:" exact="26 dec">
+      <feast filename="dec/26.hip" name="Собор Пресвятой Богородицы" res=""/>
+      <feast filename="dec/26.hip" name="Святого священномученика Евфимия" res=""/>
+      <feast filename="dec/26.hip" name="Суббота по Рождестве Христовом" res=""/>
+      <feast filename="dec/26.hip" name="Неделя по рождестве Христовом" res=""/>
+      <feast filename="dec/26.hip" name="Святых праведных Иосифа обручника, Давида царя и Иакова, брата Господня" res=""/>
+    </day>
+    <day date="27 декабря:" exact="27 dec">
+      <feast filename="dec/27.hip" name="Святого апостола первомученика и архидиакона Стефана" res=""/>
+      <feast filename="dec/27.hip" name="Преподобного Феодора начертанного, исповедника" res=""/>
+    </day>
+    <day date="28 декабря:" exact="28 dec">
+      <feast filename="dec/28.hip" name="Святых двух тысяч мучеников, в Никомидии сожженных" res=""/>
+    </day>
+    <day date="29 декабря:" exact="29 dec">
+      <feast filename="dec/29.hip" name="Святых четырнадцати тысяч младенцев, Христа ради избиенных Иродом в Вифлееме Иудейском" res=""/>
+      <feast filename="dec/29.hip" name="Преподобного Маркелла, игумена обители неусыпаемых" res=""/>
+    </day>
+    <day date="30 декабря:" exact="30 dec">
+      <feast filename="dec/30.hip" name="Святой мученицы Анисии" res=""/>
+      <feast filename="dec/30.hip" name="Преподобной Мелании" res=""/>
+      <feast filename="dec/30.hip" name="Преподобного Зотика" res=""/>
+      <feast filename="dec/30p.hip" name="Святителя Макария, Митрополита Московского и всея Руси" res="ext"/>
+    </day>
+    <day date="31 декабря:" exact="31 dec">
+      <feast filename="dec/31.hip" name="Преподобной Мелании Римляныни (служба ее написана 30 декабря)" res=""/>
+      <feast filename="dec/31.hip" name="Отдание праздника Рождества Христова" res=""/>
+    </day>
+  </month>
+  <month name="jan">
+    <day date="1 января:" exact="1 jan">
+      <feast filename="jan/01.hip" name="Обрезание Господне" res=""/>
+      <feast filename="jan/01.hip" name="святителя Василия Великого" res=""/>
+    </day>
+    <day date="2 января:" exact="2 jan">
+      <feast filename="jan/02.hip" name="Предпразднество Просвещения" res=""/>
+      <feast filename="jan/02.hip" name="Святого отца нашего Сильвестра, папы Римского" res=""/>
+      <feast filename="jan/02p.hip" name="Преподобного Серафима, Саровского чудотворца" res="ext"/>
+    </day>
+    <day date="3 января:" exact="3 jan">
+      <feast filename="jan/03.hip" name="Святого пророка Малахии" res=""/>
+      <feast filename="jan/03.hip" name="Святого мученика Гордия" res=""/>
+    </day>
+    <day date="4 января:" exact="4 jan">
+      <feast filename="jan/04.hip" name="Собор святых семидесяти апостолов" res=""/>
+      <feast filename="jan/04.hip" name="Преподобного Феоктиста игумена, в Кукуме Сикелийском" res=""/>
+    </day>
+    <day date="5 января:" exact="5 jan">
+      <feast filename="jan/05.hip" name="Святых мучеников Феопемпта и Феоны" res=""/>
+      <feast filename="jan/05.hip" name="Преподобной Синглитикии" res=""/>
+      <feast filename="jan/05.hip" name="Последование часов в навечерие Просвещения" res=""/>
+    </day>
+    <day date="6 января:" exact="6 jan">
+      <feast filename="jan/06.hip" name="Святое Богоявление Господа Бога и Спаса нашего Иисуса Христа" res=""/>
+    </day>
+    <day date="7 января:" exact="7 jan">
+      <feast filename="jan/07.hip" name="Собор святого славного пророка Предтечи и Крестителя Иоанна" res=""/>
+    </day>
+    <day date="8 января:" exact="8 jan">
+      <feast filename="jan/08.hip" name="Преподобного отца нашего Георгия Хозевита" res=""/>
+      <feast filename="jan/08.hip" name="Преподобной Домники" res=""/>
+      <feast filename="jan/08.hip" name="Емилиана исповедника" res=""/>
+    </day>
+    <day date="9 января:" exact="9 jan">
+      <feast filename="jan/09.hip" name="Святого мученика Полиевкта" res=""/>
+      <feast filename="jan/09.hip" name="Cвятителя Филиппа, митрополита Московского и всея России" res=""/>
+    </day>
+    <day date="10 января:" exact="10 jan">
+      <feast filename="jan/10.hip" name="Святителя Григория, епископа Нисского" res=""/>
+      <feast filename="jan/10.hip" name="Преподобного Дометиана, епископа Мелитинского" res=""/>
+      <feast filename="jan/10.hip" name="Преподобного Маркиана, пресвитера и эконома Великой церкви" res=""/>
+      <feast filename="jan/10.hip" name="Преподобного Павла Обнорского, вологодского чудотворца" res=""/>
+      <feast filename="jan/10p.hip" name="Святителя Феофана, затворника Вышенского" res="ext"/>
+    </day>
+    <day date="11 января:" exact="11 jan">
+      <feast filename="jan/11.hip" name="Преподобного Феодосия, общих житий начальника" res=""/>
+      <feast filename="jan/11.hip" name="Преподобного Михаила Клопского, в Великом Новгороде" res=""/>
+    </day>
+    <day date="12 января:" exact="12 jan">
+      <feast filename="jan/12.hip" name="Святой мученицы Татианы" res=""/>
+      <feast filename="jan/12.hip" name="Cвятителя Саввы, первого архиепископа и учителя Сербского" res=""/>
+    </day>
+    <day date="13 января:" exact="13 jan">
+      <feast filename="jan/13.hip" name="Святых мучеников Ермила и Стратоника" res=""/>
+      <feast filename="jan/13.hip" name="Служба святых отцев, в Синаи и Раифе избиенных" res=""/>
+    </day>
+    <day date="14 января:" exact="14 jan">
+      <feast filename="jan/14.hip" name="Отдание праздника Просвещения" res=""/>
+      <feast filename="jan/14p.hip" name="Святой равноапостольной Нины, просветительницы Грузии" res="ext"/>
+    </day>
+    <day date="15 января:" exact="15 jan">
+      <feast filename="jan/15.hip" name="Преподобных Павла Фивейского и Иоанна Кущника" res=""/>
+    </day>
+    <day date="16 января:" exact="16 jan">
+      <feast filename="jan/16.hip" name="Поклонение честным веригам святого и всехвального апостола Петра" res=""/>
+    </day>
+    <day date="17 января:" exact="17 jan">
+      <feast filename="jan/17.hip" name="Преподобного Антония Великого" res=""/>
+    </day>
+    <day date="18 января:" exact="18 jan">
+      <feast filename="jan/18.hip" name="Святителей Афанасия и Кирилла, архиепископов Александрийских" res=""/>
+    </day>
+    <day date="19 января:" exact="19 jan">
+      <feast filename="jan/19.hip" name="Преподобного Макария Египетского" res=""/>
+    </day>
+    <day date="20 января:" exact="20 jan">
+      <feast filename="jan/20.hip" name="Преподобного Евфимия Великого" res=""/>
+    </day>
+    <day date="21 января:" exact="21 jan">
+      <feast filename="jan/21.hip" name="Преподобного Максима исповедника" res=""/>
+      <feast filename="jan/21.hip" name="Святого мученика Неофита" res=""/>
+      <feast filename="jan/21.hip" name="Святых мучеников Евгения, Книдия, Валериана и Акилы" res=""/>
+      <feast filename="jan/21p.hip" name="Преподобного Максима Грека" res="ext"/>
+    </day>
+    <day date="22 января:" exact="22 jan">
+      <feast filename="jan/22.hip" name="Святого апостола Тимофея" res=""/>
+      <feast filename="jan/22.hip" name="Святого преподобномученика Анастасия Персского" res=""/>
+    </day>
+    <day date="23 января:" exact="23 jan">
+      <feast filename="jan/23.hip" name="Священномученика Климента, епископа Агкирского" res=""/>
+      <feast filename="jan/23.hip" name="Святого мученика Агафангела" res=""/>
+    </day>
+    <day date="24 января:" exact="24 jan">
+      <feast filename="jan/24.hip" name="Преподобной матери нашей Ксении" res=""/>
+      <feast filename="jan/24p.hip" name="Святой блаженной Ксении Петербуржской" res="ext"/>
+    </day>
+    <day date="25 января:" exact="25 jan">
+      <feast filename="jan/25.hip" name="Святителя Григория Богослова, архиепископа Константинопольского" res=""/>
+    </day>
+    <day date="25 января:" exact="25 jan">
+      <feast filename="jan/25p.hip" name="Пресвятой Богородицы, в честь иконы Ее, называемой &quot;Утоли мои печали&quot;" res=""/>
+      <feast filename="jan/25pn.hip" name="В неделю, ближайшую к 25 января: Собор новомучеников и исповедников Российских. (служба без канона, составления РПЦЗ)" res="ext"/>
+    </day>
+    <day date="26 января:" exact="26 jan">
+      <feast filename="jan/26.hip" name="Преподобного Ксенофонта и дружины его" res=""/>
+    </day>
+    <day date="27 января:" exact="27 jan">
+      <feast filename="jan/27.hip" name="Перенесение мощей святителя Иоанна Златоуста" res=""/>
+    </day>
+    <day date="28 января:" exact="28 jan">
+      <feast filename="jan/28.hip" name="Преподобного Ефрема Сирина" res=""/>
+    </day>
+    <day date="29 января:" exact="29 jan">
+      <feast filename="jan/29.hip" name="Перенесение мощей священномученика Игнатия Богоносца" res=""/>
+    </day>
+    <day date="30 января:" exact="30 jan">
+      <feast filename="jan/30.hip" name="Священномученика Ипполита, папы Римского" res=""/>
+      <feast filename="jan/30.hip" name="Святителей Василия Великого, Григория Богослова и Иоанна Златоуста" res=""/>
+    </day>
+    <day date="31 января:" exact="31 jan">
+      <feast filename="jan/31.hip" name="Святых чудотворцев и бессребренников Кира и Иоанна" res=""/>
+      <feast filename="jan/31.hip" name="Святителя Никиты епископа, Новгородского чудотворца" res=""/>
+    </day>
+  </month>
+  <month name="feb">
+    <day date="1 февраля:" exact="1 feb">
+      <feast filename="feb/01.hip" name="Предпразднество Сретения Господа Бога и Спаса нашего Иисуса Христа" res=""/>
+      <feast filename="feb/01.hip" name="Святого мученика Трифона" res=""/>
+    </day>
+    <day date="2 февраля:" exact="2 feb">
+      <feast filename="feb/02.hip" name="Сретение Господа Бога и Спаса нашего Иисуса Христа" res=""/>
+    </day>
+    <day date="3 февраля:" exact="3 feb">
+      <feast filename="feb/03.hip" name="Святого праведного Симеона Богоприимца и святой Анны пророчицы" res=""/>
+      <feast filename="feb/03p.hip" name="Святого равноапостольного Николая, архиепископа Японского" res="ext"/>
+    </day>
+    <day date="4 февраля:" exact="4 feb">
+      <feast filename="feb/04.hip" name="Преподобного Исидора Пилусиотского" res=""/>
+      <feast filename="feb/04.hip" name="Святого благоверного великого князя Георгия" res=""/>
+      <feast filename="feb/04.hip" name="Преподобного Кирилла, Новоезерского чудотворца" res=""/>
+    </day>
+    <day date="5 февраля:" exact="5 feb">
+      <feast filename="feb/05.hip" name="Святой мученицы Агафии" res=""/>
+      <feast filename="feb/05p.hip" name="Служба Пресвятой Богородице ради иконы ее &quot;Взыскание погибших&quot;" res="ext"/>
+    </day>
+    <day date="6 февраля:" exact="6 feb">
+      <feast filename="feb/06.hip" name="Преподобного Вукола, епископа Смирнского" res=""/>
+    </day>
+    <day date="7 февраля:" exact="7 feb">
+      <feast filename="feb/07.hip" name="Преподобного Парфения, епископа Лампсакийского" res=""/>
+      <feast filename="feb/07.hip" name="Преподобного Луки Элладского" res=""/>
+    </day>
+    <day date="8 февраля:" exact="8 feb">
+      <feast filename="feb/08.hip" name="Святого великомученика Феодора Стратилата" res=""/>
+      <feast filename="feb/08.hip" name="Святого пророка Захарии серповидца" res=""/>
+    </day>
+    <day date="9 февраля:" exact="9 feb">
+      <feast filename="feb/09.hip" name="Святого мученика Никифора" res=""/>
+    </day>
+    <day date="10 февраля:" exact="10 feb">
+      <feast filename="feb/10.hip" name="Святого мучения Харлампия" res=""/>
+    </day>
+    <day date="11 февраля:" exact="11 feb">
+      <feast filename="feb/11.hip" name="Святого священномученика Власия" res=""/>
+      <feast filename="feb/11.hip" name="Преподобного Димитрия, Прилуцкого чудотворца" res=""/>
+      <feast filename="feb/11.hip" name="Святого благоверного великого князя Всеволода, во святом крещении Гавриила" res=""/>
+    </day>
+    <day date="12 февраля:" exact="12 feb">
+      <feast filename="feb/12.hip" name="Святителя Мелетия, архиепископа Антиохии Великой" res=""/>
+      <feast filename="feb/12.hip" name="Святителя Алексия митрополита, всей России чудотворца" res=""/>
+    </day>
+    <day date="13 февраля:" exact="13 feb">
+      <feast filename="feb/13.hip" name="Преподобного Мартиниана" res=""/>
+    </day>
+    <day date="14 февраля:" exact="14 feb">
+      <feast filename="feb/14.hip" name="Преподобного Авксентия" res=""/>
+    </day>
+    <day date="15 февраля:" exact="15 feb">
+      <feast filename="feb/15.hip" name="Святого апостола Онисима" res=""/>
+    </day>
+    <day date="16 февраля:" exact="16 feb">
+      <feast filename="feb/16.hip" name="Святого мученика Памфила и с ним пострадавших" res=""/>
+    </day>
+    <day date="17 февраля:" exact="17 feb">
+      <feast filename="feb/17.hip" name="Святого великомученика Феодора Тирона" res=""/>
+      <feast filename="feb/17p.hip" name="Святого священномученика Ермогена, патриарха Московского и всея Руси" res="ext"/>
+    </day>
+    <day date="18 февраля:" exact="18 feb">
+      <feast filename="feb/18.hip" name="Святителя Льва, папы Римского" res=""/>
+    </day>
+    <day date="19 февраля:" exact="19 feb">
+      <feast filename="feb/19.hip" name="Святого апостола Архиппа" res=""/>
+    </day>
+    <day date="20 февраля:" exact="20 feb">
+      <feast filename="feb/20.hip" name="Преподобного Льва, епископа Катанского" res=""/>
+      <feast filename="feb/20p.hip" name="Святого преподобномученика Корнилия, игумена Псково-Печерской обители" res="ext"/>
+    </day>
+    <day date="21 февраля:" exact="21 feb">
+      <feast filename="feb/21.hip" name="Преподобного Тимофея, в Символех" res=""/>
+      <feast filename="feb/21.hip" name="Святителя Евстафия, архиепископа Антиохийского" res=""/>
+    </day>
+    <day date="22 февраля:" exact="22 feb">
+      <feast filename="feb/22.hip" name="Обретение мощей святых мучеников, во Евгении" res=""/>
+    </day>
+    <day date="23 февраля:" exact="23 feb">
+      <feast filename="feb/23.hip" name="Святого священномученика Поликарпа, епископа Смирнского" res=""/>
+    </day>
+    <day date="24 февраля:" exact="24 feb">
+      <feast filename="feb/24.hip" name="Первое и второе обретение честной главы святого пророка, предтечи и крестителя Господня Иоанна" res=""/>
+    </day>
+    <day date="25 февраля:" exact="25 feb">
+      <feast filename="feb/25.hip" name="Святителя Тарасия, архиепископа Константина-града" res=""/>
+    </day>
+    <day date="26 февраля:" exact="26 feb">
+      <feast filename="feb/26.hip" name="Святителя Порфирия, архиепископа Газского" res=""/>
+    </day>
+    <day date="27 февраля:" exact="27 feb">
+      <feast filename="feb/27.hip" name="Преподобного Прокопия Декаполита, исповедника" res=""/>
+    </day>
+    <day date="28 февраля:" exact="28 feb">
+      <feast filename="feb/28.hip" name="Преподобного Василия исповедника" res=""/>
+    </day>
+    <day date="29 февраля:" exact="29 feb">
+      <feast filename="feb/29.hip" name="Преподобного Кассиана Римлянина" res=""/>
+    </day>
+  </month>
+  <month name="mar">
+    <day date="1 марта:" exact="1 mar">
+      <feast filename="mar/01.hip" name="Преподобномученицы Евдокии" res=""/>
+    </day>
+    <day date="2 марта:" exact="2 mar">
+      <feast filename="mar/02.hip" name="Священномученика Феодота, епископа Киринийского" res=""/>
+      <feast filename="mar/02.hip" name="Преставление святителя Арсения, епископа Тверского" res=""/>
+      <feast filename="mar/02p.hip" name="Празднование Пресвятой Богородице в честь иконы ее &quot;Державной&quot;" res="ext"/>
+    </day>
+    <day date="3 марта:" exact="3 mar">
+      <feast filename="mar/03.hip" name="Мучеников Евтропия и дружины его, Клеоника и Василиска" res=""/>
+    </day>
+    <day date="4 марта:" exact="4 mar">
+      <feast filename="mar/04.hip" name="Преподобного Герасима Иорданского" res=""/>
+      <feast filename="mar/04p.hip" name="Преподобного и благоверного великого князя Даниила Московского" res="ext"/>
+    </day>
+    <day date="5 марта:" exact="5 mar">
+      <feast filename="mar/05.hip" name="Мученика Конона" res=""/>
+    </day>
+    <day date="6 марта:" exact="6 mar">
+      <feast filename="mar/06.hip" name="42 Амморийских мучеников" res=""/>
+    </day>
+    <day date="7 марта:" exact="7 mar">
+      <feast filename="mar/07.hip" name="Священномучеников, в Херсоне епископствовавших: Василия, Ефрема, Капитона, Евгения, Еферия и прочих" res=""/>
+      <feast filename="mar/07p.hip" name="Празднование Пресвятой Богородице в честь иконы ее &quot;Споручница грешных&quot;" res="ext"/>
+    </day>
+    <day date="8 марта:" exact="8 mar">
+      <feast filename="mar/08.hip" name="Преподобного Феофилакта исповедника, епископа Никомидийского" res=""/>
+    </day>
+    <day date="9 марта:" exact="9 mar">
+      <feast filename="mar/09.hip" name="40 мучеников Севастийских" res=""/>
+    </day>
+    <day date="10 марта:" exact="10 mar">
+      <feast filename="mar/10.hip" name="Мученика Кодрата и дружины его" res=""/>
+    </day>
+    <day date="11 марта:" exact="11 mar">
+      <feast filename="mar/11.hip" name="Святителя Софрония, патриарха Иерусалимского" res=""/>
+      <feast filename="mar/11.hip" name="Преставление святителя Евфимия, архиепископа Новгородского, чудотворца" res=""/>
+    </day>
+    <day date="12 марта:" exact="12 mar">
+      <feast filename="mar/12.hip" name="Преподобного Феофана исповедника Сигрианского" res=""/>
+    </day>
+    <day date="13 марта:" exact="13 mar">
+      <feast filename="mar/13.hip" name="Перенесение мощей святителя Никифора, патриарха Царяграда" res=""/>
+    </day>
+    <day date="14 марта:" exact="14 mar">
+      <feast filename="mar/14.hip" name="Преподобного Венедикта" res=""/>
+    </day>
+    <day date="15 марта:" exact="15 mar">
+      <feast filename="mar/15.hip" name="Мученика Агапия и с ним шести мучеников" res=""/>
+    </day>
+    <day date="16 марта:" exact="16 mar">
+      <feast filename="mar/16.hip" name="Мучеников Савина и Папы" res=""/>
+    </day>
+    <day date="17 марта:" exact="17 mar">
+      <feast filename="mar/17.hip" name="Преподобного Алексия, человека Божия" res=""/>
+      <feast filename="mar/17.hip" name="Преставление преподобного Макария, игумена Колязинского, чудотворца" res=""/>
+    </day>
+    <day date="18 марта:" exact="18 mar">
+      <feast filename="mar/18.hip" name="Святителя Кирилла, архиепископа Иерусалимского" res=""/>
+    </day>
+    <day date="19 марта:" exact="19 mar">
+      <feast filename="mar/19.hip" name="Мучеников Хрисанфа и Дарии" res=""/>
+    </day>
+    <day date="20 марта:" exact="20 mar">
+      <feast filename="mar/20.hip" name="Преподобных отцов в обители святого Саввы убиенных" res=""/>
+    </day>
+    <day date="21 марта:" exact="21 mar">
+      <feast filename="mar/21.hip" name="Преподобного Иакова епископа, исповедника" res=""/>
+    </day>
+    <day date="22 марта:" exact="22 mar">
+      <feast filename="mar/22.hip" name="Священномученика Василия, пресвитера Анкирской церкви" res=""/>
+    </day>
+    <day date="23 марта:" exact="23 mar">
+      <feast filename="mar/23.hip" name="Преподобномученика Никона и двух сотен учеников его, с ним мучившихся" res=""/>
+    </day>
+    <day date="24 марта:" exact="24 mar">
+      <feast filename="mar/24.hip" name="Предпразднество Благовещения Пресвятой Богородицы" res=""/>
+      <feast filename="mar/24.hip" name="Преподобного Захарии" res=""/>
+      <feast filename="mar/24.hip" name="Святителя Артемия, епископа Фессалонитского" res=""/>
+    </day>
+    <day date="25 марта:" exact="25 mar">
+      <feast filename="mar/25.hip" name="Благовещение Пресвятой Владычицы нашей Богородицы и Приснодевы Марии" res=""/>
+    </day>
+    <day date="26 марта:" exact="26 mar">
+      <feast filename="mar/26.hip" name="Собор архангела Гавриила" res=""/>
+    </day>
+    <day date="27 марта:" exact="27 mar">
+      <feast filename="mar/27.hip" name="Мученицы Матроны Селунской" res=""/>
+    </day>
+    <day date="28 марта:" exact="28 mar">
+      <feast filename="mar/28.hip" name="Преподобного Иллариона Нового" res=""/>
+      <feast filename="mar/28.hip" name="Преподобного Стефана чудотворца" res=""/>
+    </day>
+    <day date="29 марта:" exact="29 mar">
+      <feast filename="mar/29.hip" name="Преподобного Марка, епископа Арефусийского, и Кирилла диакона, и иных, при Иулиане мучителе  пострадавших" res=""/>
+    </day>
+    <day date="30 марта:" exact="30 mar">
+      <feast filename="mar/30.hip" name="Преподобного Иоанна Лествичника" res=""/>
+    </day>
+    <day date="31 марта:" exact="31 mar">
+      <feast filename="mar/31.hip" name="Преподобного Ипатия, епископа Гангрского, чудотворца" res=""/>
+    </day>
+  </month>
+  <month name="apr">
+    <day date="1 апреля:" exact="1 apr">
+      <feast filename="apr/01.hip" name="Преподобной Марии Египетской" res=""/>
+      <feast filename="apr/01.hip" name="Преподобного Евфимия, Суздальского чудотворца" res=""/>
+    </day>
+    <day date="2 апреля:" exact="2 apr">
+      <feast filename="apr/02.hip" name="Преподобного Тита, чудотворца" res=""/>
+    </day>
+    <day date="3 апреля:" exact="3 apr">
+      <feast filename="apr/03.hip" name="Преподобного Никиты исповедника, игумена обители Мидикийской" res=""/>
+    </day>
+    <day date="4 апреля:" exact="4 apr">
+      <feast filename="apr/04.hip" name="Преподобных Иосифа песнописца и Георгия Малейского" res=""/>
+    </day>
+    <day date="5 апреля:" exact="5 apr">
+      <feast filename="apr/05.hip" name="Мучеников Феодула и Агафопада, и с ними иных" res=""/>
+    </day>
+    <day date="6 апреля:" exact="6 apr">
+      <feast filename="apr/06.hip" name="Святителя Евтихия" res=""/>
+      <feast filename="apr/06.hip" name="архиепископа Константинопольского" res=""/>
+    </day>
+    <day date="7 апреля:" exact="7 apr">
+      <feast filename="apr/07.hip" name="Преподобного Георгия, епископа Мелитинского" res=""/>
+    </day>
+    <day date="8 апреля:" exact="8 apr">
+      <feast filename="apr/08.hip" name="Апостолов Иродиона, Агава, Асинкрита, Руфа, Флегонта и Ерма, и иных с ними" res=""/>
+    </day>
+    <day date="9 апреля:" exact="9 apr">
+      <feast filename="apr/09.hip" name="Мученика Евпсихия" res=""/>
+    </day>
+    <day date="10 апреля:" exact="10 apr">
+      <feast filename="apr/10.hip" name="Мучеников Терентия, Помпиия и иных с ними" res=""/>
+    </day>
+    <day date="11 апреля:" exact="11 apr">
+      <feast filename="apr/11.hip" name="Священномученика Антипы, епископа Пергама Асийского" res=""/>
+    </day>
+    <day date="12 апреля:" exact="12 apr">
+      <feast filename="apr/12.hip" name="Преподобного Василия исповедника, епископа Парийского" res=""/>
+    </day>
+    <day date="13 апреля:" exact="13 apr">
+      <feast filename="apr/13.hip" name="Священномученика Артемона" res=""/>
+    </day>
+    <day date="14 апреля:" exact="14 apr">
+      <feast filename="apr/14.hip" name="Святителя Мартина исповедника, папы Римского" res=""/>
+    </day>
+    <day date="15 апреля:" exact="15 apr">
+      <feast filename="apr/15.hip" name="Апостолов Аристарха, Пуда и Трофима" res=""/>
+    </day>
+    <day date="16 апреля:" exact="16 apr">
+      <feast filename="apr/16.hip" name="Мучениц Агапии, Ирины и Хионии" res=""/>
+    </day>
+    <day date="17 апреля:" exact="17 apr">
+      <feast filename="apr/17.hip" name="Преподобного Симеона Персидского" res=""/>
+      <feast filename="apr/17.hip" name="И преподобного Акакия, епископа Мелитинского" res=""/>
+      <feast filename="apr/17.hip" name="Преподобного Зосимы, игумена Соловецкого" res=""/>
+    </day>
+    <day date="18 апреля:" exact="18 apr">
+      <feast filename="apr/18.hip" name="Преподобного Иоанна, ученика святого Григория Декаполита" res=""/>
+    </day>
+    <day date="19 апреля:" exact="19 apr">
+      <feast filename="apr/19.hip" name="Преподобного Иоанна Ветхопещерника" res=""/>
+    </day>
+    <day date="20 апреля:" exact="20 apr">
+      <feast filename="apr/20.hip" name="Преподобного Феодора Трихины" res=""/>
+    </day>
+    <day date="21 апреля:" exact="21 apr">
+      <feast filename="apr/21.hip" name="Священномученика Ианнуария и дружины его" res=""/>
+      <feast filename="apr/21.hip" name="И священномученика Феодора Пергийского" res=""/>
+    </day>
+    <day date="22 апреля:" exact="22 apr">
+      <feast filename="apr/22.hip" name="Преподобного Феодора Сикеота" res=""/>
+      <feast filename="apr/22.hip" name="И пренесение мощей благоверного великого князя Всеволода, во святом крещении Гавриила" res=""/>
+    </day>
+    <day date="23 апреля:" exact="23 apr">
+      <feast filename="apr/23.hip" name="Святого славного великомученика, победоносца и чудотворца Георгия" res=""/>
+    </day>
+    <day date="24 апреля:" exact="24 apr">
+      <feast filename="apr/24.hip" name="Мученика Саввы стратилата" res=""/>
+    </day>
+    <day date="25 апреля:" exact="25 apr">
+      <feast filename="apr/25.hip" name="Апостола и евангелиста Марка" res=""/>
+    </day>
+    <day date="26 апреля:" exact="26 apr">
+      <feast filename="apr/26.hip" name="Священномученика Василия, епископа Амасийского" res=""/>
+      <feast filename="apr/26.hip" name="Святителя Стефана, епископа Пермского" res=""/>
+    </day>
+    <day date="27 апреля:" exact="27 apr">
+      <feast filename="apr/27.hip" name="Священномученика Симеона, сродника Господня" res=""/>
+    </day>
+    <day date="28 апреля:" exact="28 apr">
+      <feast filename="apr/28.hip" name="Апостолов Иасона и Сосипатра" res=""/>
+      <feast filename="apr/28.hip" name="И мучеников Дады, Максима и Кинтилиана" res=""/>
+    </day>
+    <day date="29 апреля:" exact="29 apr">
+      <feast filename="apr/29.hip" name="Девяти мучеников Кизических" res=""/>
+      <feast filename="apr/29.hip" name="И преподобного Мемнона чудотворца" res=""/>
+    </day>
+    <day date="30 апреля:" exact="30 apr">
+      <feast filename="apr/30.hip" name="Апостола Иакова, брата святого Иоанна Богослова" res=""/>
+    </day>
+  </month>
+  <month name="may">
+    <day date="1 мая:" exact="1 may">
+      <feast filename="may/01.hip" name="Пророка Иеремии" res=""/>
+      <feast filename="may/01.hip" name="Преподобного Пафнутия Боровского" res=""/>
+    </day>
+    <day date="2 мая:" exact="2 may">
+      <feast filename="may/02.hip" name="Святителя Афанасия Великого, патриарха Александрийского" res=""/>
+      <feast filename="may/02p.hip" name="Мучеников Бориса и Глеба, во святом крещении Романа и Давида" res="ext"/>
+    </day>
+    <day date="3 мая:" exact="3 may">
+      <feast filename="may/03.hip" name="Мучеников Тимофея и Мавры" res=""/>
+      <feast filename="may/03.hip" name="Преподобного Феодосия Печерского" res=""/>
+    </day>
+    <day date="4 мая:" exact="4 may">
+      <feast filename="may/04.hip" name="Преподобномученицы Пелагии" res=""/>
+    </day>
+    <day date="5 мая:" exact="5 may">
+      <feast filename="may/05.hip" name="Мученицы Ирины" res=""/>
+    </day>
+    <day date="6 мая:" exact="6 may">
+      <feast filename="may/06.hip" name="Праведного Иова многострадального" res=""/>
+    </day>
+    <day date="7 мая:" exact="7 may">
+      <feast filename="may/07.hip" name="Знамения честнаго креста Иерусалиме" res=""/>
+      <feast filename="may/07.hip" name="Мученика Акакия" res=""/>
+    </day>
+    <day date="8 мая:" exact="8 may">
+      <feast filename="may/08.hip" name="Апостола и Евангелиста Иоанна Богослова" res=""/>
+      <feast filename="may/08.hip" name="Преподобного Арсения великого" res=""/>
+    </day>
+    <day date="9 мая:" exact="9 may">
+      <feast filename="may/09.hip" name="Пророка Исаии" res=""/>
+      <feast filename="may/09.hip" name="Мученика Христофора" res=""/>
+      <feast filename="may/09.hip" name="Перенесение честных мощей святителя Николая Мирликийского" res=""/>
+    </day>
+    <day date="10 мая:" exact="10 may">
+      <feast filename="may/10.hip" name="Апостола Симона Зилота" res=""/>
+    </day>
+    <day date="11 мая:" exact="11 may">
+      <feast filename="may/11.hip" name="Обновление Царьграда" res=""/>
+      <feast filename="may/11.hip" name="Священномученика Мокия" res=""/>
+      <feast filename="may/11p.hip" name="Равноапостольных Мефодия и Кирилла, учителей Словенских" res="ext"/>
+    </day>
+    <day date="12 мая:" exact="12 may">
+      <feast filename="may/12.hip" name="Святителя Епифания, епископа Кипрского" res=""/>
+      <feast filename="may/12.hip" name="Святителя Германа, патриарха Константинопольского" res=""/>
+    </day>
+    <day date="13 мая:" exact="13 may">
+      <feast filename="may/13.hip" name="Мученицы Гликерии" res=""/>
+    </day>
+    <day date="14 мая:" exact="14 may">
+      <feast filename="may/14.hip" name="Мученика Исидора Хиосского" res=""/>
+      <feast filename="may/14.hip" name="Блаженного Исидора Ростовского" res=""/>
+    </day>
+    <day date="15 мая:" exact="15 may">
+      <feast filename="may/15.hip" name="Преподобного Пахомия Великого" res=""/>
+      <feast filename="may/15.hip" name="Святителя Исаии Ростовского" res=""/>
+      <feast filename="may/15.hip" name="Благоверного царевича Димитрия" res=""/>
+    </day>
+    <day date="16 мая:" exact="16 may">
+      <feast filename="may/16.hip" name="Преподобного Феодора освященного" res=""/>
+      <feast filename="may/16.hip" name="Преподобного Ефрема Перекомского" res=""/>
+    </day>
+    <day date="17 мая:" exact="17 may">
+      <feast filename="may/17.hip" name="Апостола Андроника и других с ним" res=""/>
+    </day>
+    <day date="18 мая:" exact="18 may">
+      <feast filename="may/18.hip" name="Мученика Феодота Анкирского" res=""/>
+      <feast filename="may/18.hip" name="Мучеников Петра, Дионисия и других с ними" res=""/>
+      <feast filename="may/18.hip" name="Святых семи дев" res=""/>
+    </day>
+    <day date="19 мая:" exact="19 may">
+      <feast filename="may/19.hip" name="Священномученика Патрикия Прусского и дружины его" res=""/>
+      <feast filename="may/19.hip" name="Преподобного Корнилия Комельского" res=""/>
+    </day>
+    <day date="20 мая:" exact="20 may">
+      <feast filename="may/20.hip" name="Мученика Фалалея" res=""/>
+      <feast filename="may/20.hip" name="Святителя Алексия Московского" res=""/>
+    </day>
+    <day date="21 мая:" exact="21 may">
+      <feast filename="may/21.hip" name="Равноапостольных Константина и Елены" res=""/>
+      <feast filename="may/21.hip" name="Сретение Владимирской иконы Пресвятой Богородицы" res=""/>
+      <feast filename="may/21.hip" name="Благоверного князя Константина и чад его: Михаила и Феодора муромских" res=""/>
+    </day>
+    <day date="22 мая:" exact="22 may">
+      <feast filename="may/22.hip" name="Мученика Василиска" res=""/>
+    </day>
+    <day date="23 мая:" exact="23 may">
+      <feast filename="may/23.hip" name="Преподобного Михаила Синадского" res=""/>
+      <feast filename="may/23.hip" name="Святителя Леонтия Ростовского" res=""/>
+      <feast filename="may/23p.hip" name="Преподобной Евфросинии Полоцкой" res="ext"/>
+    </day>
+    <day date="24 мая:" exact="24 may">
+      <feast filename="may/24.hip" name="Преподобного Симеона на Дивней горе" res=""/>
+      <feast filename="may/24.hip" name="Преподобного Никиты столпника" res=""/>
+    </day>
+    <day date="25 мая:" exact="25 may">
+      <feast filename="may/25.hip" name="Пророка, Предтечи и Крестителя Иоанна" res=""/>
+    </day>
+    <day date="26 мая:" exact="26 may">
+      <feast filename="may/26.hip" name="Апостола Карпа, одного от семидесяти" res=""/>
+      <feast filename="may/26.hip" name="Великомученика Георгия Нового" res=""/>
+    </day>
+    <day date="27 мая:" exact="27 may">
+      <feast filename="may/27.hip" name="Священномученика Ферапонта" res=""/>
+    </day>
+    <day date="28 мая:" exact="28 may">
+      <feast filename="may/28.hip" name="Преподобного Никиты Халкидонского" res=""/>
+      <feast filename="may/28.hip" name="Святителя Игнатия Ростовского" res=""/>
+    </day>
+    <day date="29 мая:" exact="29 may">
+      <feast filename="may/29.hip" name="Преподобномученицы Феодосии девы" res=""/>
+      <feast filename="may/29.hip" name="Блаженного Иоанна Устюжского" res=""/>
+    </day>
+    <day date="30 мая:" exact="30 may">
+      <feast filename="may/30.hip" name="Преподобного Исаакия Далматского" res=""/>
+    </day>
+    <day date="31 мая:" exact="31 may">
+      <feast filename="may/31.hip" name="Апостола Ермия" res=""/>
+      <feast filename="may/31.hip" name="Мученика Ермея" res=""/>
+    </day>
+  </month>
+  <month name="jun">
+    <day date="1 июня:" exact="1 jun">
+      <feast filename="jun/01.hip" name="Мученика Иустина Философа, и другого мученика Иустина, и иных с ними" res=""/>
+      <feast filename="jun/01.hip" name="Преподобного Дионисия, Глушицкого чудотворца" res=""/>
+    </day>
+    <day date="2 июня:" exact="2 jun">
+      <feast filename="jun/02.hip" name="Святителя Никифора, патриарха Константинополя, исповедника" res=""/>
+      <feast filename="jun/02.hip" name="Великомученика Иоанна Нового" res=""/>
+    </day>
+    <day date="3 июня:" exact="3 jun">
+      <feast filename="jun/03.hip" name="Мученика Лукиллиана и иных с ним" res=""/>
+    </day>
+    <day date="4 июня:" exact="4 jun">
+      <feast filename="jun/04.hip" name="Святителя Митрофана, патриарха Константинополя" res=""/>
+    </day>
+    <day date="5 июня:" exact="5 jun">
+      <feast filename="jun/05.hip" name="Священномученика Дорофея, епископа Тирского" res=""/>
+    </day>
+    <day date="6 июня:" exact="6 jun">
+      <feast filename="jun/06.hip" name="Преподобного Виссариона чудотворца" res=""/>
+      <feast filename="jun/06.hip" name="Преподобного Илариона Нового" res=""/>
+    </day>
+    <day date="7 июня:" exact="7 jun">
+      <feast filename="jun/07.hip" name="Священномученика Феодота, епископа Анкирского" res=""/>
+    </day>
+    <day date="8 июня:" exact="8 jun">
+      <feast filename="jun/08.hip" name="Великомученика Феодора Стратилата" res=""/>
+    </day>
+    <day date="9 июня:" exact="9 jun">
+      <feast filename="jun/09.hip" name="Святителя Кирилла, архиепископа Александрийского" res=""/>
+      <feast filename="jun/09.hip" name="Преподобного Кирилла, игумена Белоезерского" res=""/>
+    </day>
+    <day date="10 июня:" exact="10 jun">
+      <feast filename="jun/10.hip" name="Священномученика Тимофея, епископа Прусского" res=""/>
+    </day>
+    <day date="11 июня:" exact="11 jun">
+      <feast filename="jun/11.hip" name="Апостолов Варфоломея и Варнавы" res=""/>
+    </day>
+    <day date="12 июня:" exact="12 jun">
+      <feast filename="jun/12.hip" name="Преподобного Онуфрия" res=""/>
+      <feast filename="jun/12.hip" name="Преподобного Петра Афонского" res=""/>
+      <feast filename="jun/12.hip" name="Преподобного Арсения, Коневского чудотворца" res=""/>
+    </day>
+    <day date="13 июня:" exact="13 jun">
+      <feast filename="jun/13.hip" name="Мученица Акилины" res=""/>
+      <feast filename="jun/13.hip" name="Святителя Трифиллия, епископа Левкусии Кипрской" res=""/>
+    </day>
+    <day date="14 июня:" exact="14 jun">
+      <feast filename="jun/14.hip" name="Пророка Елиссея" res=""/>
+      <feast filename="jun/14.hip" name="Святителя Мефодия, патриарха Константинополя" res=""/>
+    </day>
+    <day date="15 июня:" exact="15 jun">
+      <feast filename="jun/15.hip" name="Пророка Амоса" res=""/>
+      <feast filename="jun/15.hip" name="Святителя Ионы, митрополита Московского и всея России" res=""/>
+    </day>
+    <day date="16 июня:" exact="16 jun">
+      <feast filename="jun/16.hip" name="Святителя Тихона Амафунсткого, чудотворца" res=""/>
+    </day>
+    <day date="17 июня:" exact="17 jun">
+      <feast filename="jun/17.hip" name="Мучеников Мануила, Савела и Исмаила" res=""/>
+    </day>
+    <day date="18 июня:" exact="18 jun">
+      <feast filename="jun/18.hip" name="Мученика Леонтия" res=""/>
+      <feast filename="jun/18p.hip" name="Служба Пресвятой Богородице, в честь иконы ее Боголюбской" res="ext"/>
+    </day>
+    <day date="19 июня:" exact="19 jun">
+      <feast filename="jun/19.hip" name="Апостола Иуды, брата Господня" res=""/>
+    </day>
+    <day date="20 июня:" exact="20 jun">
+      <feast filename="jun/20.hip" name="Священномученика Мефодия, епископа Патарского" res=""/>
+    </day>
+    <day date="21 июня:" exact="21 jun">
+      <feast filename="jun/21.hip" name="Мученика Иулиана Тарсийского" res=""/>
+    </day>
+    <day date="22 июня:" exact="22 jun">
+      <feast filename="jun/22.hip" name="Священномученика Евсевия, епископа Самосатского" res=""/>
+    </day>
+    <day date="23 июня:" exact="23 jun">
+      <feast filename="jun/23.hip" name="Мученицы Агрипины" res=""/>
+      <feast filename="jun/23.hip" name="Сретение чудотворной иконы Пресвятой Богородицы, Владимирской" res=""/>
+    </day>
+    <day date="24 июня:" exact="24 jun">
+      <feast filename="jun/24.hip" name="Рождество пророка, Предтечи и Крестителя Господня Иоанна" res=""/>
+    </day>
+    <day date="25 июня:" exact="25 jun">
+      <feast filename="jun/25.hip" name="Преподобномученицы Февронии" res=""/>
+      <feast filename="jun/25.hip" name="Благоверных князя Петра и княгини Февронии, муромских чудотворцев" res=""/>
+      <feast filename="jun/25.hip" name="20" res=""/>
+    </day>
+    <day date="26 июня:" exact="26 jun">
+      <feast filename="jun/26.hip" name="Преподобного Давида, Селунского" res=""/>
+      <feast filename="jun/26.hip" name="Явление Иконы Пресвятой Богородицы, Тихвинской" res=""/>
+    </day>
+    <day date="27 июня:" exact="27 jun">
+      <feast filename="jun/27.hip" name="Преподобного Сампсона странноприимца" res=""/>
+      <feast filename="jun/27.hip" name="Благодарственная служба Пресвятой Троице о победе в Полтавской битве" res=""/>
+    </day>
+    <day date="28 июня:" exact="28 jun">
+      <feast filename="jun/28.hip" name="Бессребренников Кира и Иоанна, чудотворцев" res=""/>
+      <feast filename="jun/28p.hip" name="Преподобных Сергия и Германа Валаамских чудотворцев" res="ext"/>
+    </day>
+    <day date="29 июня:" exact="29 jun">
+      <feast filename="jun/29.hip" name="Первоверховных апостолов Петра и Павла" res=""/>
+    </day>
+    <day date="30 июня:" exact="30 jun">
+      <feast filename="jun/30.hip" name="Собор двенадцати славных и всехвальных апостолов" res=""/>
+      <feast filename="jun/ned2.hip" name="В неделю вторую по святой Пятидесятнице: Всех святых в земли Российской просиявших." res="ext"/>
+    </day>
+  </month>
+  <month name="jul">
+    <day date="1 июля:" exact="1 jul">
+      <feast filename="jul/01.hip" name="Святых бессребреников Космы и Дамиана римских" res=""/>
+    </day>
+    <day date="2 июля:" exact="2 jul">
+      <feast filename="jul/02.hip" name="Положение честной ризы Пресвятой Богородицы во Влахерне" res=""/>
+    </day>
+    <day date="3 июля:" exact="3 jul">
+      <feast filename="jul/03.hip" name="Мученика Иакинфа" res=""/>
+      <feast filename="jul/03.hip" name="Святителя Филиппа, митрополита Московского" res=""/>
+    </day>
+    <day date="4 июля:" exact="4 jul">
+      <feast filename="jul/04.hip" name="Святителя Андрея, архиепископа Критского" res=""/>
+      <feast filename="jul/04.hip" name="Преподобной Марфы, матери святого Симеона Дивногорца" res=""/>
+    </day>
+    <day date="5 июля:" exact="5 jul">
+      <feast filename="jul/05.hip" name="Преподобного Афанасия Афонского" res=""/>
+      <feast filename="jul/05.hip" name="Обретение мощей преподобного Сергия Радонежского" res=""/>
+    </day>
+    <day date="6 июля:" exact="6 jul">
+      <feast filename="jul/06.hip" name="Преподобного Сисоя Великого" res=""/>
+    </day>
+    <day date="7 июля:" exact="7 jul">
+      <feast filename="jul/07.hip" name="Преподобных Фомы Малейского и Акакия , упоминаемого в Лествице" res=""/>
+    </day>
+    <day date="8 июля:" exact="8 jul">
+      <feast filename="jul/08.hip" name="Великомученика Прокопия" res=""/>
+      <feast filename="jul/08.hip" name="Блаженного Прокопия, Христа ради юродивого, Устюжского чудотворца" res=""/>
+      <feast filename="jul/08.hip" name="Явление иконы Пресвятой Богородицы во граде Казани" res=""/>
+    </day>
+    <day date="9 июля:" exact="9 jul">
+      <feast filename="jul/09.hip" name="Священномученика Панкратия, епископа Тавроменийского" res=""/>
+    </day>
+    <day date="10 июля:" exact="10 jul">
+      <feast filename="jul/10.hip" name="Четыредесяти пяти мучеников из Никополи Арменской" res=""/>
+      <feast filename="jul/10.hip" name="Положение честной ризы Господа Иисуса Христа в Москве" res=""/>
+      <feast filename="jul/10.hip" name="Преподобного Антония Киево-Печерского" res=""/>
+    </day>
+    <day date="11 июля:" exact="11 jul">
+      <feast filename="jul/11.hip" name="Мученицы Евфимии" res=""/>
+      <feast filename="jul/11.hip" name="Равноапостольной Ольги, великой княгини Российской, во святом крещении Елены" res=""/>
+    </day>
+    <day date="12 июля:" exact="12 jul">
+      <feast filename="jul/12.hip" name="Мучеников Прокла и Илария" res=""/>
+      <feast filename="jul/12.hip" name="Преподобного Михаила Малеина" res=""/>
+      <feast filename="jul/12p.hip" name="Иконы Пресвятой Богородицы Троеручица" res="ext"/>
+    </day>
+    <day date="13 июля:" exact="13 jul">
+      <feast filename="jul/13.hip" name="Собор архангела Гавриила" res=""/>
+      <feast filename="jul/13.hip" name="Преподобного Стефана Сассаита" res=""/>
+    </day>
+    <day date="14 июля:" exact="14 jul">
+      <feast filename="jul/14.hip" name="Апостола Акилы" res=""/>
+      <feast filename="jul/14.hip" name="Мучеников Кирика и Иулитты" res=""/>
+    </day>
+    <day date="15 июля:" exact="15 jul">
+      <feast filename="jul/15.hip" name="Равноапостольного великого князя Владимира, во святом крещении Василия" res=""/>
+    </day>
+    <day date="16 июля:" exact="16 jul">
+      <feast filename="jul/16.hip" name="Священномученика Афиногена и десяти учеников его" res=""/>
+      <feast filename="jul/16.hip" name="Святые отцов шести Вселенских соборов" res=""/>
+    </day>
+    <day date="17 июля:" exact="17 jul">
+      <feast filename="jul/17.hip" name="Великомученицы Марины" res=""/>
+    </day>
+    <day date="18 июля:" exact="18 jul">
+      <feast filename="jul/18.hip" name="Мученика Иакинфа Амастридийского" res=""/>
+      <feast filename="jul/18.hip" name="Мученика Емилиана" res=""/>
+    </day>
+    <day date="19 июля:" exact="19 jul">
+      <feast filename="jul/19.hip" name="Преподобной Макрины, сестры святителя Василия Великого" res=""/>
+      <feast filename="jul/19.hip" name="Преподобного Дия" res=""/>
+    </day>
+    <day date="20 июля:" exact="20 jul">
+      <feast filename="jul/20.hip" name="Пророка Илии" res=""/>
+    </day>
+    <day date="21 июля:" exact="21 jul">
+      <feast filename="jul/21.hip" name="Преподобных Симеона, Христа ради юродивого, и Иоанна, спостника его" res=""/>
+      <feast filename="jul/21.hip" name="Пророка Иезекиила" res=""/>
+    </day>
+    <day date="22 июля:" exact="22 jul">
+      <feast filename="jul/22.hip" name="Равноапостольной Марии Магдалины" res=""/>
+      <feast filename="jul/22.hip" name="Возвращение мощей священномученика Фоки" res=""/>
+    </day>
+    <day date="23 июля:" exact="23 jul">
+      <feast filename="jul/23.hip" name="Мучеников Трофима, Феофила и других с ними" res=""/>
+      <feast filename="jul/23p.hip" name="Иконы Пресвятой Богородицы Почаевской" res="ext"/>
+    </day>
+    <day date="24 июля:" exact="24 jul">
+      <feast filename="jul/24.hip" name="Мученицы Христины" res=""/>
+      <feast filename="jul/24.hip" name="Мучеников Бориса и Глеба, во святом крещении Романа и Давида" res=""/>
+    </day>
+    <day date="25 июля:" exact="25 jul">
+      <feast filename="jul/25.hip" name="Успение святой Анны, матери Пресвятой Богородицы" res=""/>
+      <feast filename="jul/25.hip" name="Святых жен Олимпиады и Евпраксии" res=""/>
+      <feast filename="jul/25.hip" name="Преподобного Макария Желтоводского, Унженского" res=""/>
+    </day>
+    <day date="26 июля:" exact="26 jul">
+      <feast filename="jul/26.hip" name="Священномученика Ермолая и других с ним" res=""/>
+      <feast filename="jul/26.hip" name="5k" res=""/>
+    </day>
+    <day date="27 июля:" exact="27 jul">
+      <feast filename="jul/27.hip" name="Великомученика и целителя Пантелеимона" res=""/>
+    </day>
+    <day date="28 июля:" exact="28 jul">
+      <feast filename="jul/28.hip" name="Апостолов Прохора, Никанора, Тимона и Пармена" res=""/>
+      <feast filename="jul/28.hip" name="Явление иконы Пресвятой Богородицы Смоленской, Одигитрии" res=""/>
+      <feast filename="jul/28p.hip" name="Святителя Питирима Тамбовского" res="ext"/>
+    </day>
+    <day date="29 июля:" exact="29 jul">
+      <feast filename="jul/29.hip" name="Мученика Каллиника" res=""/>
+    </day>
+    <day date="30 июля:" exact="30 jul">
+      <feast filename="jul/30.hip" name="Апостолов Силы, Силуана и других с ними" res=""/>
+      <feast filename="jul/30p.hip" name="Мученика Иоанна воина" res="ext"/>
+    </day>
+    <day date="31 июля:" exact="31 jul">
+      <feast filename="jul/31.hip" name="Предпразднество происхождения честного Креста Господня" res=""/>
+      <feast filename="jul/31.hip" name="Праведного Евдокима" res=""/>
+    </day>
+  </month>
+  <month name="aug">
+    <day date="1 августа:" exact="1 aug">
+      <feast filename="aug/01.hip" name="Происхождение честных древ честнаго и животворящего Креста Господня" res=""/>
+      <feast filename="aug/01.hip" name="И память святых семи мучеников Маккавейских и матери их Соломонии и учителя их Елеазара" res=""/>
+    </day>
+    <day date="2 августа:" exact="2 aug">
+      <feast filename="aug/02.hip" name="Пренесение мощей святого первомученика и архидиакона Стефана" res=""/>
+      <feast filename="aug/02.hip" name="Святого блаженного Василия, Московского чудотворца" res=""/>
+    </day>
+    <day date="3 августа:" exact="3 aug">
+      <feast filename="aug/03.hip" name="Преподобных отцов Исаакия, Далмата и Фавста" res=""/>
+      <feast filename="aug/03.hip" name="Преподобного Антония Римлянина, Новгородского чудотворца" res=""/>
+    </day>
+    <day date="4 августа:" exact="4 aug">
+      <feast filename="aug/04.hip" name="Святых семи отроков Ефесских" res=""/>
+    </day>
+    <day date="5 августа:" exact="5 aug">
+      <feast filename="aug/05.hip" name="Предпразднество Преображения Господа нашего Иисуса Христа" res=""/>
+      <feast filename="aug/05.hip" name="Святого мученика Евсигния" res=""/>
+    </day>
+    <day date="6 августа:" exact="6 aug">
+      <feast filename="aug/06.hip" name="Святое Преображение Господа Бога и Спаса нашего Иисуса Христа" res=""/>
+    </day>
+    <day date="7 августа:" exact="7 aug">
+      <feast filename="aug/07.hip" name="Святого преподобномученика Дометия" res=""/>
+    </day>
+    <day date="8 августа:" exact="8 aug">
+      <feast filename="aug/08.hip" name="Святого Емилиана исповедника, епископа Кизического" res=""/>
+      <feast filename="aug/08p.hip" name="Преподобных Зосимы и Савватия Соловецких" res="ext"/>
+    </day>
+    <day date="9 августа:" exact="9 aug">
+      <feast filename="aug/09.hip" name="Святого апостола Матфия" res=""/>
+    </day>
+    <day date="10 августа:" exact="10 aug">
+      <feast filename="aug/10.hip" name="Святого мученика и архидиакона Лаврентия" res=""/>
+    </day>
+    <day date="11 августа:" exact="11 aug">
+      <feast filename="aug/11.hip" name="Святого мученика и архидиакона Евпла" res=""/>
+    </day>
+    <day date="12 августа:" exact="12 aug">
+      <feast filename="aug/12.hip" name="Святых мучеников Фотия и Аникиты" res=""/>
+      <feast filename="aug/12.hip" name="Преподобного Максима исповедника" res=""/>
+    </day>
+    <day date="13 августа:" exact="13 aug">
+      <feast filename="aug/13.hip" name="Отдание праздника Преображения Господня" res=""/>
+      <feast filename="aug/13p.hip" name="Святителя Тихона, епископа Воронежского" res="ext"/>
+    </day>
+    <day date="14 августа:" exact="14 aug">
+      <feast filename="aug/14.hip" name="Препразднество Успения Пресвятой Богородицы" res=""/>
+      <feast filename="aug/14.hip" name="Святого пророка Михея" res=""/>
+      <feast filename="aug/14.hip" name="Пренесение честных мощей преподобного Феодосия Киево-печерского" res=""/>
+    </day>
+    <day date="15 августа:" exact="15 aug">
+      <feast filename="aug/15.hip" name="Успение Пресвятой Славной Владычицы нашей Богородицы и Приснодевы Марии" res=""/>
+      <feast filename="aug/17p.hip" name="Чин погребения Пресвятой Богородицы" res="ext"/>
+    </day>
+    <day date="16 августа:" exact="16 aug">
+      <feast filename="aug/16.hip" name="От Эдеса перенесение в Константинов град нерукотворенного образа Господа нашего Иисуса Христа" res=""/>
+      <feast filename="aug/16.hip" name="Святого мученика Диомида" res=""/>
+    </day>
+    <day date="17 августа:" exact="17 aug">
+      <feast filename="aug/17.hip" name="Святого мученика Мирона" res=""/>
+    </day>
+    <day date="18 августа:" exact="18 aug">
+      <feast filename="aug/18.hip" name="Святых мучеников Флора и Лавра" res=""/>
+    </day>
+    <day date="19 августа:" exact="19 aug">
+      <feast filename="aug/19.hip" name="Святого мученика Андрея Стратилата, и с ним двух тысяч пяти сот девятидесяти трех мучеников" res=""/>
+      <feast filename="aug/19p.hip" name="Пресвятой Богородицы, в честь иконы Ее, называемой Донской" res="ext"/>
+    </day>
+    <day date="20 августа:" exact="20 aug">
+      <feast filename="aug/20.hip" name="Святого пророка Самуила" res=""/>
+    </day>
+    <day date="21 августа:" exact="21 aug">
+      <feast filename="aug/21.hip" name="Святого апостола Фаддея" res=""/>
+      <feast filename="aug/21.hip" name="И святой мученицы Вассы" res=""/>
+      <feast filename="aug/21.hip" name="Преставление преподобного Авраамия, Смоленского чудотворца" res=""/>
+    </day>
+    <day date="22 августа:" exact="22 aug">
+      <feast filename="aug/22.hip" name="Святого мученика Агафоника и других с ним" res=""/>
+      <feast filename="aug/22.hip" name="Святого мученика Луппа" res=""/>
+    </day>
+    <day date="23 августа:" exact="23 aug">
+      <feast filename="aug/23.hip" name="Отдание праздника Успения Пресвятой Богородицы" res=""/>
+    </day>
+    <day date="24 августа:" exact="24 aug">
+      <feast filename="aug/24.hip" name="Святого священномученика Евтиха" res=""/>
+      <feast filename="aug/24.hip" name="Святителя Петра, митрополита всея России, чудотворца" res=""/>
+    </day>
+    <day date="25 августа:" exact="25 aug">
+      <feast filename="aug/25.hip" name="Святого апостола Варфоломея" res=""/>
+      <feast filename="aug/25.hip" name="Святого апостола Тита" res=""/>
+    </day>
+    <day date="26 августа:" exact="26 aug">
+      <feast filename="aug/26.hip" name="Святых мученик Адриана и Наталии" res=""/>
+      <feast filename="aug/26.hip" name="Сретение чудотворной иконы Пресвятой Богородицы Владимирской" res=""/>
+    </day>
+    <day date="27 августа:" exact="27 aug">
+      <feast filename="aug/27.hip" name="Преподобного Пимена" res=""/>
+    </day>
+    <day date="28 августа:" exact="28 aug">
+      <feast filename="aug/28.hip" name="Преподобного Моисея Мурина" res=""/>
+      <feast filename="aug/28p.hip" name="Собор преподобных отцов Киево-печерских" res="ext"/>
+    </day>
+    <day date="29 августа:" exact="29 aug">
+      <feast filename="aug/29.hip" name="Усекновение честной главы честнаго славного пророка, предтечи и крестителя Господня Иоанна" res=""/>
+    </day>
+    <day date="30 августа:" exact="30 aug">
+      <feast filename="aug/30.hip" name="Святых патриархов Константинова града: Александра, Иоанна и Павла Нового" res=""/>
+      <feast filename="aug/30.hip" name="Перенесение мощей святого благоверного великого князя Александра Невского" res=""/>
+      <feast filename="aug/30.hip" name="Преподобного Александра Свирского" res=""/>
+    </day>
+    <day date="31 августа:" exact="31 aug">
+      <feast filename="aug/31.hip" name="Положение честнаго пояса Пресвятой Богородицы" res=""/>
+    </day>
+  </month>
+</document>
