@@ -6,6 +6,7 @@ chapter-verse system'''
 
 #import codecs 
 import sys
+import os
 import xml.etree.ElementTree as ET
 
 class Zachalo():
@@ -14,8 +15,8 @@ class Zachalo():
 
 
     def f_search(self, book, zach):
-
-        tree = ET.parse('zach.xml')
+        z_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', 'zach.xml')
+        tree = ET.parse(z_path)
         root = tree.getroot()
         res = []
 
