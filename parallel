@@ -453,3 +453,16 @@ greek_lib/Penticostarion/Samaritan.xml==hiplib/ctr/13sam.hip
 greeklib/Penticostarion/p77.xml==hiplib/ctr/21troicsubb.hip
 greeklib/Penticostarion/Pentecost.xml==hiplib/ctr/22pentikost.hip
 greeklib/Euchologion/Agiasmos.xml==hiplib/trb/11mosv_vod.hip
+greeklib/Euchologion/Exomologhsis.xml==hiplib/trb/02ispovedanie.hip
+greeklib/Euchologion/Wedding.xml==hiplib/trb/03vench.hip
+greeklib/Euchologion/Baptism.xml==hiplib/trb/01kreschenie.hip
+greeklib/Euchologion/digamwn.xml==hiplib/trb/04vtorobrach.hip
+greeklib/Euchologion/Agiasmos.xml==hiplib/trb/11mosv_vod.hip
+greeklib/Euchologion/Uncion.xml==hiplib/trb/05eley.hip
+greeklib/Euchologion/nekrosimos_nipiou.xml==hiplib/trb/10pogr_mlad.hip
+greeklib/Euchologion/nekrosimos.xml==hiplib/trb/08otp_mir.hip
+greeklib/Euchologion/Trisagion.xml==hiplib/slu/12lit_usopsh.hip
+greeklib/Typikon/mikros_esp.xml==hiplib/tip/01.hip
+greeklib/Typikon/Eidhsis_megalou_esp.xml==hiplib/tip/02.hip
+greeklib/Typikon/Orthros_wres.xml==hiplib/tip/02.hip
+greeklib/Typikon/Eidhsis_Agrupniwn_olou_eniautou.xml==hiplib/tip/06.hip
