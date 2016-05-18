@@ -96,7 +96,8 @@ class Book_lst:
 
         self.book_lst = booklst.listbooks(self.lib_path) # , False) # - чтобы не перечислять "лишние" (не описанные) файлы
 
-        self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
+#        self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
+        self.split_parag = re.compile(u'(?:\r?\n){1,}', re.U) # problems with spaces in Octoihos (xml not cleaned out or read)
         self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
         self.html_del = re.compile(r'<.*?>', re.S)
 
@@ -183,6 +184,9 @@ class Book_lst:
             text_ls = []
             txt = ''.join(f_lines)
 
+            if self.mode:
+                txt = self.html_del.sub('', txt)
+
             parts_ls = self.split_parag.split(txt)
             for part in parts_ls:
                 part = self.kill_rn.sub(' ', part)
@@ -191,7 +195,6 @@ class Book_lst:
 
 ######            import pdb; pdb.set_trace()
             if self.mode:
-                txt = self.html_del.sub('', txt)
                 txt_win.ins_txt_gr(txt1)
             else:
                 txt_win.ins_txt_hip(txt1)
