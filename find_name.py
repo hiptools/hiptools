@@ -254,6 +254,7 @@ if __name__ == '__main__':
     parser = OptionParser(usage=usage)
 
     parser.add_option("-c", "--cli", dest="cli", action="store_true", help="use CLI indtead of GUI")
+    parser.add_option("-m", "--menu", dest="menu", action="store_true", help="CLI menu to view corresponding services.")
     parser.add_option("-g", "--greek", dest="greek", action="store_true", help="Search in greek base instead of slavic")
 
     (options, args) = parser.parse_args()
@@ -279,7 +280,12 @@ if __name__ == '__main__':
 
             res = sr.searcher(args[0].decode('utf8'))
             if res:
-                sr.txt_output(res)
+                if options.menu:
+                    sr.txt_output(res)
+                else:
+                    for i in range(len(res)):
+                        print i, res[i][1], res[i][2]
+
             else:
                 print 'Nothing is found, sorry'
                 sys.exit(1)
