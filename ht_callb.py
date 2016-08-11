@@ -88,6 +88,7 @@ class Connect_ind:
     def sw_mode(self, widget):
         '''callback for slav-greek switch in search and index'''
 
+        # search area
         if widget == self.gr_switch1:
             if self.mode_s:
                 self.mode_s = False
@@ -97,6 +98,7 @@ class Connect_ind:
                 self.gr_switch2.set_label("Греч.")
             print 'Greek in search:', self.mode_s
 
+        # list area
         elif widget == self.gr_switch2:
             if not self.mode_v:
                 self.gr_switch2.set_label("Слав.")

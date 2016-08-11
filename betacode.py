@@ -81,3 +81,9 @@ class Beta():
             b_word = b_word.replace(a, b)
         return b_word
 
+    def revert_all(self, b_word):
+        # all letters
+        for a, b in self.gr_filter:
+            b_word = b_word.replace(b, a)
+        return b_word
+
