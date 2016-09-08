@@ -37,7 +37,7 @@ if __name__ == '__main__':
 #    za.opener()
 
     from optparse import OptionParser
-    usage = "usage: %prog [options] dir"
+    usage = "usage: %prog Mf 35"
     parser = OptionParser(usage=usage)
 
 #    parser.add_option("-d", "--debug", dest="debug", action="store_true", help="Create new base")
