@@ -21,7 +21,7 @@ bcode = Beta()
 
 class Findaname():
     '''Finds names of the saints and other feasts and corresponding service texts in hip library.
-     All names searched should be in Genetive case'''
+     All names searched should be in Genetive case. No need to start with capital letter! '''
     def __init__(self, mode=False):
         self.split_parag = re.compile(u'(?:\r?\n){2,}', re.U)
         self.kill_rn = re.compile(u'(?:\r?\n)', re.U)
@@ -68,6 +68,7 @@ class Findaname():
         print "this is beta code", find_n
 
         find_n = find_n.decode('utf-8')
+        find_n = find_n.title() # first letter to uppercase
         find_n = unicodedata.normalize('NFD', find_n)
 
         s_path = os.path.join(os.path.expanduser('~'), '.config', 'hiptools', self.xml_file)
