@@ -469,6 +469,7 @@ class Show_text:
                 st, end = self.textbuffer.get_bounds()
                 self.textbuffer.delete(st, end)
                 for i in range(len(f_lines)):
+#                    print "line", i, f_lines[i]
                     # insert line (paragraph) into TextView buffer. 
                     # have to be filter here - only allowed tags get through
 #                    self.textbuffer.insert(self.textbuffer.get_end_iter(),f_lines[i][0])
@@ -842,9 +843,12 @@ class Show_text:
 #        for att in root.attrib:
 #            if att == 'title':
 #                t_name = root.attrib['title']
-
+        s_att = ''
         for bk in root.iter('span'):
-            for sec in bk.iter('span'):
+#            print 'bk', bk.text
+            s_att == bk.attrib
+            print 'attr', s_att
+#            for sec in bk.iter('span'):
 #                for s_att in sec.attrib:
 #                    if s_att == 'number':
 #                        flag = 1
@@ -852,7 +856,8 @@ class Show_text:
 #                    else:
 #                        flag = 0
 
-                f_lines.append(sec.text)
+#                f_lines.append(sec.text)
+            f_lines.append(bk.text)
 
 #        return f_lines, root
         return f_lines
@@ -887,6 +892,7 @@ if __name__ == '__main__':
         txt_win = Show_text(True)
         txt_win.path1 = args[0]
         f_lines = txt_win.xml_open(args[0])
+#        print f_lines
         txt_win.ins_txt_gr(f_lines)
 
 #        else:

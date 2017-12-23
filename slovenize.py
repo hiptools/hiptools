@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python2
 # -*- coding: utf-8 -*-
 
 #import pygtk
@@ -76,24 +76,25 @@ class Mn:
         # fill up the titlo-filter list from file
         try:
 #            fp = codecs.open("/usr/local/bin/titlo_filter", "rb", "utf8")
-            fp = codecs.open(os.path.join(os.path.expanduser('~'), ".config", "hiptools", "titlo_filter"), "rb", "utf8")
+            tit = os.path.join(os.path.expanduser('~'), ".config", "hiptools", "titlo_filter")
+            print 'titlo path', tit
+
+            fp = codecs.open(tit, "rb", "utf8")
             text_l = fp.readlines()
             fp.close()
-
-            self.filter = []
-            
-            for line in text_l:
-                line = line.encode('utf8').strip()
-
-                a, b = line.split(' ')
-                a = a.replace("R", "")
-
-                self.filter.append((b, a))
 
         except IOError:
             print 'no such file found: titlo_filter'
 
+        self.filter = []
+        
+        for line in text_l:
+            line = line.encode('utf8').strip()
 
+            a, b = line.split(' ')
+            a = a.replace("R", "")
+
+            self.filter.append((b, a))
 
     def opener(self, f_name):
         try:
@@ -217,23 +218,25 @@ class Mn:
 
 if __name__ == '__main__':
     rep = Mn()
-    #rep.opener('tmp3.hip')
-    #rep.conv_str(u'пе\'снь')
+
     from optparse import OptionParser
     usage = "usage: russ_simp.py [options] file"
     parser = OptionParser(usage=usage)
 
     parser.add_option("-d", "--debug", dest="debug", action='store_true', default=False, help="Work in the debuging mode")
     (options, args) = parser.parse_args()
-    
-    if args:
+
+    if options.debug:
+#        rep.conv_str(u'пр\сн')
+#        rep.conv_str(u'<%п>%е\'снь')
+
+        wrd = args[0].decode('utf8')
+        print rep.conv_str(wrd)
+   
+    elif args:
 
         rep.opener(args[0])
         
-    elif options.debug:
-#        rep.conv_str(u'пр\сн')
-        rep.conv_str(u'<%п>%е\'снь')
-
     else:
         print "No file name given, exiting"
         sys.exit(1)
