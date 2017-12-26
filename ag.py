@@ -37,6 +37,12 @@ class Show_text:
     """
     def __init__(self, Mode=True):
         # mode=true means greek mode 
+        self.r_vs = re.compile(r'g (.*?) (\d{1,2})[:, ](\d{1,2})')
+
+        self.book_names = [[['Мф','Mf','Mt', 'мф', 'mf', 'mt'], 'Matthew'],
+                            [['Мк', 'Mk', 'мк', 'mk'], 'Mark'],
+                            [['Лк', 'Lk', 'лк', 'lk'], 'Luke'],
+                            [['Ин', 'Jh', 'Jhn', 'Jn', 'ин', 'jh', 'jhn', 'jn'], 'John']]
 
 #        self.res_num = 0
 #        self.text = 'Searching...'
@@ -97,7 +103,7 @@ class Show_text:
         box2.pack_start(sw)
         box2.pack_start(self.entry, False, False, 0)
 
-#        self.entry.connect('activate', self.entry_cb)
+        self.entry.connect('activate', self.entry_cb)
 #        self.entry.connect('key_press_event', self.on_key_press_event)
 #        self.label.set_text("Найдено " + str(count) + " совпадений")
         self.entry.show()
@@ -108,7 +114,53 @@ class Show_text:
 
         window2.show()
 
+#    def on_key_press_event(self, widget, event):
+#        """Callback for find-Entry in results window"""
+#        keyname = gtk.gdk.keyval_name(event.keyval)
+#
+#        if event.state & gtk.gdk.CONTROL_MASK:
+#            if keyname == ":" or keyname == "Cyrillic_zhe_capital":
+#                print 'zhezhe'
+# 
+##        model, path = self.selection.get_selected_rows()
+##        iter_v = model.get_iter(path[0])
+##        file_path = model.get_value(iter_v, 0) 
+
+    def entry_cb(self, ent):
+        """Callback for entry widg
+           Look for word in results of primary search
+
+        """
+ 
+        addr = ent.get_text()
+#        fnc, arg = addr.split()
+#        if fnc == 'g': # go to verse
+            
+#            args = r_vs.split(arg)
+        if self.r_vs.search(addr):
+            args = self.r_vs.split(addr)
+            if args:
+                bk = args[1]
+                ch = args[2]
+                vs = args[3]
+#                print bk, ch, vs
+                # get full book name
+                for sh, lg in self.book_names:
+                    if bk in sh:
+                        bk = lg
+                        print bk
+
+            else:
+                print 'Some error occured. Perhaps, a typo?'
+            bk_path = os.path.join('hipxml_eua', bk + '.xml')
+            print bk_path
+            # this doesnt work. Have to rewright TreeView
+            self.ins_txt(self.xml_open(bk_path))
+            self.show_verse(ch, vs)
+
     def xml_open(self, *args):
+        print 'args xml_open', args
+
         t_name = ""
         tree = ET.parse(args[0])
         root = tree.getroot()

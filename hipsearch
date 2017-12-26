@@ -225,6 +225,7 @@ class Viewer:
         col_num = 2
         search = ent.get_text()
 
+        # функция find_match используется для обхода списка в modelfilter
         data = [search]
         def find_match(model, path, iter, data):
 
