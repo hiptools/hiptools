@@ -12,10 +12,12 @@ import os
 import xml.etree.ElementTree as ET
 #import subprocess
 import unicodedata
+import datetime
 
 import ConfigParser
 from textview import Show_text
 from betacode import Beta
+from old_date import Old
 
 bcode = Beta()
 
@@ -37,6 +39,9 @@ class Findaname():
             self.lib_path = os.path.join(config.get('LibraryPaths', 'sl_path'), 'min')
             self.enc = 'cp1251'
         print self.lib_path
+
+#        min_ls = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
+        self.min_ls = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
 
     def txt_output(self, res):
         # recursive func, outputs results in text version of the prog, checks input, starts a popup
@@ -88,7 +93,22 @@ class Findaname():
                     if find_n in s_line:
                         res_path = os.path.join(self.lib_path, fs.get('filename').encode('utf8'))
                         res.append([res_path, d.get('date').encode('utf8'), fs.get('name').encode('utf8')])
-                         
+# TODO: 
+# 
+        yr = datetime.date.today().year
+# определить старый юлианский год в модуле old_date
+        (dy, mnc) = res[0][1].split()
+
+#        print 'day', dtt[0], 'mon', dtt[1][:-1], 'year', yr
+        mth = 'zz'
+        for z in range(len(self.min_ls)):
+            if self.min_ls[z] == mnc[:-1]:
+                mth = z + 1
+#                print dy, mth, yr
+
+        olddate = Old().to_new((int(dy), int(mth), int(yr)))
+        print olddate
+        res[0].append(olddate)
         # [filename, date, text]
         return res
 
@@ -285,7 +305,7 @@ if __name__ == '__main__':
                     sr.txt_output(res)
                 else:
                     for i in range(len(res)):
-                        print i, res[i][1], res[i][2]
+                        print i, res[i][1], res[i][3], "н.ст.,", res[i][2]
 
             else:
                 print 'Nothing is found, sorry'
