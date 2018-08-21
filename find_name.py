@@ -47,7 +47,8 @@ class Findaname():
         # recursive func, outputs results in text version of the prog, checks input, starts a popup
 
         for i in range(len(res)):
-            print i, res[i][1], res[i][2]
+#            print i, res[i][1], res[i][2]
+            print i, res[i][1], "( н.ст.:", res[i][3][0], res[i][3][1], res[i][3][2], "),", res[i][2]
 
         nm = raw_input('pick number or [q]uit! ')
 
@@ -97,18 +98,26 @@ class Findaname():
 # 
         yr = datetime.date.today().year
 # определить старый юлианский год в модуле old_date
-        (dy, mnc) = res[0][1].split()
+
+        
+        for j in range(len(res)):
+            (dy, mnc) = res[j][1].split()
+
+            mth = 'zz'
+
+            # find out month number
+            for z in range(len(self.min_ls)):
+                if self.min_ls[z] == mnc[:-1]:
+                    mth = z + 1
+#            print 'input', dy, mth, yr
+            olddate = Old().to_new((int(dy), int(mth), int(yr)))
+
+#            print "olddate", olddate
+            res[j].append(olddate) # list of found selebration days
 
 #        print 'day', dtt[0], 'mon', dtt[1][:-1], 'year', yr
-        mth = 'zz'
-        for z in range(len(self.min_ls)):
-            if self.min_ls[z] == mnc[:-1]:
-                mth = z + 1
 #                print dy, mth, yr
 
-        olddate = Old().to_new((int(dy), int(mth), int(yr)))
-        print olddate
-        res[0].append(olddate)
         # [filename, date, text]
         return res
 
@@ -303,10 +312,11 @@ if __name__ == '__main__':
             if res:
                 if options.menu:
                     sr.txt_output(res)
+# Почини вывод в (txt_output)
                 else:
                     for i in range(len(res)):
-                        print i, res[i][1], res[i][3], "н.ст.,", res[i][2]
-
+                        print i, res[i][1], "( н.ст.:", res[i][3][0], res[i][3][1], res[i][3][2], "),", res[i][2]
+# причесать
             else:
                 print 'Nothing is found, sorry'
                 sys.exit(1)
